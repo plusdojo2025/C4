@@ -10,13 +10,25 @@ import javax.servlet.http.HttpSession;
 
 public abstract class CustomTemplateServlet extends HttpServlet {
 	
+	public boolean checkLogout(HttpServletRequest request, HttpServletResponse response)
+			throws IOException {
+		String logout = request.getParameter("logout");
+		boolean result = (logout != null);
+		if (result) {
+			HttpSession session =  request.getSession();
+			session.removeAttribute("id");
+			checkNoneLogin(request,response);
+		}
+		return result;
+	}
+	
 	protected final boolean checkNoneLogin(HttpServletRequest request, HttpServletResponse response) 
 			   throws IOException {
 		HttpSession session = request.getSession();
 		boolean result = (session.getAttribute("id") == null);
 		if (result) {
-			// loginトにリダイレクトする
-			response.sendRedirect("login");
+			// loginにリダイレクトする
+			response.sendRedirect("OmoiyalinkLogin");
 		}
 		return result;
 	}
@@ -26,8 +38,8 @@ public abstract class CustomTemplateServlet extends HttpServlet {
 		HttpSession session = request.getSession();
 		boolean result = (session.getAttribute("id") != null);
 		if (result) {
-			// menuにリダイレクトする
-			response.sendRedirect("menu");
+			// homeにリダイレクトする
+			response.sendRedirect("OmoiyalinkHome");
 		}
 		return result;
 	}
