@@ -16,7 +16,7 @@ public abstract class CustomTemplateServlet extends HttpServlet {
 		boolean result = (logout != null);
 		if (result) {
 			HttpSession session =  request.getSession();
-			session.removeAttribute("id");
+			session.removeAttribute("id"); //idを出している
 			checkNoneLogin(request,response);
 		}
 		return result;
@@ -25,8 +25,8 @@ public abstract class CustomTemplateServlet extends HttpServlet {
 	protected final boolean checkNoneLogin(HttpServletRequest request, HttpServletResponse response) 
 			   throws IOException {
 		HttpSession session = request.getSession();
-		boolean result = (session.getAttribute("id") == null);
-		if (result) {
+		boolean result = (session.getAttribute("id") == null);  //removeしたらbooleanの結果がtrueになる
+		if (result) { 
 			// loginにリダイレクトする
 			response.sendRedirect("OmoiyalinkLogin");
 		}
