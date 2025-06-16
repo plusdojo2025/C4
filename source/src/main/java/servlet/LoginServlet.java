@@ -24,6 +24,8 @@ public class LoginServlet extends CustomTemplateServlet {
 		if (checkDoneLogin(request, response)) {
 			return;
 		}
+
+		
 		// ログインページにフォワードする
 		RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/login.jsp");
 		dispatcher.forward(request, response);
