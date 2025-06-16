@@ -34,6 +34,7 @@ button { padding: 0.6em 1.5em; font-size: 1em; margin-top: 0.5em; }
         <button type="submit" class="A2regibtn">登録（メールを送信します）</button>
         <button type="button" class="A2backbtn" onclick="history.back();">登録をやめる</button>
     </form>
+</body>
 
 <script>
 // ▼都道府県・市区町村リスト
@@ -108,5 +109,4 @@ $(function () {
     });
 });
 </script>
-</body>
 </html>
