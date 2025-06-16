@@ -19,9 +19,9 @@ button { padding: 0.6em 1.5em; font-size: 1em; margin-top: 0.5em; }
         <label for="name">氏名</label>
         <input type="text" name="name" id="A2name" placeholder="ニックネームでも可" required>
         <label for="pref">都道府県</label>
-        <select name="pref" id="pref"></select>
+        <select name="pref" id="pref" required></select>
         <label for="city">市区町村</label>
-        <select name="city" id="city">
+        <select name="city" id="city" required>
             <option value="">市区町村で絞り込む</option>
         </select>
         <label for="birthdate">生年月日</label>
@@ -31,7 +31,7 @@ button { padding: 0.6em 1.5em; font-size: 1em; margin-top: 0.5em; }
         <button type="submit" class="A2regibtn">登録（メールを送信します）</button>
         <button type="button" class="A2backbtn" onclick="history.back();">登録をやめる</button>
     </form>
-</body>
+
 
 <script>
 const PREF_CITY = {
@@ -254,4 +254,5 @@ $(function () {
     });
 });
 </script>
+</body>
 </html>
