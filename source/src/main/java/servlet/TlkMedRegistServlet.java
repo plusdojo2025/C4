@@ -41,10 +41,7 @@ public class TlkMedRegistServlet extends CustomTemplateServlet {
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		if (checkNoneLogin(request, response)) {
-			return;
-		}
-		if (checkLogout(request, response)) {
+		if (checkNoneLogin(request, response) || checkLogout(request, response)) {
 			return;
 		}
 		
@@ -56,7 +53,7 @@ public class TlkMedRegistServlet extends CustomTemplateServlet {
 		String[] selectedOptions = request.getParameterValues("options");
 		
 	   //データ変換
-		
+		//Date  takeTime = Date.valueOf(takeTimeStr);
 		
 		//ログインユーザーの取得
 		
