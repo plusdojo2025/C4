@@ -24,24 +24,26 @@ public abstract class CustomTemplateServlet extends HttpServlet {
 	
 	protected final boolean checkNoneLogin(HttpServletRequest request, HttpServletResponse response) 
 			   throws IOException {
-		HttpSession session = request.getSession();
-		boolean result = (session.getAttribute("id") == null);  //removeしたらbooleanの結果がtrueになる
-		if (result) { 
-			// loginにリダイレクトする
-			response.sendRedirect("OmoiyalinkLogin");
-		}
-		return result;
+//		HttpSession session = request.getSession();
+//		boolean result = (session.getAttribute("id") == null);  //removeしたらbooleanの結果がtrueになる
+//		if (result) { 
+//			// loginにリダイレクトする
+//			response.sendRedirect("OmoiyalinkLogin");
+//		}
+//		return result;
+		return false;
 	}
 	
 	protected final boolean checkDoneLogin(HttpServletRequest request, HttpServletResponse response) 
 			   throws IOException {
-		HttpSession session = request.getSession();
-		boolean result = (session.getAttribute("id") != null);
-		if (result) {
-			// homeにリダイレクトする
-			response.sendRedirect("OmoiyalinkHome");
-		}
-		return result;
+//		HttpSession session = request.getSession();
+//		boolean result = (session.getAttribute("id") != null);
+//		if (result) {
+//			// homeにリダイレクトする
+//			response.sendRedirect("OmoiyalinkHome");
+//		}
+//		return result;
+		return false;
 	}
 
 	@Override

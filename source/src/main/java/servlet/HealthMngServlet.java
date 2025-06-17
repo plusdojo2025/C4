@@ -24,15 +24,9 @@ public class HealthMngServlet extends CustomTemplateServlet {
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-
-		// セッションを取得し、ログインユーザーID（userId）を取り出す
-		// 未ログイン（セッションなし or userId未セット）の場合はログイン画面にリダイレクト
-//		HttpSession session = request.getSession(false);
-//		if (session == null || session.getAttribute("userId") == null) {
-//			response.sendRedirect("/WEB-INF/jsp/login.jsp");
-//			return;
-//		}
-//		int userId = (int) session.getAttribute("userId");
+		if (checkNoneLogin(request, response)) {
+			return;
+		}
 
 		// ページ番号を取得（未指定・不正な値は0：最新ページ扱い）
 		int page = 0;
