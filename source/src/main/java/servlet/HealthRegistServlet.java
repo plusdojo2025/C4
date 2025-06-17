@@ -36,14 +36,11 @@ public class HealthRegistServlet extends CustomTemplateServlet {
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		if (checkNoneLogin(request, response)) {
-			return;
-		}
-		if (checkLogout(request, response)) {
+		if (checkNoneLogin(request, response) || checkLogout(request, response)) {
 			return;
 		}
 		
-	// フォームから入力内容を取得する
+	// フォームからの入力内容を取得する
 	request.setCharacterEncoding("UTF-8");
     try {
         // パラメータ取得
@@ -87,7 +84,7 @@ public class HealthRegistServlet extends CustomTemplateServlet {
 
         // 結果をセットして画面遷移
         if (result) {
-            request.setAttribute("message", "体調を登録しました。");
+            request.setAttribute("message", "本日の体調を登録しました。");
             request.getRequestDispatcher(request.getContextPath() + "/HealthMngServlet").forward(request, response);
         } else {
             request.setAttribute("message", "登録に失敗しました。");
