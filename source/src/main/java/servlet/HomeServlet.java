@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 public class HomeServlet extends CustomTemplateServlet {
 	private static final long serialVersionUID = 1L;
 
+	//もしログインしていなかったらログインサーブレットにリダイレクトする。
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
@@ -23,7 +24,7 @@ public class HomeServlet extends CustomTemplateServlet {
 			return;
 		}
 		
-		// ログインページにフォワードする
+		// ログインページにフォワードする　　（ホーム？）
 		RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/home.jsp");
 		dispatcher.forward(request, response);
 	}
