@@ -17,7 +17,7 @@ import dto.UsersDto;
 /**
  * Servlet implementation class MedMngServlet
  */
-@WebServlet("/OmoiyalinkMedMng")
+@WebServlet("/OmoiyalinkMedRegist")
 public class MedRegistServlet extends CustomTemplateServlet {
 	private static final long serialVersionUID = 1L;
 
