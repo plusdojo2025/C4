@@ -4,7 +4,6 @@ import java.io.IOException;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -22,20 +21,31 @@ public class BrainTraServlet extends CustomTemplateServlet {
         // TODO Auto-generated constructor stub
     }
 
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
-	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	
+    //メニュー表示
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) 
+			throws ServletException, IOException {
+		request.getRequestDispatcher("/WEB-INF/jsp/brainMenu.jsp").forward(request, response);
+    }
 		// TODO Auto-generated method stub
-		response.getWriter().append("Served at: ").append(request.getContextPath());
+	
+
+	
+	//選択肢
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) 
+			throws ServletException, IOException {
+		String action = request.getParameter("action");
+
+        if ("start".equals(action)) {
+            response.sendRedirect("BrainTraPlayServlet");     //ゲーム開始ボタン
+        } else if ("history".equals(action)) {
+            response.sendRedirect("BrainTraMng");		     //履歴閲覧
+        } else {
+            response.sendRedirect("OmoiyalinkBrainTra");	// メニューに戻る
+        }
+    }
+		// TODO Auto-generated method stub
+		//doGet(request, response);
 	}
 
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		doGet(request, response);
-	}
 
-}
