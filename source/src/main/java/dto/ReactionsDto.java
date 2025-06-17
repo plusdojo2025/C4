@@ -3,24 +3,27 @@ package dto;
 import java.io.Serializable;
 import java.util.Date;
 
-public class ReactionsDto<ReactionType> extends CustomeTemplateDto implements Serializable{
+import utility.ReactionType;
+
+public class ReactionsDto extends CustomeTemplateDto implements Serializable{
 	private int reactionId;
 	private int postId;
 	private int userId;
 	private ReactionType type;
-	private Date created_at;
+	private Date createdAt;
 
-	public ReactionsDto() {
-		// TODO 自動生成されたコンストラクター・スタブ
-	}
-
-	public ReactionsDto(int reactionId, int postId, int userId, ReactionType type, Date created_at) {
+	public ReactionsDto(int reactionId, int postId, int userId, ReactionType type, Date createdAt) {
 		super();
 		this.reactionId = reactionId;
 		this.postId = postId;
 		this.userId = userId;
 		this.type = type;
-		this.created_at = created_at;
+		this.createdAt = createdAt;
+	}
+
+	public ReactionsDto() {
+		this(0,0,0,null,new Date());
+		
 	}
 
 	public int getReactionId() {
@@ -56,11 +59,11 @@ public class ReactionsDto<ReactionType> extends CustomeTemplateDto implements Se
 	}
 
 	public Date getCreated_at() {
-		return created_at;
+		return createdAt;
 	}
 
 	public void setCreated_at(Date created_at) {
-		this.created_at = created_at;
+		this.createdAt = created_at;
 	}
 
 }
