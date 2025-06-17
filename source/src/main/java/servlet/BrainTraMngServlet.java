@@ -27,7 +27,7 @@ public class BrainTraMngServlet extends CustomTemplateServlet {
 		// セッション取得・ログインチェック
 		HttpSession session = request.getSession(false);
 		if (session == null || session.getAttribute("userId") == null) {
-			response.sendRedirect("login.jsp");
+			response.sendRedirect("/WEB-INF/jsp/login.jsp");
 			return;
 		}
 		int userId = (int) session.getAttribute("userId");
