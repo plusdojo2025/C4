@@ -2,6 +2,7 @@ package servlet;
 
 import java.io.IOException;
 import java.sql.Date;
+import java.util.List;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -32,16 +33,33 @@ public class MedMngServlet extends CustomTemplateServlet {
 		RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/home.jsp");
 		dispatcher.forward(request, response);
 	}
-
+	
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		if (checkNoneLogin(request, response)) {
+		if (checkNoneLogin(request, response) || checkLogout(request, response)) {
 			return;
 		}
-		if (checkLogout(request, response)) {
-			return;
-		}
+	
+	try {	
+		// 一覧表示をするために検索処理を行う
+		MedicationsDao dao = new MedicationsDao();
+		MedicationsDto searchDto = new  MedicationsDto( 0, 0, "", "", "", null, "", null);
+		List<MedicationsDto> medicationList = dao.select(searchDto);
+
+		// 検索結果をリクエストスコープに格納する
+		request.setAttribute("cardList", medicationList);
+
+		// 結果ページにフォワードする
+		RequestDispatcher dispatcher = request.getRequestDispatcher(request.getContextPath() + "/medMng.jsp");
+		dispatcher.forward(request, response);
+	}
+	catch (Exception e) {
+        e.printStackTrace();
+        request.setAttribute("message", "エラーが発生しました。お薬情報を取得できませんでした");
+        request.getRequestDispatcher(request.getContextPath() + "/HomeServlet").forward(request, response);
+    }
+
 		
 		
 		// フォームから入力内容を取得する
@@ -60,40 +78,41 @@ public class MedMngServlet extends CustomTemplateServlet {
 	        Date createdAt = Date.valueOf(createdAtStr);
 	        Date intakeTime = Date.valueOf(intakeTimeStr);
 
+	        // medicationIdの取得
+	        HttpSession sessionA = request.getSession();
+	        MedicationsDto medication = (MedicationsDto) sessionA.getAttribute("medication_id");
+	        int medicationId = medication.getMedicationId();
+
 	        // ログインユーザーの取得
 	        HttpSession session = request.getSession();
-	        UsersDto user = (UsersDto) session.getAttribute("userId");
+	        UsersDto user = (UsersDto) session.getAttribute("user_id");
 	        int userId = user.getUserId();
 
-	        // DTOに詰める
-	        MedicationsDto dto = new MedicationsDto();
-	        dto.setUserId(userId);
-	        dto.setNickName(nickName);
-	        dto.setFormalName(formalName);
-	        dto.setDosage(dosage);
-	        dto.setCreatedAt(createdAt);
-	        dto.setIntakeTime(intakeTime);
-	        dto.setMemo(memo);
-
-	        // DAOで登録
-	        boolean result = new MedicationsDao().insert(dto);
-
-	        // 結果をセットして画面遷移
-	        if (result) {
-	            request.setAttribute("message", "お薬を登録しました。");
-	            request.getRequestDispatcher(request.getContextPath() + "/MedMngServlet").forward(request, response);
-	        } else {
-	            request.setAttribute("message", "登録に失敗しました。");
-	            request.getRequestDispatcher(request.getContextPath() + "/medRegist.jsp").forward(request, response);
-	        };
-	        
-
-	    } catch (Exception e) {
-	        e.printStackTrace();
-	        request.setAttribute("message", "エラーが発生しました。入力内容を確認してください。");
-	        request.getRequestDispatcher(request.getContextPath() + "/medRegist.jsp").forward(request, response);
-	    }	
-	    
-	  }
-	
+			// 更新または削除を行う
+	        MedicationsDao bDao = new MedicationsDao();
+			if (request.getParameter("submit").equals("更新")) {
+				if (bDao.update(new MedicationsDto(medicationId, userId, nickName, formalName, dosage, createdAt, memo, intakeTime))) { // 更新成功
+		            request.setAttribute("message", "お薬情報を更新しました。");
+		            request.getRequestDispatcher(request.getContextPath() + "/MedMngServlet").forward(request, response);
+				} else { // 更新失敗
+		            request.setAttribute("message", "更新に失敗しました。");
+		            request.getRequestDispatcher(request.getContextPath() + "/MedMngServlet").forward(request, response);
+				}
+			} 
+			else {
+				if (bDao.delete(new MedicationsDto(medicationId, userId, nickName, formalName, dosage, createdAt, memo, intakeTime))) { // 削除成功
+		            request.setAttribute("message", "お薬情報を削除しました");
+		            request.getRequestDispatcher(request.getContextPath() + "/MedMngServlet").forward(request, response);
+				} else { // 削除失敗
+		            request.setAttribute("message", "削除に失敗しました。");
+		            request.getRequestDispatcher(request.getContextPath() + "/MedMngServlet").forward(request, response);
+				}
+			}
+		}
+			catch (Exception e) {
+		        e.printStackTrace();
+		        request.setAttribute("message", "エラーが発生しました。入力内容を確認してください。");
+		        request.getRequestDispatcher(request.getContextPath() + "/MedMngServlet").forward(request, response);
+		    }
+	}
 }
