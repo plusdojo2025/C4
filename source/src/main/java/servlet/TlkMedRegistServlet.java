@@ -1,6 +1,7 @@
 package servlet;
 
 import java.io.IOException;
+import java.sql.Date;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -47,21 +48,21 @@ public class TlkMedRegistServlet extends CustomTemplateServlet {
 		
 		//リクエストパラメータを取得する
 		request.setCharacterEncoding("UTF-8");
-		String takenTime 	=		 request.getParameter("takeTime");
-		String takenMed  	= 		request.getParameter("takeMed");
+		String takenTime 	=		 request.getParameter("takenTime");
 		String memo			=		 request.getParameter("memo");
-		String[] selectedOptions = request.getParameterValues("options");
+		String[] selectedTakenMed = request.getParameterValues("takenMed");
 		
 	   //データ変換
-		//Date  takeTime = Date.valueOf(takeTimeStr);
+		Date  takeTime = Date.valueOf(takenTime);
 		
 		//ログインユーザーの取得
 		
-		
-		//DTOに詰める
-		
-		//DAOで登録
-		
+		for (String selected : selectedTakenMed) {
+			//DTOに詰める
+			
+			//DAOで登録
+				
+		}
 	}
 	
 }
