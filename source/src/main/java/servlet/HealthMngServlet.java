@@ -7,7 +7,6 @@ import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import dao.HealthrecordDao;
 import dto.HealthrecordDto;
@@ -28,12 +27,12 @@ public class HealthMngServlet extends CustomTemplateServlet {
 
 		// セッションを取得し、ログインユーザーID（userId）を取り出す
 		// 未ログイン（セッションなし or userId未セット）の場合はログイン画面にリダイレクト
-		HttpSession session = request.getSession(false);
-		if (session == null || session.getAttribute("userId") == null) {
-			response.sendRedirect("/WEB-INF/jsp/login.jsp");
-			return;
-		}
-		int userId = (int) session.getAttribute("userId");
+//		HttpSession session = request.getSession(false);
+//		if (session == null || session.getAttribute("userId") == null) {
+//			response.sendRedirect("/WEB-INF/jsp/login.jsp");
+//			return;
+//		}
+//		int userId = (int) session.getAttribute("userId");
 
 		// ページ番号を取得（未指定・不正な値は0：最新ページ扱い）
 		int page = 0;
@@ -52,7 +51,7 @@ public class HealthMngServlet extends CustomTemplateServlet {
 		// ※大量データになる場合はページングSQLへの改善も検討
 		HealthrecordDao dao = new HealthrecordDao();
 		HealthrecordDto cond = new HealthrecordDto();
-		cond.setUserId(userId);
+//		cond.setUserId(userId);
 		List<HealthrecordDto> allRecords = dao.select(cond);
 
 		// 取得件数に応じて、表示すべき10件分を抽出
