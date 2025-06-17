@@ -25,17 +25,35 @@ public class BrainTraServlet extends CustomTemplateServlet {
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    
+    //メニュー表示
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) 
+			throws ServletException, IOException {
+		request.getRequestDispatcher("/WEB-INF/jsp/brainMenu.jsp").forward(request, response);
+    }
 		// TODO Auto-generated method stub
-		response.getWriter().append("Served at: ").append(request.getContextPath());
-	}
+	
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	
+	//選択肢
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) 
+			throws ServletException, IOException {
+		String action = request.getParameter("action");
+
+        if ("start".equals(action)) {
+            response.sendRedirect("BrainTraPlayServlet"); //ゲーム開始ボタン
+        } else if ("history".equals(action)) {
+            response.sendRedirect("BrainTraMng");		//履歴閲覧
+        } else {
+            // メニューに戻る
+            response.sendRedirect("OmoiyalinkBrainTra");
+        }
+    }
 		// TODO Auto-generated method stub
-		doGet(request, response);
+		//doGet(request, response);
 	}
 
-}
+
