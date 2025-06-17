@@ -11,89 +11,70 @@ import dto.BrainTrainingResultsDto;
 
 public class BrainTrainingResultsDao extends CustomTemplateDao<BrainTrainingResultsDto> {
 
-	@Override
-	public List< BrainTrainingResultsDto> select(BrainTrainingResultsDto dto) {
+	/**
+	 * 指定ユーザーの脳トレ履歴を取得します（orderByScore: true=昇順, false=降順）
+	 */
+	public List<BrainTrainingResultsDto> selectByUserId(int userId, boolean orderByScoreAsc) {
 		Connection conn = null;
-		List< BrainTrainingResultsDto> userList = new ArrayList< BrainTrainingResultsDto>();
-
+		List<BrainTrainingResultsDto> list = new ArrayList<>();
 		try {
 			conn = conn();
-			
-			// SQL文を準備する
-			String sql = "SELECT * FROM users WHERE result_id = ?";
+			// ソート条件
+			String order = orderByScoreAsc ? "ASC" : "DESC";
+			String sql = "SELECT * FROM brain_training_results WHERE user_id = ? ORDER BY score " + order
+					+ ", played_at DESC";
 			PreparedStatement pStmt = conn.prepareStatement(sql);
-
-			// SQL文を完成させる
-			pStmt.setInt(1,  dto.getResult_id() );
-			
-			
-			// SQL文を実行し、結果表を取得する
-			//ResultSetはJDBC特有のなにか
+			pStmt.setInt(1, userId);
 			ResultSet rs = pStmt.executeQuery();
-
-			// 結果表をコレクションにコピーする
 			while (rs.next()) {
-				BrainTrainingResultsDto bc = new  BrainTrainingResultsDto(
-						rs.getInt("result_id"), 
-						rs.getInt("user_id;"), 
-						rs.getInt("score"), 
-						rs.getString("game_type"), 
-						rs.getDate("played_at")
-						);										
-				userList.add(bc);
+				BrainTrainingResultsDto dto = new BrainTrainingResultsDto(rs.getInt("result_id"), rs.getInt("user_id"),
+						rs.getInt("score"), rs.getString("game_type"), rs.getTimestamp("played_at") // Timestamp → Date
+																									// は自動変換可
+				);
+				list.add(dto);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
-			userList = null;
+			list = null;
 		} finally {
-			// データベースを切断
 			close(conn);
 		}
+		return list;
+	}
 
-		// 結果を返す
-		return userList;
+	@Override
+	public List<BrainTrainingResultsDto> select(BrainTrainingResultsDto dto) {
+		// 非推奨：用途が明確な selectByUserId を推奨
+		return selectByUserId(dto.getUser_id(), false); // デフォルトは降順
 	}
 
 	@Override
 	public boolean insert(BrainTrainingResultsDto dto) {
 		Connection conn = null;
 		boolean result = false;
-
 		try {
-			// JDBCドライバを読み込む
-			// データベースに接続する
 			conn = conn();
-
-			// SQL文を準備する
 			String sql = """
-					INSERT users(result_id , user_id , score , geme_type , played_at)
-							VALEUS(       ?,                ?,       ?,     ?,         ? )
+					    INSERT INTO brain_training_results (user_id, score, game_type, played_at)
+					    VALUES (?, ?, ?, ?)
 					""";
-			PreparedStatement pStmt = conn.prepareStatement(sql);
-
-			// SQL文を完成させる
-			pStmt.setInt(1, dto.getResult_id());
-			pStmt.setInt(2, dto.getUser_id());
-			pStmt.setInt(3, dto.getScore());
-			pStmt.setString(4, dto.getGame_type());
-			pStmt.setDate(5,new java.sql.Date (dto.getPlayed_at().getTime()));
-		
-
-			// SQL文を実行する
+			PreparedStatement pStmt = conn.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
+			pStmt.setInt(1, dto.getUser_id());
+			pStmt.setInt(2, dto.getScore());
+			pStmt.setString(3, dto.getGame_type());
+			pStmt.setTimestamp(4, new java.sql.Timestamp(dto.getPlayed_at().getTime()));
 			if (pStmt.executeUpdate() == 1) {
 				ResultSet res = pStmt.getGeneratedKeys();
-				res.next();
-				dto.setUser_id(res.getInt(1));			
+				if (res.next()) {
+					dto.setResult_id(res.getInt(1));
+				}
 				result = true;
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
-			// データベースを切断
 			close(conn);
 		}
-
-		// 結果を返す
 		return result;
 	}
 
@@ -101,79 +82,47 @@ public class BrainTrainingResultsDao extends CustomTemplateDao<BrainTrainingResu
 	public boolean update(BrainTrainingResultsDto dto) {
 		Connection conn = null;
 		boolean result = false;
-
 		try {
-			// JDBCドライバを読み込む
-			// データベースに接続する
 			conn = conn();
-
-			// SQL文を準備する
 			String sql = """
-					UPDATE users
-					SET
-					result_id = ?,  					
-					user_id =?,
-					score =?,
-					game_type =?,  
-					played_at =?
-					WHERE user_id = ?
+					    UPDATE brain_training_results
+					    SET user_id = ?, score = ?, game_type = ?, played_at = ?
+					    WHERE result_id = ?
 					""";
 			PreparedStatement pStmt = conn.prepareStatement(sql);
-
-			// SQL文を完成させる
-			pStmt.setInt(1, dto.getResult_id());
-			pStmt.setInt(2, dto.getUser_id());
-			pStmt.setInt(3, dto.getScore());
-			pStmt.setString(4, dto.getGame_type());
-			pStmt.setDate(5, new java.sql.Date (dto.getPlayed_at().getTime()));
-			
-
-			// SQL文を実行する
+			pStmt.setInt(1, dto.getUser_id());
+			pStmt.setInt(2, dto.getScore());
+			pStmt.setString(3, dto.getGame_type());
+			pStmt.setTimestamp(4, new java.sql.Timestamp(dto.getPlayed_at().getTime()));
+			pStmt.setInt(5, dto.getResult_id());
 			if (pStmt.executeUpdate() == 1) {
 				result = true;
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
-			// データベースを切断
 			close(conn);
 		}
-
-		// 結果を返す
 		return result;
 	}
 
 	@Override
-	public boolean delete(BrainTrainingResultsDto dto){
+	public boolean delete(BrainTrainingResultsDto dto) {
 		Connection conn = null;
 		boolean result = false;
-
 		try {
-			// JDBCドライバを読み込む
-			// データベースに接続する
 			conn = conn();
-
-			// SQL文を準備する
-			String sql = "DELETE FROM users WHERE result_id=?";
+			String sql = "DELETE FROM brain_training_results WHERE result_id = ?";
 			PreparedStatement pStmt = conn.prepareStatement(sql);
-
-			// SQL文を完成させる
 			pStmt.setInt(1, dto.getResult_id());
-
-			// SQL文を実行する
 			if (pStmt.executeUpdate() == 1) {
 				result = true;
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
-			// データベースを切断
 			close(conn);
 		}
-
-		// 結果を返す
 		return result;
 	}
-
-	
 }
