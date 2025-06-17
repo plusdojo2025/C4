@@ -753,6 +753,74 @@ CSSはページを分けて各個人で管理する
 
 備考
 
+-----------------------------------------------
+日時　2025/06/16
+
+
+●本日の目標
+
+先週みたいに1時間に1回全体で進捗確認の時間を取る
+
+●場所　SEプラス社
+
+●出席者
+岡谷・清水・真野・村土・山中
+
+
+●議題 （本日中に終わらせたいこと　順番）
+１.DBの配布
+→"C:\Program Files\MySQL\MySQL Server 8.0\bin\mysql" -uroot -ppassword -e "DROP DATABASE IF EXISTS C4; CREATE DATABASE C4;"
+"C:\Program Files\MySQL\MySQL Server 8.0\bin\mysql" -uroot -ppassword C4 < %USERPROFILE%\Desktop\C4_0616.bakcup.sql
+
+ダウンロードの所に保存した場合はこれ
+"C:\Program Files\MySQL\MySQL Server 8.0\bin\mysql" -uroot -ppassword C4 < %USERPROFILE%\downloads\C4_0616.bakcup.sql
+
+を入れてuse c4; → select * from users;を押す
+
+２．発表のMTG
+３．誰がどのページから作成するのかを決める
+
+岡谷
+メディケーションのDAO
+
+山中
+ブレイントレーニングのDTOとDAO
+
+清水
+掲示板のDAOとDTO
+
+真野
+メディケーションDAO
+
+村土
+
+ヘルスレコードDAOとDTOとメール
+
+
+●内容
+
+共通ヘッターにログアウトボタンを作る
+ログアウトサーブレットは先日作ったから大丈夫
+
+発表について
+発表すべきなのではないかということを出す（水曜日まで）
+
+
+
+●進捗
+
+
+
+
+
+
+
+決定事項
+CSSはページを分けて各個人で管理する
+
+備考
+
+
 
 
 

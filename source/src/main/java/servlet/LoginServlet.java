@@ -40,10 +40,15 @@ public class LoginServlet extends CustomTemplateServlet {
 		}
 
 		String id = request.getParameter("id");
-		String pw = request.getParameter("pw");
+		String name = request.getParameter("name");
+		String birthday = request.getParameter("birthday");
 		
+		//データベース照合処理追加		
 		HttpSession session =  request.getSession();
 		session.setAttribute("id",id);
+		session.setAttribute("name",name);
+		session.setAttribute("birthday",birthday);
+		
 		response.sendRedirect("OmoiyalinkLogin");
 	}
 
