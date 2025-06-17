@@ -1,5 +1,4 @@
-package servlet;
-
+package servlet;  
 import java.io.IOException;
 
 import javax.servlet.ServletException;
@@ -7,35 +6,27 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+ 
 
-/**
- * Servlet implementation class OnboardSearchServlet
- */
-@WebServlet("/OmoiyalinkOnboardSearch")
-public class OnboardSearchServlet extends CustomTemplateServlet {
-	private static final long serialVersionUID = 1L;
+@WebServlet("/OnboardSearch")
+public class OnboardSearchServlet extends HttpServlet {
+    private static final long serialVersionUID = 1L;
 
-    /**
-     * Default constructor. 
-     */
-    public OnboardSearchServlet() {
-        // TODO Auto-generated constructor stub
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        // 検索フォームの初期表示を設定
+        request.getRequestDispatcher("/WEB-INF/jsp/onboardSearch.jsp").forward(request, response);
+        
+        if (checkNoneLogin(request, response) || checkLogout(request, response));
     }
 
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
-	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		response.getWriter().append("Served at: ").append(request.getContextPath());
+	private boolean checkLogout(HttpServletRequest request, HttpServletResponse response) {
+		// TODO 自動生成されたメソッド・スタブ
+		return false;
 	}
 
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		doGet(request, response);
+	private boolean checkNoneLogin(HttpServletRequest request, HttpServletResponse response) {
+		// TODO 自動生成されたメソッド・スタブ
+		return false;
 	}
-
 }
