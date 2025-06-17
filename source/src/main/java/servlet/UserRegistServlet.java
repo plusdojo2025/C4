@@ -58,29 +58,29 @@ public class UserRegistServlet extends CustomTemplateServlet {
 			// 登録後はログイン画面へリダイレクト（メール内容は仮）
 			MailUtil.sendMail("muratsuchi-takuma-plusdojo2025@seplus2016.onmicrosoft.com", "【おもいやリンク】登録完了のお知らせ", """
 おもいやリンク運営事務局です。
-					
+
 このたびは、おもいやリンクにご登録いただき、誠にありがとうございます。
-					
+
 以下の内容にて、登録が完了いたしました。
 ログインの際に必要な情報ですので、大切に保管してください。
-					
+
 ID：1
 パスワード：生年月日（1960年1月1日は「19600101」）です。
-					
+
 パスワードを忘れた場合は、お手数ですが再度新規登録をお願いいたします。
-					
+
 今後ともおもいやリンクをよろしくお願いいたします。
-					
+
 ※このメールは送信専用です。
 ご返信いただきましてもお返事できませんので、ご了承ください。
-					
+
 このメールにお心当たりのない方は、muratsuchi-takuma-plusdojo2025@seplus2016.onmicrosoft.com までご連絡ください。
-					
+
 CollectForce.Inc
 東京都万代田区味噌町１－２－３
 C4ビルディング 3F
-""");
-			response.sendRedirect("login.jsp");
+					""");
+			response.sendRedirect("/WEB-INF/jsp/login.jsp");
 
 		} catch (Exception e) {
 			e.printStackTrace();

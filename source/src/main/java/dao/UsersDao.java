@@ -18,30 +18,22 @@ public class UsersDao extends CustomTemplateDao<UsersDto> {
 
 		try {
 			conn = conn();
-			
+
 			// SQL文を準備する
 			String sql = "SELECT * FROM users WHERE user_id = ?";
 			PreparedStatement pStmt = conn.prepareStatement(sql);
 
 			// SQL文を完成させる
-			pStmt.setInt(1,  dto.getUserId() );
-			
-			
+			pStmt.setInt(1, dto.getUserId());
+
 			// SQL文を実行し、結果表を取得する
-			//ResultSetはJDBC特有のなにか
+			// ResultSetはJDBC特有のなにか
 			ResultSet rs = pStmt.executeQuery();
 
 			// 結果表をコレクションにコピーする
 			while (rs.next()) {
-				UsersDto users = new UsersDto(
-						rs.getInt("user_id"), 
-						rs.getString("name"), 
-						rs.getInt("birth_date"), 
-						rs.getString("pref"), 
-						rs.getString("city"), 
-						rs.getString("email"), 
-						rs.getDate("created_at")
-				);										
+				UsersDto users = new UsersDto(rs.getInt("user_id"), rs.getString("name"), rs.getInt("birth_date"),
+						rs.getString("pref"), rs.getString("city"), rs.getString("email"), rs.getDate("created_at"));
 				userList.add(users);
 			}
 		} catch (SQLException e) {
@@ -79,13 +71,12 @@ public class UsersDao extends CustomTemplateDao<UsersDto> {
 			pStmt.setString(3, dto.getPref());
 			pStmt.setString(4, dto.getCity());
 			pStmt.setString(5, dto.getEmail());
-		
 
 			// SQL文を実行する
 			if (pStmt.executeUpdate() == 1) {
 				ResultSet res = pStmt.getGeneratedKeys();
 				res.next();
-				dto.setUserId(res.getInt(1));			
+				dto.setUserId(res.getInt(1));
 				result = true;
 			}
 		} catch (SQLException e) {
@@ -99,7 +90,6 @@ public class UsersDao extends CustomTemplateDao<UsersDto> {
 		return result;
 	}
 
-
 	@Override
 	public boolean update(UsersDto dto) {
 		Connection conn = null;
@@ -112,15 +102,15 @@ public class UsersDao extends CustomTemplateDao<UsersDto> {
 
 			// SQL文を準備する
 			String sql = """
-					UPDATE users
-					SET
-  name = ?
-,  birth_date =?
-, ｐref =?
-,  city =?
-,  email =?
-					WHERE user_id = ?
-					""";
+										UPDATE users
+										SET
+					  name = ?
+					,  birth_date =?
+					, pref =?
+					,  city =?
+					,  email =?
+										WHERE user_id = ?
+										""";
 			PreparedStatement pStmt = conn.prepareStatement(sql);
 
 			// SQL文を完成させる
@@ -146,9 +136,8 @@ public class UsersDao extends CustomTemplateDao<UsersDto> {
 		return result;
 	}
 
-
 	@Override
-	public boolean delete(UsersDto dto){
+	public boolean delete(UsersDto dto) {
 		Connection conn = null;
 		boolean result = false;
 
@@ -179,5 +168,3 @@ public class UsersDao extends CustomTemplateDao<UsersDto> {
 		return result;
 	}
 }
-
-
