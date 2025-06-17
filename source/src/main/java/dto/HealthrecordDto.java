@@ -1,36 +1,38 @@
 package dto;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
-import java.util.Date;
+import java.sql.Date;
 
 public class HealthrecordDto extends CustomeTemplateDto implements Serializable {
 	private int recordId;
 	private int userId;
 	private Date date;
-	private BigDecimal temperature;
-	private BigDecimal highBp;
-	private BigDecimal lowBp;
-	private String pluseRate;
-	private BigDecimal pulseOx;
-	private String sleep;
+	private double temperature;
+	private Double highBp; // null許容
+	private Double lowBp; // null許容
+	private Integer pulseRate; // null許容
+	private Double pulseOx; // null許容
+	private int sleep;
 	private String memo;
-	
-	public HealthrecordDto(int recordId, int userId, Date date, BigDecimal temperature, BigDecimal highBp,
-			BigDecimal lowBp, String pluseRate, BigDecimal pulseOx, String sleep, String memo) {
-		super();
+
+	public HealthrecordDto() {
+	}
+
+	public HealthrecordDto(int recordId, int userId, Date date, double temperature, Double highBp, Double lowBp,
+			Integer pulseRate, Double pulseOx, int sleep, String memo) {
 		this.recordId = recordId;
 		this.userId = userId;
 		this.date = date;
 		this.temperature = temperature;
 		this.highBp = highBp;
 		this.lowBp = lowBp;
-		this.pluseRate = pluseRate;
+		this.pulseRate = pulseRate;
 		this.pulseOx = pulseOx;
 		this.sleep = sleep;
 		this.memo = memo;
 	}
 
+	// ゲッタとセッタ
 	public int getRecordId() {
 		return recordId;
 	}
@@ -55,51 +57,51 @@ public class HealthrecordDto extends CustomeTemplateDto implements Serializable 
 		this.date = date;
 	}
 
-	public BigDecimal getTemperature() {
+	public double getTemperature() {
 		return temperature;
 	}
 
-	public void setTemperature(BigDecimal temperature) {
+	public void setTemperature(double temperature) {
 		this.temperature = temperature;
 	}
 
-	public BigDecimal getHighBp() {
+	public Double getHighBp() {
 		return highBp;
 	}
 
-	public void setHighBp(BigDecimal highBp) {
+	public void setHighBp(Double highBp) {
 		this.highBp = highBp;
 	}
 
-	public BigDecimal getLowBp() {
+	public Double getLowBp() {
 		return lowBp;
 	}
 
-	public void setLowBp(BigDecimal lowBp) {
+	public void setLowBp(Double lowBp) {
 		this.lowBp = lowBp;
 	}
 
-	public String getPluseRate() {
-		return pluseRate;
+	public Integer getPulseRate() {
+		return pulseRate;
 	}
 
-	public void setPluseRate(String pluseRate) {
-		this.pluseRate = pluseRate;
+	public void setPulseRate(Integer pulseRate) {
+		this.pulseRate = pulseRate;
 	}
 
-	public BigDecimal getPulseOx() {
+	public Double getPulseOx() {
 		return pulseOx;
 	}
 
-	public void setPulseOx(BigDecimal pulseOx) {
+	public void setPulseOx(Double pulseOx) {
 		this.pulseOx = pulseOx;
 	}
 
-	public String getSleep() {
+	public int getSleep() {
 		return sleep;
 	}
 
-	public void setSleep(String sleep) {
+	public void setSleep(int sleep) {
 		this.sleep = sleep;
 	}
 
@@ -110,5 +112,4 @@ public class HealthrecordDto extends CustomeTemplateDto implements Serializable 
 	public void setMemo(String memo) {
 		this.memo = memo;
 	}
-
 }
