@@ -88,17 +88,17 @@ public class HealthRegistServlet extends CustomTemplateServlet {
         // 結果をセットして画面遷移
         if (result) {
             request.setAttribute("message", "体調を登録しました。");
-            request.getRequestDispatcher("/WEB-INF/jsp/healthMng.jsp").forward(request, response);
+            request.getRequestDispatcher(request.getContextPath() + "/HealthMngServlet").forward(request, response);
         } else {
             request.setAttribute("message", "登録に失敗しました。");
-            request.getRequestDispatcher("/WEB-INF/jsp/healthRegist.jsp").forward(request, response);
+            request.getRequestDispatcher(request.getContextPath() + "/healthRegist.jsp").forward(request, response);
         };
         
 
     } catch (Exception e) {
         e.printStackTrace();
         request.setAttribute("message", "エラーが発生しました。入力内容を確認してください。");
-        request.getRequestDispatcher("/WEB-INF/jsp/healthRegist.jsp").forward(request, response);
+        request.getRequestDispatcher(request.getContextPath() + "/healthRegist.jsp").forward(request, response);
     }	}
 	
 }

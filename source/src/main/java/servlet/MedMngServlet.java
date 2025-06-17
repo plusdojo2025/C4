@@ -81,17 +81,17 @@ public class MedMngServlet extends CustomTemplateServlet {
 	        // 結果をセットして画面遷移
 	        if (result) {
 	            request.setAttribute("message", "お薬を登録しました。");
-	            request.getRequestDispatcher("/WEB-INF/jsp/medMng.jsp").forward(request, response);
+	            request.getRequestDispatcher(request.getContextPath() + "/MedMngServlet").forward(request, response);
 	        } else {
 	            request.setAttribute("message", "登録に失敗しました。");
-	            request.getRequestDispatcher("/WEB-INF/jsp/medRegist.jsp").forward(request, response);
+	            request.getRequestDispatcher(request.getContextPath() + "/medRegist.jsp").forward(request, response);
 	        };
 	        
 
 	    } catch (Exception e) {
 	        e.printStackTrace();
 	        request.setAttribute("message", "エラーが発生しました。入力内容を確認してください。");
-	        request.getRequestDispatcher("/WEB-INF/jsp/medRegist.jsp").forward(request, response);
+	        request.getRequestDispatcher(request.getContextPath() + "/medRegist.jsp").forward(request, response);
 	    }	
 	    
 	  }
