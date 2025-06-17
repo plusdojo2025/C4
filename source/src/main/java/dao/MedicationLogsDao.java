@@ -39,6 +39,7 @@ public class MedicationLogsDao extends CustomTemplateDao<MedicationLogsDto> {
 						rs.getInt("medication_id"), 
 						rs.getInt("user_id"),
 						rs.getDate("taken_time"),
+						rs.getString("taken_med"),
 						rs.getString("memo")
 				);										
 				userList.add(bc);
@@ -67,13 +68,14 @@ public class MedicationLogsDao extends CustomTemplateDao<MedicationLogsDto> {
 
 			// SQL文を準備する
 			String sql = """
-					INSERT medication_logs(taken_time , memo)
-							VALEUS( ?,  ? )
+					INSERT medication_logs(taken_time , takenMed , memo)
+//							VALEUS( ?,  ? ,? )
 					""";
 			PreparedStatement pStmt = conn.prepareStatement(sql);
 
 			// SQL文を完成させる
 			pStmt.setTimestamp(1, new Timestamp(dto.getTakenTime().getTime()));
+			pStmt.setString(2, dto.getTakenMed());
 			pStmt.setString(2, dto.getMemo());
 		
 
@@ -107,8 +109,8 @@ public class MedicationLogsDao extends CustomTemplateDao<MedicationLogsDto> {
 
 			// SQL文を準備する
 			String sql = """
-					UPDATE medication_logs
-					SET taken_time =?, memo =?
+					UPDATE users
+					SET taken_time =?, takenMed = ? ,memo =?
 					WHERE log_id = ?
 					""";
 			PreparedStatement pStmt = conn.prepareStatement(sql);
