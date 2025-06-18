@@ -9,20 +9,22 @@ public class ReactionsDto extends CustomeTemplateDto implements Serializable{
 	private int reactionId;
 	private int postId;
 	private int userId;
+	private String name; 
 	private ReactionType type;
 	private Date createdAt;
 
-	public ReactionsDto(int reactionId, int postId, int userId, ReactionType type, Date createdAt) {
+	public ReactionsDto(int reactionId, int postId, int userId, String name, ReactionType type, Date createdAt) {
 		super();
 		this.reactionId = reactionId;
 		this.postId = postId;
 		this.userId = userId;
+		this.name = name;
 		this.type = type;
 		this.createdAt = createdAt;
 	}
 
 	public ReactionsDto() {
-		this(0,0,0,null,new Date());
+		this(0, 0, 0,"", null,new Date());
 		
 	}
 
@@ -64,6 +66,14 @@ public class ReactionsDto extends CustomeTemplateDto implements Serializable{
 
 	public void setCreated_at(Date created_at) {
 		this.createdAt = created_at;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 
 }

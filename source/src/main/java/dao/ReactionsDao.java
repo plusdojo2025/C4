@@ -22,7 +22,7 @@ public class ReactionsDao extends CustomTemplateDao<ReactionsDto> {
 			conn = conn();
 			
 			// SQL文を準備する
-			String sql = "SELECT * FROM users WHERE reaction_id = ?";
+			String sql = "SELECT * FROM reactions INNER JOIN users ON reactions.user_id = users.user_id WHERE reaction_id = ?";
 			PreparedStatement pStmt = conn.prepareStatement(sql);
 
 			// SQL文を完成させる
@@ -39,8 +39,9 @@ public class ReactionsDao extends CustomTemplateDao<ReactionsDto> {
 			        rs.getInt("reaction_id"),
 			        rs.getInt("post_id"),
 			        rs.getInt("user_id"),
+			        rs.getString("name"),
 			        ReactionType.valueOf(rs.getString("reaction_type")), 
-			        rs.getTimestamp("reacted_at")
+			        rs.getDate("reacted_at")
 				);										
 				userList.add(bc);
 			}
@@ -161,4 +162,37 @@ public class ReactionsDao extends CustomTemplateDao<ReactionsDto> {
 		return result;
 	}
 
+	//リアクションをして人を出すメソッド
+	public List<ReactionsDto> findUsersByPostId(int postId) throws SQLException {
+		Connection conn = null;
+		
+		List<ReactionsDto> userList = new ArrayList<>();
+		try {
+			// データベースに接続する
+		conn = conn();
+		
+		// SQL文を準備する
+	    
+	    String sql = "SELECT users.id, users.name FROM reactions INNER JOIN users ON reactions.userId = users.id WHERE reactions.postId = ?";
+	    
+	    // SQL文を完成させる
+	    PreparedStatement pStmt = conn.prepareStatement(sql);
+	    
+	        pStmt.setInt(1, postId);
+	        ResultSet rs = pStmt.executeQuery();
+	        while (rs.next()) {
+	        	ReactionsDto user = new ReactionsDto();
+	            user.setUserId(rs.getInt("user_id"));
+	            user.setName(rs.getString("name"));
+	            userList.add(user);
+	        }
+		}
+	        catch (Exception e) {
+	            e.printStackTrace();
+	            userList = null;
+	        } finally {
+	            close(conn);
+	        }
+	    return userList;
+	}
 }
