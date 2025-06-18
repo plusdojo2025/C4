@@ -6,13 +6,7 @@
 <meta charset="UTF-8">
 <title>　ゲーム開始 </title>
 
-<script>
 
-function submitHand(hand) {
-	document.getElementById("handInput").value = hand;
-	document.getElementById("handForm").submit;
-}
-</script>
 
 </head>
 <body>
@@ -24,14 +18,15 @@ function submitHand(hand) {
 	<input type="hidden" name="hand" id=""handInput>
 	
 	<!-- 画像で手を選択する -->
-	<img src= alt="グー">
-	<img src= alt="チョキ">
-	<img src= alt="パー">
+	<img src="image/janken_gu.png" alt="グー" class="janken-img" onclick="submithand('グー')">
+	<img src="image/janken_choki.png" alt="チョキ" class="janken-img" onclick="submithand('チョキ')">
+	<img src="image/janken_pa.png" alt="パー" class="janken-img" onclick="submithand('パー')">
+	
 </form>
 
 <script>
 	'use strict'
- 	alert('準備はよろしいでしょうか'); {
+ 	alert('準備はよろしいでしょうか　※OKを押すとゲームが始まります'); {
    }
  	<!--60秒タイマー -->	
 	let time = 60;
@@ -41,6 +36,11 @@ function submitHand(hand) {
 	timer.textContent = time;
 	if (time <= 0) clearInterval (interval);
 	}, 1000);
+	
+	function submitHand(hand) {
+		document.getElementById("handInput").value = hand;
+		document.getElementById("handForm").submit;
+	}
 
 </script>
 </body>
