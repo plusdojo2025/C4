@@ -23,7 +23,7 @@ public class BrainTraPlayServlet extends CustomTemplateServlet {
 	//じゃんけんの選択画面を表示
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		request.getRequestDispatcher("/WEB-INF/jsp/brainMenu.jsp").forward(request, response);
+		request.getRequestDispatcher("/WEB-INF/jsp/brainTraPlay.jsp").forward(request, response);
 		
 	}
 
@@ -32,19 +32,29 @@ public class BrainTraPlayServlet extends CustomTemplateServlet {
 			throws ServletException, IOException {
 		request.setCharacterEncoding("UTF-8");
 		
-		String usersHand = request.getParameter("hand");  //利用者の手
+		String userHand = request.getParameter("hand");  //利用者の手
 		
 		String cpuHand = HANDS[new Random().nextInt(HANDS.length)]; //CPUの手をランダムで選ぶ
 				
-		//String result;  //勝利判定
-		//if (isUserWin(usersHand,cpuHand)) {
-			//result = "正解！" ;
-		//} else {
-			//result = "不正解";
-		//}
+		String result;  //勝利判定
+		if (isUserWin(userHand,cpuHand)) {
+			result = "正解！" ;
+		} else {
+			result = "不正解";
+		}
 		
+		//JSPに移行する
+		request.setAttribute("userHand", userHand);
+		request.setAttribute("cpuHand", cpuHand);
+		request.setAttribute("result", result);
 		
-		
-		
+		request.getRequestDispatcher("/WEB-INF/jsp/brainTraResult.jsp").forward(request, response);
+	}
+	
+		//勝敗判定:ユーザー側
+	private boolean isUserWin(String user, String cpu) {
+		return	(user.equals("グー") && cpu.equals("チョキ")) ||
+				(user.equals("チョキ") && cpu.equals("パー")) ||
+				(user.equals("パー") && cpu.equals("グー")) ;
 	}
 }
