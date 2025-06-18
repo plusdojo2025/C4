@@ -115,7 +115,7 @@ public class MedicationLogsDao extends CustomTemplateDao<MedicationLogsDto> {
 			// SQL文を準備する
 			String sql = """
 					UPDATE medication_logs
-					SET taken_time =?, takenMed = ? ,memo =?
+					SET taken_time =?, taken_med = ? ,memo =?
 					WHERE log_id = ?
 					""";
 			PreparedStatement pStmt = conn.prepareStatement(sql);
