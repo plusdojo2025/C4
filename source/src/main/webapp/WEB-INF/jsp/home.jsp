@@ -1,10 +1,11 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html>
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
 <title>おもいやリンク ホーム</title>
-<!-- FontAwesome CDN（ネット接続必須、オフライン環境ではsvg等を使用） -->
+<!-- FontAwesome CDN -->
 <link rel="stylesheet"
 	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
 <style>
@@ -76,9 +77,11 @@ h2 {
 				class="fa-solid fa-heart-pulse"></i> 体調管理
 			</a> <a class="menu-btn" href="MedMngServlet"> <i
 				class="fa-solid fa-capsules"></i> 服薬管理
-			</a> <a class="menu-btn" href="OnboardRegistServlet"> <i
-				class="fa-solid fa-comments"></i> 掲示板
-			</a> <a class="menu-btn" href="BrainTraServlet"> <i
+			</a> <a class="menu-btn"
+				href="${pageContext.request.contextPath}/OmoiyalinkOnboardRegist">
+				<i class="fa-solid fa-comments"></i> 掲示板
+			</a> <a class="menu-btn"
+				href="${pageContext.request.contextPath}/OmoiyalinkBrainTra"> <i
 				class="fa-solid fa-brain"></i> 脳トレ
 			</a>
 		</div>
