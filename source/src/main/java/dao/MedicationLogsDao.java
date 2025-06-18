@@ -21,7 +21,7 @@ public class MedicationLogsDao extends CustomTemplateDao<MedicationLogsDto> {
 			conn = conn();
 			
 			// SQL文を準備する
-			String sql = "SELECT * FROM users WHERE log_id = ?";
+			String sql = "SELECT * FROM medication_logs WHERE log_id = ?";
 			PreparedStatement pStmt = conn.prepareStatement(sql);
 
 			// SQL文を完成させる
