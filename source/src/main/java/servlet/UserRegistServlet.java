@@ -14,68 +14,68 @@ import utility.MailUtil;
 
 @WebServlet("/OmoiyalinkUserRegistServlet")
 public class UserRegistServlet extends CustomTemplateServlet {
-    private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
 
-    @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        request.getRequestDispatcher("/WEB-INF/jsp/userRegist.jsp").forward(request, response);
-    }
+	@Override
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		request.getRequestDispatcher("/WEB-INF/jsp/userRegist.jsp").forward(request, response);
+	}
 
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        request.setCharacterEncoding("UTF-8");
+	@Override
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		request.setCharacterEncoding("UTF-8");
 
-        try {
-            // フォームの値を取得
-            String name = request.getParameter("name");
-            String pref = request.getParameter("pref");
-            String city = request.getParameter("city");
-            String birthDate = request.getParameter("birthdate");
-            String email = request.getParameter("email");
+		try {
+			// フォーム値取得
+			String name = request.getParameter("name");
+			String pref = request.getParameter("pref");
+			String city = request.getParameter("city");
+			String birthDate = request.getParameter("birthdate");
+			String email = request.getParameter("email");
 
-            // 入力バリデーション（必要に応じて追加）
-            if (name == null || name.isEmpty() ||
-                pref == null || pref.isEmpty() ||
-                city == null || city.isEmpty() ||
-                birthDate == null || birthDate.isEmpty() ||
-                email == null || email.isEmpty()) {
-                request.setAttribute("errorMessage", "全ての項目を入力してください。");
-                request.getRequestDispatcher("/WEB-INF/jsp/userRegist.jsp").forward(request, response);
-                return;
-            }
+			// 簡易バリデーション（全項目必須）
+			if (name == null || name.isEmpty() || pref == null || pref.isEmpty() || city == null || city.isEmpty()
+					|| birthDate == null || birthDate.isEmpty() || email == null || email.isEmpty()) {
+				request.setAttribute("errorMessage", "全ての項目を入力してください。");
+				request.getRequestDispatcher("/WEB-INF/jsp/userRegist.jsp").forward(request, response);
+				return;
+			}
 
-            // DTO生成。userIdは0（自動採番）でOK
-            UsersDto userDto = new UsersDto(0, name, Integer.parseInt(birthDate), pref, city, email, new Date());
+			// DTOを生成（userId=0:自動採番, birthDateはint化）
+			UsersDto userDto = new UsersDto(0, name, Integer.parseInt(birthDate), pref, city, email, new Date());
 
-            // DAOで登録
-            UsersDao userDao = new UsersDao();
-            boolean result = userDao.insert(userDto);
+			// 登録
+			UsersDao userDao = new UsersDao();
+			boolean result = userDao.insert(userDto);
 
-            if (result) {
-                // 仮にDAOのinsertでuserDtoに自動採番されたIDがセットされている場合は下記のように使える
-                // int newUserId = userDto.getUserId();
+			if (result) {
+				// 自動採番IDを取得
+				int newUserId = userDto.getUserId();
 
-                // メール送信（メール内容は適宜調整）
-                MailUtil.sendMail(email,
-                        "【おもいやリンク】登録完了のお知らせ",
-                        "おもいやリンク運営事務局です。\n\n" +
-                        "ご登録ありがとうございます。\n" +
-                        "ID（自動採番番号）とパスワード（生年月日8桁）でログインできます。\n\n" +
-                        "今後ともよろしくお願いいたします。\n");
+				// メール本文を生成
+				String body = String.format("おもいやリンク運営事務局です。\n\n" + "このたびは、おもいやリンクにご登録いただき、誠にありがとうございます。\n\n"
+						+ "以下の内容にて、登録が完了いたしました。\n" + "ログインの際に必要な情報ですので、大切に保管してください。\n\n" + "【ログインID】%d\n"
+						+ "【パスワード】ご自身の生年月日8桁（例：19600101）\n\n" + "パスワードを忘れた場合は、お手数ですが再度新規登録をお願いいたします。\n\n"
+						+ "今後ともおもいやリンクをよろしくお願いいたします。\n\n" + "※このメールは送信専用です。\n" + "ご返信いただきましてもお返事できませんので、ご了承ください。\n\n"
+						+ "このメールにお心当たりのない方は、muratsuchi-takuma-plusdojo2025@seplus2016.onmicrosoft.com までご連絡ください。\n\n"
+						+ "CollectForce Inc.\n" + "東京都万代田区味噌町１－２－３\n" + "C4ビルディング 3F\n", newUserId);
 
-                // サーブレット名でログイン画面へリダイレクト
-                response.sendRedirect("OmoiyalinkLogin");
-            } else {
-                // 失敗時
-                request.setAttribute("errorMessage", "登録に失敗しました。やり直してください。");
-                request.getRequestDispatcher("/WEB-INF/jsp/userRegist.jsp").forward(request, response);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            request.setAttribute("errorMessage", "システムエラー: " + e.getMessage());
-            request.getRequestDispatcher("/WEB-INF/jsp/userRegist.jsp").forward(request, response);
-        }
-    }
+				// メール送信（メールアドレスがto）
+				MailUtil.sendMail(email, "【おもいやリンク】登録完了のお知らせ", body);
+
+				// 登録完了後はログイン画面へリダイレクト
+				response.sendRedirect("OmoiyalinkLogin");
+			} else {
+				// 登録失敗
+				request.setAttribute("errorMessage", "登録に失敗しました。やり直してください。");
+				request.getRequestDispatcher("/WEB-INF/jsp/userRegist.jsp").forward(request, response);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			request.setAttribute("errorMessage", "システムエラー: " + e.getMessage());
+			request.getRequestDispatcher("/WEB-INF/jsp/userRegist.jsp").forward(request, response);
+		}
+	}
 }
