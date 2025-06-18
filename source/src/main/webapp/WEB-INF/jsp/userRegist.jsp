@@ -25,7 +25,7 @@ button { padding: 0.6em 1.5em; font-size: 1em; margin-top: 0.5em; }
             <option value="">市区町村で絞り込む</option>
         </select>
         <label for="birthdate">生年月日</label>
-        <input type="number" name="birthdate" id="A2birth" placeholder="19600101" required>
+        <input type="text" name="birthdate" id="A2birth" placeholder="19600101" required>
         <label for="email">メールアドレス</label>
         <input type="email" name="email" id="A2mail" placeholder="example@email.com" required>
         <button type="submit" class="A2regibtn">登録（メールを送信します）</button>

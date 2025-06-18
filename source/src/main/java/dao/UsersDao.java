@@ -60,9 +60,9 @@ public class UsersDao extends CustomTemplateDao<UsersDto> {
 
 			// SQL文を準備する
 			String sql = """
-					INSERT users(name , birth_date , pref , city , email)
-							VALEUS(       ?,                ?,       ?,     ?,         ? )
-					""";
+					INSERT INTO users(name , birth_date , pref , city , email)
+					    VALUES(?, ?, ?, ?, ?)
+					    					""";
 			PreparedStatement pStmt = conn.prepareStatement(sql);
 
 			// SQL文を完成させる
