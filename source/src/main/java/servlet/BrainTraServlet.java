@@ -35,9 +35,9 @@ public class BrainTraServlet extends CustomTemplateServlet {
 		String action = request.getParameter("action");
 
         if ("start".equals(action)) {
-            response.sendRedirect("brainTraPlayServlet");     //ゲーム開始ボタン
+            response.sendRedirect("BrainTraPlayServlet");     //ゲーム開始ボタン
         } else if ("history".equals(action)) {
-            response.sendRedirect("brainTraMng");		     //履歴閲覧
+            response.sendRedirect("BrainTraMng");		     //履歴閲覧
         } else {
             response.sendRedirect("OmoiyalinkBrainTra");	// メニューに戻る
         }

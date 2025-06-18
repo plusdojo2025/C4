@@ -1,12 +1,15 @@
 package servlet;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  * Servlet implementation class BrainTraPlayServlet
@@ -28,6 +31,7 @@ public class BrainTraPlayServlet extends CustomTemplateServlet {
 	}
 
 	//利用者の手を受け取って勝つ手を出して結果を表示
+	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) 
 			throws ServletException, IOException {
 		request.setCharacterEncoding("UTF-8");
@@ -36,17 +40,44 @@ public class BrainTraPlayServlet extends CustomTemplateServlet {
 		
 		String cpuHand = HANDS[new Random().nextInt(HANDS.length)]; //CPUの手をランダムで選ぶ
 				
-		String result;  //勝利判定
-		if (isUserWin(userHand,cpuHand)) {
-			result = "正解！" ;
-		} else {
-			result = "不正解";
-		}
+		String result;
+		
+		 HttpSession session = request.getSession();
+		 
+		 //勝利数
+		 Integer winCount = (Integer) session.getAttribute("winCount");
+		 if (winCount == null) {
+			 winCount = 0;
+		 }
+		 
+		 //履歴リスト
+		 @SuppressWarnings("unchecked")
+		 List <String> history = (List<String>) session.getAttribute("history");
+		 if (history == null) {
+			 history = new ArrayList<>();
+		 }
+		 
+		//勝敗判定
+		 if (isUserWin(userHand,cpuHand)) {
+			 result = "正解！";
+		 }else {
+			 result = "不正解";
+		 }
+		 
+		 //履歴に追加
+		 String record = "あなた" + userHand + "CPU" + cpuHand + "→" + result;
+		 
+		 //セッションに保存
+		 request.setAttribute("winCount", winCount);
+		request.setAttribute("history", history);
 		
 		//JSPに移行する
 		request.setAttribute("userHand", userHand);
 		request.setAttribute("cpuHand", cpuHand);
 		request.setAttribute("result", result);
+		request.setAttribute("winCount", winCount);
+		request.setAttribute("history", history);
+		
 		
 		request.getRequestDispatcher("/WEB-INF/jsp/brainTraResult.jsp").forward(request, response);
 	}
