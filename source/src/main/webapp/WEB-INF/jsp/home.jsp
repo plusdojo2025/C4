@@ -73,9 +73,11 @@ h2 {
 			さん
 		</h2>
 		<div class="menu-area">
-			<a class="menu-btn" href="HealthRegistServlet"> <i
-				class="fa-solid fa-heart-pulse"></i> 体調管理
-			</a> <a class="menu-btn" href="MedMngServlet"> <i
+			<a class="menu-btn"
+				href="${pageContext.request.contextPath}/OmoiyalinkHealthRegist">
+				<i class="fa-solid fa-heart-pulse"></i> 体調管理
+			</a> <a class="menu-btn"
+				href="${pageContext.request.contextPath}/OmoiyalinkMedMng"> <i
 				class="fa-solid fa-capsules"></i> 服薬管理
 			</a> <a class="menu-btn"
 				href="${pageContext.request.contextPath}/OmoiyalinkOnboardRegist">
