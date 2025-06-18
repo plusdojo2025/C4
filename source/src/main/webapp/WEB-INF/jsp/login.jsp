@@ -29,7 +29,7 @@
         <input type="text" id="name" name="name"><br><br>
 
         <label for="birthday">誕生日：</label>
-        <input type="date" id="birthday" name="birthday"><br><br>
+        <input type="text" id="birthday" name="birthday"><br><br>
 
         <input type="submit" value="ログイン">
     </form>
