@@ -24,9 +24,14 @@ public class HealthMngServlet extends CustomTemplateServlet {
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		if (checkNoneLogin(request, response)) {
+
+		// ---- 未ログイン・ログアウト指示時は以降の処理を中断 ----
+		if (checkNoneLogin(request, response) || checkLogout(request, response)) {
 			return;
 		}
+
+		// ★ログインユーザーIDの取得（セッションから取り出す）
+		int userId = (int) request.getSession().getAttribute("userId");
 
 		// ページ番号を取得（未指定・不正な値は0：最新ページ扱い）
 		int page = 0;
@@ -35,17 +40,16 @@ public class HealthMngServlet extends CustomTemplateServlet {
 			try {
 				page = Integer.parseInt(pageParam);
 				if (page < 0)
-					page = 0; // マイナスは0ページ目扱い
+					page = 0;
 			} catch (NumberFormatException e) {
-				page = 0; // 数値変換失敗も0ページ
+				page = 0;
 			}
 		}
 
 		// DAOでこのユーザーの全体調記録を取得（降順）
-		// ※大量データになる場合はページングSQLへの改善も検討
 		HealthrecordDao dao = new HealthrecordDao();
 		HealthrecordDto cond = new HealthrecordDto();
-//		cond.setUserId(userId);
+		cond.setUserId(userId); // ←必ず自分のデータだけ取得
 		List<HealthrecordDto> allRecords = dao.select(cond);
 
 		// 取得件数に応じて、表示すべき10件分を抽出
@@ -68,12 +72,13 @@ public class HealthMngServlet extends CustomTemplateServlet {
 		request.getRequestDispatcher("/WEB-INF/jsp/healthMng.jsp").forward(request, response);
 	}
 
-	// エラーを解決するための最低限のdoPostメソッド
+	// POSTリクエストもGETと同じ認証チェックを行う
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		// 今回はPOSTリクエストの予定がなければGETへ転送でもOK
+		if (checkNoneLogin(request, response) || checkLogout(request, response)) {
+			return;
+		}
 		doGet(request, response);
 	}
-
 }
