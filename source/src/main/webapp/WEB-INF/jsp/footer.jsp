@@ -2,11 +2,32 @@
     pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
-<head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
-</head>
 <body>
+<head>
+<style>
+    .gotop{
+    text-align :center;
+    }
+.copyright{
+    margin-top: 20px;
+    margin-bottom: 0;
+    padding-top: 75px;
+    padding-bottom: 75px;
+    background-color: #46B1E1;
+    color: #FFFEEF;
+    text-align: center;
+    font-size: 1.3rem;
+    }
+</style>
 
+</head>
+	<!-- フッター -->
+	<footer>
+	<div class="gotop">
+        <a href="#top"><img src="img/gotop.svg" alt="ページトップへ戻る"></a>
+    </div>	
+		<p class="copyright">&copy; Collect Force Inc.</p>
+	</footer>
+	<!-- フッターここまで -->
 </body>
 </html>

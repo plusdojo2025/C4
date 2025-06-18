@@ -118,12 +118,16 @@ public class PostsDao extends CustomTemplateDao<PostsDto>{
 		Connection conn = null;
 
         List<PostsDto> postsList = new ArrayList<>();
-        String sql = "SELECT * FROM posts WHERE userId = ? ORDER BY createdAT DESC";
-
-        try (@SuppressWarnings("null")
-		PreparedStatement stmt = conn.prepareStatement(sql)) {
+        
+        try {
+        
 			// データベースに接続する
 			conn = conn();
+			
+			//SQL文を用意する
+	        String sql = "SELECT * FROM posts WHERE userId = ? ORDER BY createdAT DESC";
+			PreparedStatement stmt = conn.prepareStatement(sql);
+			
 
             stmt.setInt(1, userId);
             ResultSet rs = stmt.executeQuery();
@@ -137,7 +141,10 @@ public class PostsDao extends CustomTemplateDao<PostsDto>{
                     rs.getDate("createdAT")
                 ));
             }
-        }
+        } finally {
+			// データベースを切断
+			close(conn);
+		}
 
         return postsList;
     }
