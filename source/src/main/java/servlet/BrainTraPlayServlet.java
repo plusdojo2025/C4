@@ -60,6 +60,7 @@ public class BrainTraPlayServlet extends CustomTemplateServlet {
 		//勝敗判定
 		 if (isUserWin(userHand,cpuHand)) {
 			 result = "正解！";
+			 winCount++;
 		 }else {
 			 result = "不正解";
 		 }
@@ -79,7 +80,7 @@ public class BrainTraPlayServlet extends CustomTemplateServlet {
 		request.setAttribute("history", history);
 		
 		
-		request.getRequestDispatcher("/WEB-INF/jsp/brainTraResult.jsp").forward(request, response);
+		request.getRequestDispatcher("/WEB-INF/jsp/BrainTraResult.jsp").forward(request, response);
 	}
 	
 		//勝敗判定:ユーザー側
