@@ -22,6 +22,7 @@ public class LoginServlet extends CustomTemplateServlet {
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+
 		// すでにログイン済みならホームへリダイレクト
 		if (checkDoneLogin(request, response)) {
 			return;
@@ -34,6 +35,10 @@ public class LoginServlet extends CustomTemplateServlet {
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+
+		// 文字化け対応
+		request.setCharacterEncoding("UTF-8");
+
 		if (checkDoneLogin(request, response)) {
 			return;
 		}
@@ -55,6 +60,12 @@ public class LoginServlet extends CustomTemplateServlet {
 			dispatcher.forward(request, response);
 			return;
 		}
+
+		System.out.println("user_id: [" + user_id + "]");
+		System.out.println("userIdInt: " + userIdInt);
+		System.out.println("name: [" + name + "]");
+		System.out.println("birth_date: [" + birth_date + "]");
+		System.out.println("birthDateInt: " + birthDateInt);
 
 		// DB認証
 		boolean isAuthenticated = false;
