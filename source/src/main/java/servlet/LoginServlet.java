@@ -39,28 +39,19 @@ public class LoginServlet extends CustomTemplateServlet {
         }
 
         // 入力値取得
-        String id = request.getParameter("id");
+        String user_id = request.getParameter("user_id");
         String name = request.getParameter("name");
-        String birthday = request.getParameter("birthday");
+        String birth_date = request.getParameter("birth_date");
 
-        // 入力チェック
-        if (id == null || id.isEmpty() || 
-            name == null || name.isEmpty() || 
-            birthday == null || birthday.isEmpty()) {
-            request.setAttribute("error", "ID・氏名・生年月日をすべて入力してください。");
-            RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/login.jsp");
-            dispatcher.forward(request, response);
-            return;
-        }
 
         // DB認証
         boolean isAuthenticated = false;
         try (Connection conn = DBUtil.getConnection()) {
-            String sql = "SELECT name FROM users WHERE id = ? AND name = ? AND birthday = ?";
+            String sql = "SELECT name FROM users WHERE user_id = ? AND name = ? AND birth_date = ?";
             PreparedStatement stmt = conn.prepareStatement(sql);
-            stmt.setString(1, id);
+            stmt.setString(1, user_id);
             stmt.setString(2, name);
-            stmt.setString(3, birthday);
+            stmt.setString(3, birth_date);
             ResultSet rs = stmt.executeQuery();
             if (rs.next()) {
                 // nameが完全一致したら認証OK
@@ -78,9 +69,9 @@ public class LoginServlet extends CustomTemplateServlet {
         if (isAuthenticated) {
             // 認証OK→セッションへセット
             HttpSession session = request.getSession();
-            session.setAttribute("id", id);
+            session.setAttribute("user_id", user_id);
             session.setAttribute("userName", name); // JSPはuserNameを参照
-            session.setAttribute("birthday", birthday);
+            session.setAttribute("birth_date", birth_date);
 
             // ホームへリダイレクト
             response.sendRedirect("OmoiyalinkHome");
