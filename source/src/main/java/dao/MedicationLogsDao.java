@@ -21,7 +21,7 @@ public class MedicationLogsDao extends CustomTemplateDao<MedicationLogsDto> {
 			conn = conn();
 			
 			// SQL文を準備する
-<<<<<<< HEAD
+
 			String sql = "SELECT M.nickname , M.formal_name , M.dosage , L.log_id , L.medication_id, L.user_id , L.taken_time , L.taken_med , L.memo "
 					+ "FROM medication_logs AS L INNER JOIN medications AS M "
 					+ "ON L.medication_id = M.medication_id";
