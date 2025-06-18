@@ -1,14 +1,11 @@
 package servlet;
 
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -18,50 +15,43 @@ import dto.PostsDto;
  * Servlet implementation class OnboardResultServlet
  */
 @WebServlet("/OnboardResult")
-public class OnboardResultServlet extends HttpServlet {
+public class OnboardResultServlet extends CustomTemplateServlet {
     private static final long serialVersionUID = 1L;
 
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-    	
-    	
-        // 検索条件を取得
-        String prefecture = request.getParameter("prefecture");
-        String city = request.getParameter("city");
-        
-     // コネクションを準備
-        Connection connection = null;
-		try {
-			connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/c4");
-		} catch (SQLException e) {
-			// TODO 自動生成された catch ブロック
-			e.printStackTrace();
-			
-			if (checkNoneLogin(request, response) || checkLogout(request, response)); 
-		    		
+	@Override
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		if (checkNoneLogin(request, response) || checkLogout(request, response)) {
+			return;
 		}
-        // PostsDaoを使用して検索実行
-        PostsDao dao = new PostsDao(connection); // PostsDaoをインスタンス化
-        List<PostsDto> results = null;
 		try {
-			results = dao.select(prefecture, city);
-		} catch (SQLException e) {
+		       // PostsDaoを使用して検索実行
+	        PostsDao dao = new PostsDao(); // PostsDaoをインスタンス化
+	        PostsDto searchDto = new  PostsDto( 0, "", "", "", new Date());
+	        List<PostsDto> postsList = dao.select(searchDto);
+
+			// 検索結果をリクエストスコープに格納する
+			request.setAttribute("postsList", postsList);
+			
+			//postsList = dao.select(prefecture, city);どう動くか分からない
+
+	        // 検索結果をリクエストに保存
+	        request.getRequestDispatcher("/WEB-INF/jsp/onboardResult.jsp").forward(request, response);
+
+
+					} catch (Exception e) {
 			// TODO 自動生成された catch ブロック
 			e.printStackTrace();
 		}
 
-        // 検索結果をリクエストに保存
-        request.setAttribute("results", results);
-        request.getRequestDispatcher("/WEB-INF/jsp/onboardResult.jsp").forward(request, response);
     }
 
-	private boolean checkNoneLogin(HttpServletRequest request, HttpServletResponse response) {
-		// TODO 自動生成されたメソッド・スタブ
-		return false;
-	}
+	@Override
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		if (checkNoneLogin(request, response) || checkLogout(request, response)) {
+			return;
+		}
+	}	
 
-	private boolean checkLogout(HttpServletRequest request, HttpServletResponse response) {
-		// TODO 自動生成されたメソッド・スタブ
-		return false;
-	}
 }

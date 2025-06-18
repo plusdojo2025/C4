@@ -25,13 +25,27 @@ public class MedMngServlet extends CustomTemplateServlet {
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		if (checkNoneLogin(request, response)) {
+		if (checkNoneLogin(request, response) || checkLogout(request, response)) {
 			return;
 		}
-		
-		// ログインページにフォワードする
-		RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/home.jsp");
-		dispatcher.forward(request, response);
+		try {	
+			// 一覧表示をするために検索処理を行う
+			MedicationsDao dao = new MedicationsDao();
+			MedicationsDto searchDto = new  MedicationsDto( 0, 0, "", "", "", null, "", null);
+			List<MedicationsDto> medicationList = dao.select(searchDto);
+
+			// 検索結果をリクエストスコープに格納する
+			request.setAttribute("cardList", medicationList);
+
+			// 結果ページにフォワードする
+			RequestDispatcher dispatcher = request.getRequestDispatcher(request.getContextPath() + "/medMng.jsp");
+			dispatcher.forward(request, response);
+		}
+		catch (Exception e) {
+	        e.printStackTrace();
+	        request.setAttribute("message", "エラーが発生しました。お薬情報を取得できませんでした");
+	        request.getRequestDispatcher(request.getContextPath() + "/HomeServlet").forward(request, response);
+	    }
 	}
 	
 	@Override
@@ -40,28 +54,6 @@ public class MedMngServlet extends CustomTemplateServlet {
 		if (checkNoneLogin(request, response) || checkLogout(request, response)) {
 			return;
 		}
-	
-	try {	
-		// 一覧表示をするために検索処理を行う
-		MedicationsDao dao = new MedicationsDao();
-		MedicationsDto searchDto = new  MedicationsDto( 0, 0, "", "", "", null, "", null);
-		List<MedicationsDto> medicationList = dao.select(searchDto);
-
-		// 検索結果をリクエストスコープに格納する
-		request.setAttribute("cardList", medicationList);
-
-		// 結果ページにフォワードする
-		RequestDispatcher dispatcher = request.getRequestDispatcher(request.getContextPath() + "/medMng.jsp");
-		dispatcher.forward(request, response);
-	}
-	catch (Exception e) {
-        e.printStackTrace();
-        request.setAttribute("message", "エラーが発生しました。お薬情報を取得できませんでした");
-        request.getRequestDispatcher(request.getContextPath() + "/HomeServlet").forward(request, response);
-    }
-
-		
-		
 		// フォームから入力内容を取得する
 		request.setCharacterEncoding("UTF-8");
 	    try {
