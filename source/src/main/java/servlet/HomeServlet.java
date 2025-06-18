@@ -7,37 +7,43 @@ import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 @WebServlet("/OmoiyalinkHome")
 public class HomeServlet extends CustomTemplateServlet {
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	//もしログインしていなかったらログインサーブレットにリダイレクトする。
-	@Override
-	protected void doGet(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
+    // もしログインしていなかったらログインサーブレットにリダイレクトする。
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
 
-		if (checkNoneLogin(request, response)) {
-			return;
-		}
-		
-		// ユーザー名取得（userNameがセッションにセットされている前提）
-//		String userName = (String) session.getAttribute("userName");
-//		if (userName == null)
-//			userName = "ゲスト";
+        if (checkNoneLogin(request, response)) {
+            return;
+        }
 
-		// JSPへ渡す
-//		request.setAttribute("userName", userName);
+        // セッションからユーザー名取得
+        HttpSession session = request.getSession(false);
+        String userName = null;
+        if (session != null) {
+            userName = (String) session.getAttribute("userName");
+        }
+        if (userName == null) {
+            userName = "ゲスト";
+        }
 
-		// ホーム画面へフォワード
-		RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/home.jsp");
-		dispatcher.forward(request, response);
-	}
+        // JSPへ渡す
+        request.setAttribute("userName", userName);
 
-	// POST不要ならdoPostはGETへ転送でOK
-	@Override
-	protected void doPost(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-		doGet(request, response);
-	}
+        // ホーム画面へフォワード
+        RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/home.jsp");
+        dispatcher.forward(request, response);
+    }
+
+    // POST不要ならdoPostはGETへ転送でOK
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        doGet(request, response);
+    }
 }
