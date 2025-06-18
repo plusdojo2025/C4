@@ -4,21 +4,23 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>ログイン</title>
 </head>
+
 <body>
-	<form action = "OmoiyalinkLogin" method = "post">
-		<div>
-		<label for ="id">ID:</label>
-		<input type = "text" id = "id" name = "id" value ="">
- 		</div>
-		<div>
-		<label for ="id">PW:</label>
-		<input type = "text" id = "pw" name = "pw" value ="">
- 		</div>
-		<div>
-		<input type = "submit" id = "submit" name = "submit" value ="ログイン">
- 		</div>
+    <h2>ログイン</h2>
+    <form action="OmoiyalinkLogin" method="post">
+        <label for="id">ID：</label>
+        <input type="text" id="id" name="id" required><br><br>
+
+        <label for="name">名前：</label>
+        <input type="text" id="name" name="name" required><br><br>
+
+        <label for="birthday">誕生日：</label>
+        <input type="date" id="birthday" name="birthday" required><br><br>
+
+        <input type="submit" value="ログイン">
+
 	</form>
 </body>
 </html>
