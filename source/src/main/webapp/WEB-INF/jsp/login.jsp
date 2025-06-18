@@ -50,10 +50,10 @@
             <label for="user_id">ID（半角数字）</label>
             <input type="text" id="user_id" name="user_id" maxlength="10" required />
 
-            <label for="name">氏名</label>
+            <label for="name">名前</label>
             <input type="text" id="name" name="name" maxlength="50" required />
 
-            <label for="birthday">生年月日（8桁：例 20000101）</label>
+            <label for="birth_date">生年月日（8桁：例 20000101）</label>
             <input type="text" id="birth_date" name="birth_date" maxlength="8" required />
 
             <button type="submit">ログイン</button>
