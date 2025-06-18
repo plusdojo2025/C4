@@ -15,13 +15,17 @@ public class MedicationLogsDao extends CustomTemplateDao<MedicationLogsDto> {
 	@Override
 	public List<MedicationLogsDto> select(MedicationLogsDto dto) {
 		Connection conn = null;
-		List<MedicationLogsDto> userList = new ArrayList<MedicationLogsDto>();
+		List<MedicationLogsDto> mlogList = new ArrayList<MedicationLogsDto>();
 
 		try {
 			conn = conn();
 			
 			// SQL文を準備する
-			String sql = "SELECT * FROM medication_logs WHERE log_id = ?";
+<<<<<<< HEAD
+			String sql = "SELECT M.nickname , M.formal_name , M.dosage , L.log_id , L.medication_id, L.user_id , L.taken_time , L.taken_med , L.memo "
+					+ "FROM medication_logs AS L INNER JOIN medications AS M "
+					+ "ON L.medication_id = M.medication_id";
+
 			PreparedStatement pStmt = conn.prepareStatement(sql);
 
 			// SQL文を完成させる
@@ -34,26 +38,29 @@ public class MedicationLogsDao extends CustomTemplateDao<MedicationLogsDto> {
 
 			// 結果表をコレクションにコピーする
 			while (rs.next()) {
-				MedicationLogsDto bc = new MedicationLogsDto(
+				MedicationLogsDto mlog = new MedicationLogsDto(
 						rs.getInt("log_id"), 
 						rs.getInt("medication_id"), 
 						rs.getInt("user_id"),
 						rs.getDate("taken_time"),
 						rs.getString("taken_med"),
-						rs.getString("memo")
+						rs.getString("memo"),
+						rs.getString("nickname"),
+						rs.getString("formalName"),
+						rs.getString("dosage")
 				);										
-				userList.add(bc);
+				mlogList.add(mlog);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
-			userList = null;
+			mlogList = null;
 		} finally {
 			// データベースを切断
 			close(conn);
 		}
 
 		// 結果を返す
-		return userList;
+		return mlogList;
 	}
 
 	@Override
@@ -109,8 +116,8 @@ public class MedicationLogsDao extends CustomTemplateDao<MedicationLogsDto> {
 
 			// SQL文を準備する
 			String sql = """
-					UPDATE users
-					SET taken_time =?, takenMed = ? ,memo =?
+					UPDATE medication_logs
+					SET taken_time =?, taken_med = ? ,memo =?
 					WHERE log_id = ?
 					""";
 			PreparedStatement pStmt = conn.prepareStatement(sql);
@@ -146,7 +153,7 @@ public class MedicationLogsDao extends CustomTemplateDao<MedicationLogsDto> {
 			conn = conn();
 
 			// SQL文を準備する
-			String sql = "DELETE FROM users WHERE log_id=?";
+			String sql = "DELETE FROM medication_logs WHERE log_id=?";
 			PreparedStatement pStmt = conn.prepareStatement(sql);
 
 			// SQL文を完成させる

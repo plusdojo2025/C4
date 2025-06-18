@@ -1,6 +1,7 @@
 package servlet;
 
 import java.io.IOException;
+import java.sql.Date;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -8,6 +9,11 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
+import dao.MedicationLogsDao;
+import dto.MedicationLogsDto;
+import dto.UsersDto;
 
 /**
  * Servlet implementation class TlkMedRegistServlet
@@ -47,21 +53,50 @@ public class TlkMedRegistServlet extends CustomTemplateServlet {
 		
 		//リクエストパラメータを取得する
 		request.setCharacterEncoding("UTF-8");
-		String takenTime 	=		 request.getParameter("takeTime");
-		String takenMed  	= 		request.getParameter("takeMed");
-		String memo			=		 request.getParameter("memo");
-		String[] selectedOptions = request.getParameterValues("options");
 		
-	   //データ変換
-		//Date  takeTime = Date.valueOf(takeTimeStr);
-		
-		//ログインユーザーの取得
-		
-		
-		//DTOに詰める
-		
-		//DAOで登録
-		
-	}
+		try {
+			String takenTime 	=		 request.getParameter("takenTime");
+			String memo			=		 request.getParameter("memo");
+			String[] selectedTakenMed = request.getParameterValues("takenMed");
+			
+		   //データ変換
+			Date  takeTime = Date.valueOf(takenTime);
+			
+			//ログインユーザーの取得
+	        HttpSession session = request.getSession();
+	        UsersDto user = (UsersDto) session.getAttribute("userId");
+	        int userId = user.getUserId();
+	        
+	        
+			for (String selected : selectedTakenMed) {
+				//DTOに詰める
+				MedicationLogsDto dto = new MedicationLogsDto();
+				dto.setUserId(userId);
+				dto.setTakenTime(takeTime);
+				dto.setMemo(memo);
+				dto.setTakenMed(selected);
+				
+				//DAOで登録
+				boolean result = new MedicationLogsDao().insert(dto);
+				
+				// 結果をセットして画面遷移
+		        if (result) {
+		            request.setAttribute("message", "服薬記録を登録しました。");
+		            request.getRequestDispatcher(request.getContextPath() + "/TlkMedMngServlet").forward(request, response);
+		        } else {
+		            request.setAttribute("message", "服薬記録を登録しました。");
+		            request.getRequestDispatcher(request.getContextPath() + "/tlkMedRegist.jsp").forward(request, response);
+		        };
+	        
+
+		    }} catch (Exception e) {
+		        e.printStackTrace();
+		        request.setAttribute("message", "エラーが発生しました。入力内容を確認してください。");
+		        request.getRequestDispatcher(request.getContextPath() + "/tlkMedRegist.jsp").forward(request, response);
+		    }	
+	    
+	 
+		}
+	
 	
 }
