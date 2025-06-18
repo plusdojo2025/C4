@@ -11,14 +11,7 @@
 <body>
     <h2>ログイン</h2>
 
-    <!-- エラーメッセージ表示 -->
     
-     String error = (String) request.getAttribute("error");
-     if (error != null) {
-    
-        <p> style="color: red;"</p>
-    
-        }
     
 
     <form action="OmoiyalinkLogin" method="post">
