@@ -1,258 +1,91 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-<meta charset="UTF-8">
-<title>新規登録</title>
-<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-<style>
-body { font-family: sans-serif; padding: 2em; }
-form { max-width: 600px; margin: 0 auto; }
-label { display: block; margin: 1em 0 0.3em 0; }
-input, select { width: 98%; padding: 0.5em; font-size: 1em; margin-bottom: 1em; }
-button { padding: 0.6em 1.5em; font-size: 1em; margin-top: 0.5em; }
-</style>
+  <meta charset="UTF-8">
+  <title>新規登録</title>
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <style>
+    body { font-family: sans-serif; padding: 2em; }
+    form { max-width: 600px; margin: 0 auto; }
+    label { display: block; margin: 1em 0 0.3em 0; }
+    input, select { width: 98%; padding: 0.5em; font-size: 1em; margin-bottom: 1em; }
+    button { padding: 0.6em 1.5em; font-size: 1em; margin-top: 0.5em; }
+    select, option { color: #222 !important; background: #fff !important; }
+    .error { color: #c00; margin-bottom: 1em; }
+  </style>
 </head>
 <body>
-    <h1>新規登録</h1>
-    <form action="UserRegistServlet" method="post">
-        <label for="name">氏名</label>
-        <input type="text" name="name" id="A2name" placeholder="ニックネームでも可" required>
-        <label for="pref">都道府県</label>
-        <select name="pref" id="pref" required></select>
-        <label for="city">市区町村</label>
-        <select name="city" id="city" required>
-            <option value="">市区町村で絞り込む</option>
-        </select>
-        <label for="birthdate">生年月日</label>
-        <input type="text" name="birthdate" id="A2birth" placeholder="19600101" required>
-        <label for="email">メールアドレス</label>
-        <input type="email" name="email" id="A2mail" placeholder="example@email.com" required>
-        <button type="submit" class="A2regibtn">登録（メールを送信します）</button>
-        <button type="button" class="A2backbtn" onclick="history.back();">登録をやめる</button>
-    </form>
+  <h1>新規登録</h1>
+  <form action="OmoiyalinkUserRegistServlet" method="post" autocomplete="off">
+    <c:if test="${not empty errorMessage}">
+      <div class="error">${errorMessage}</div>
+    </c:if>
 
+    <label for="name">氏名</label>
+    <input type="text" name="name" id="name" placeholder="ニックネームでも可" required>
 
-<script>
-const PREF_CITY = {
-    "都道府県を選択してください": ["市区町村で絞り込む"],
-    "北海道": [
-        "市区町村で絞り込む",
-        "札幌市", "函館市", "小樽市", "旭川市", "室蘭市", "釧路市", "帯広市", "北見市", "夕張市", "岩見沢市", "網走市"
-    ],
-    "青森県": [
-        "市区町村で絞り込む",
-        "青森市", "弘前市", "八戸市", "黒石市", "五所川原市", "十和田市", "三沢市"
-    ],
-    "岩手県": [
-        "市区町村で絞り込む",
-        "盛岡市", "宮古市", "大船渡市", "花巻市", "北上市", "久慈市"
-    ],
-    "宮城県": [
-        "市区町村で絞り込む",
-        "仙台市", "石巻市", "塩竈市", "気仙沼市", "白石市"
-    ],
-    "秋田県": [
-        "市区町村で絞り込む",
-        "秋田市", "能代市", "横手市", "大館市", "男鹿市"
-    ],
-    "山形県": [
-        "市区町村で絞り込む",
-        "山形市", "米沢市", "鶴岡市", "酒田市"
-    ],
-    "福島県": [
-        "市区町村で絞り込む",
-        "福島市", "会津若松市", "郡山市", "いわき市"
-    ],
-    "茨城県": [
-        "市区町村で絞り込む",
-        "水戸市", "日立市", "土浦市", "古河市"
-    ],
-    "栃木県": [
-        "市区町村で絞り込む",
-        "宇都宮市", "足利市", "栃木市", "佐野市"
-    ],
-    "群馬県": [
-        "市区町村で絞り込む",
-        "前橋市", "高崎市", "桐生市"
-    ],
-    "埼玉県": [
-        "市区町村で絞り込む",
-        "さいたま市", "川越市", "熊谷市", "川口市", "行田市"
-    ],
-    "千葉県": [
-        "市区町村で絞り込む",
-        "千葉市", "銚子市", "市川市", "船橋市", "館山市"
-    ],
-    "東京都": [
-        "市区町村で絞り込む",
-        "千代田区", "中央区", "港区", "新宿区", "文京区", "台東区", "墨田区", "江東区",
-        "品川区", "目黒区", "大田区", "世田谷区", "渋谷区", "中野区", "杉並区", "豊島区",
-        "北区", "荒川区", "板橋区", "練馬区", "足立区", "葛飾区", "江戸川区",
-        "八王子市", "立川市", "武蔵野市", "三鷹市", "町田市", "調布市", "府中市"
-    ],
-    "神奈川県": [
-        "市区町村で絞り込む",
-        "横浜市", "川崎市", "相模原市", "横須賀市", "平塚市"
-    ],
-    "新潟県": [
-        "市区町村で絞り込む",
-        "新潟市", "長岡市", "三条市"
-    ],
-    "富山県": [
-        "市区町村で絞り込む",
-        "富山市", "高岡市", "魚津市"
-    ],
-    "石川県": [
-        "市区町村で絞り込む",
-        "金沢市", "七尾市", "小松市"
-    ],
-    "福井県": [
-        "市区町村で絞り込む",
-        "福井市", "敦賀市", "小浜市"
-    ],
-    "山梨県": [
-        "市区町村で絞り込む",
-        "甲府市", "富士吉田市", "都留市"
-    ],
-    "長野県": [
-        "市区町村で絞り込む",
-        "長野市", "松本市", "上田市"
-    ],
-    "岐阜県": [
-        "市区町村で絞り込む",
-        "岐阜市", "大垣市", "高山市"
-    ],
-    "静岡県": [
-        "市区町村で絞り込む",
-        "静岡市", "浜松市", "沼津市"
-    ],
-    "愛知県": [
-        "市区町村で絞り込む",
-        "名古屋市", "豊橋市", "岡崎市", "一宮市", "瀬戸市"
-    ],
-    "三重県": [
-        "市区町村で絞り込む",
-        "津市", "四日市市", "伊勢市"
-    ],
-    "滋賀県": [
-        "市区町村で絞り込む",
-        "大津市", "彦根市", "長浜市"
-    ],
-    "京都府": [
-        "市区町村で絞り込む",
-        "京都市", "宇治市", "福知山市"
-    ],
-    "大阪府": [
-        "市区町村で絞り込む",
-        "大阪市", "堺市", "東大阪市"
-    ],
-    "兵庫県": [
-        "市区町村で絞り込む",
-        "神戸市", "姫路市", "尼崎市"
-    ],
-    "奈良県": [
-        "市区町村で絞り込む",
-        "奈良市", "大和高田市", "大和郡山市"
-    ],
-    "和歌山県": [
-        "市区町村で絞り込む",
-        "和歌山市", "海南市", "田辺市"
-    ],
-    "鳥取県": [
-        "市区町村で絞り込む",
-        "鳥取市", "米子市", "倉吉市"
-    ],
-    "島根県": [
-        "市区町村で絞り込む",
-        "松江市", "浜田市", "出雲市"
-    ],
-    "岡山県": [
-        "市区町村で絞り込む",
-        "岡山市", "倉敷市", "津山市"
-    ],
-    "広島県": [
-        "市区町村で絞り込む",
-        "広島市", "呉市", "福山市"
-    ],
-    "山口県": [
-        "市区町村で絞り込む",
-        "山口市", "下関市", "宇部市"
-    ],
-    "徳島県": [
-        "市区町村で絞り込む",
-        "徳島市", "鳴門市", "阿南市"
-    ],
-    "香川県": [
-        "市区町村で絞り込む",
-        "高松市", "丸亀市", "坂出市"
-    ],
-    "愛媛県": [
-        "市区町村で絞り込む",
-        "松山市", "今治市", "宇和島市"
-    ],
-    "高知県": [
-        "市区町村で絞り込む",
-        "高知市", "室戸市", "安芸市"
-    ],
-    "福岡県": [
-        "市区町村で絞り込む",
-        "福岡市", "北九州市", "久留米市"
-    ],
-    "佐賀県": [
-        "市区町村で絞り込む",
-        "佐賀市", "唐津市", "鳥栖市"
-    ],
-    "長崎県": [
-        "市区町村で絞り込む",
-        "長崎市", "佐世保市", "島原市"
-    ],
-    "熊本県": [
-        "市区町村で絞り込む",
-        "熊本市", "八代市", "人吉市"
-    ],
-    "大分県": [
-        "市区町村で絞り込む",
-        "大分市", "別府市", "中津市"
-    ],
-    "宮崎県": [
-        "市区町村で絞り込む",
-        "宮崎市", "都城市", "延岡市"
-    ],
-    "鹿児島県": [
-        "市区町村で絞り込む",
-        "鹿児島市", "鹿屋市", "枕崎市"
-    ],
-    "沖縄県": [
-        "市区町村で絞り込む",
-        "那覇市", "宜野湾市", "石垣市"
-    ]
-};
+    <label for="pref">都道府県</label>
+    <select name="pref" id="pref" required>
+      <option value="">都道府県を選択してください</option>
+    </select>
 
-$(function () {
-    // 都道府県プルダウンを生成
-    for (const pref in PREF_CITY) {
-        $('#pref').append(`<option value="${pref}">${pref}</option>`);
-    }
-    $('#city').hide();
+    <label for="city">市区町村</label>
+    <select name="city" id="city" required disabled>
+      <option value="">市区町村で絞り込む</option>
+    </select>
 
-    // 都道府県選択時
-    $('#pref').on('change', function () {
-        const selectedPref = $(this).val();
-        $('#city').empty();
+    <label for="birthdate">生年月日（例：19600101）</label>
+    <input type="text" name="birthdate" id="birthdate" maxlength="8" pattern="\d{8}" required>
 
-        if (selectedPref && selectedPref !== "都道府県を選択してください") {
-            const cities = PREF_CITY[selectedPref];
-            for (const city of cities) {
-                $('#city').append(`<option value="${city}">${city}</option>`);
-            }
-            $('#city').fadeIn();
-        } else {
-            $('#city').append('<option value="">市区町村で絞り込む</option>');
-            $('#city').fadeOut();
-        }
+    <label for="email">メールアドレス</label>
+    <input type="email" name="email" id="email" placeholder="example@email.com" required>
+
+    <button type="submit">登録（メールを送信します）</button>
+    <button type="button" onclick="history.back();">登録をやめる</button>
+  </form>
+
+  <script>
+    // jQuery不要で書く場合（純粋なJSだけでもOK）
+    const PREF_CITY = {
+      "北海道": ["札幌市", "函館市", "小樽市"],
+      "青森県": ["青森市", "弘前市", "八戸市"],
+      "岩手県": ["盛岡市", "宮古市", "大船渡市"],
+      "宮城県": ["仙台市", "石巻市", "塩竈市"],
+      "秋田県": ["秋田市", "能代市", "横手市"],
+      "東京都": ["千代田区", "中央区", "港区", "新宿区", "世田谷区"]
+      // ...必要に応じて追加
+    };
+
+    const prefSelect = document.getElementById('pref');
+    const citySelect = document.getElementById('city');
+
+    // ページロード時に都道府県追加
+    window.addEventListener('DOMContentLoaded', function() {
+      for (const pref of Object.keys(PREF_CITY)) {
+        const option = document.createElement('option');
+        option.value = pref;
+        option.textContent = pref;
+        prefSelect.appendChild(option);
+      }
     });
-});
-</script>
+
+    prefSelect.addEventListener('change', function() {
+      const selectedPref = this.value;
+      // リセット
+      citySelect.innerHTML = '<option value="">市区町村で絞り込む</option>';
+      if (PREF_CITY[selectedPref]) {
+        citySelect.disabled = false;
+        for (const city of PREF_CITY[selectedPref]) {
+          const option = document.createElement('option');
+          option.value = city;
+          option.textContent = city;
+          citySelect.appendChild(option);
+        }
+      } else {
+        citySelect.disabled = true;
+      }
+    });
+  </script>
 </body>
 </html>

@@ -16,16 +16,6 @@ import utility.MailUtil;
 public class UserRegistServlet extends CustomTemplateServlet {
 	private static final long serialVersionUID = 1L;
 
-	/**
-	 * Default constructor.
-	 */
-	public UserRegistServlet() {
-		// TODO Auto-generated constructor stub
-	}
-
-	/**
-	 * GETリクエスト：登録フォームへフォワード
-	 */
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
@@ -37,55 +27,55 @@ public class UserRegistServlet extends CustomTemplateServlet {
 			throws ServletException, IOException {
 		request.setCharacterEncoding("UTF-8");
 
-		/**
-		 * POSTリクエスト：フォーム送信後の登録処理
-		 */
 		try {
-
-			// フォームからのパラメータ取得
-			String userId = request.getParameter("userid");
+			// フォーム値取得
 			String name = request.getParameter("name");
 			String pref = request.getParameter("pref");
 			String city = request.getParameter("city");
 			String birthDate = request.getParameter("birthdate");
 			String email = request.getParameter("email");
-			UsersDao myUserDao = new UsersDao();
-			UsersDto myUserDto = new UsersDto(Integer.parseInt(userId), name, Integer.parseInt(birthDate), pref, city,
-					email, new Date());
 
-			myUserDao.insert(myUserDto);
+			// 簡易バリデーション（全項目必須）
+			if (name == null || name.isEmpty() || pref == null || pref.isEmpty() || city == null || city.isEmpty()
+					|| birthDate == null || birthDate.isEmpty() || email == null || email.isEmpty()) {
+				request.setAttribute("errorMessage", "全ての項目を入力してください。");
+				request.getRequestDispatcher("/WEB-INF/jsp/userRegist.jsp").forward(request, response);
+				return;
+			}
 
-			// 登録後はログイン画面へリダイレクト（メール内容は仮）
-			MailUtil.sendMail("muratsuchi-takuma-plusdojo2025@seplus2016.onmicrosoft.com", "【おもいやリンク】登録完了のお知らせ", """
-おもいやリンク運営事務局です。
+			// DTOを生成（userId=0:自動採番, birthDateはint化）
+			UsersDto userDto = new UsersDto(0, name, Integer.parseInt(birthDate), pref, city, email, new Date());
 
-このたびは、おもいやリンクにご登録いただき、誠にありがとうございます。
+			// 登録
+			UsersDao userDao = new UsersDao();
+			boolean result = userDao.insert(userDto);
 
-以下の内容にて、登録が完了いたしました。
-ログインの際に必要な情報ですので、大切に保管してください。
+			if (result) {
+				// 自動採番IDを取得
+				int newUserId = userDto.getUserId();
 
-ID：1
-パスワード：生年月日（1960年1月1日は「19600101」）です。
+				// メール本文を生成
+				String body = String.format("おもいやリンク運営事務局です。\n\n" + "このたびは、おもいやリンクにご登録いただき、誠にありがとうございます。\n\n"
+						+ "以下の内容にて、登録が完了いたしました。\n" + "ログインの際に必要な情報ですので、大切に保管してください。\n\n" + "【ログインID】%d\n"
+						+ "【パスワード】ご自身の生年月日8桁（例：19600101）\n\n" + "パスワードを忘れた場合は、お手数ですが再度新規登録をお願いいたします。\n\n"
+						+ "今後ともおもいやリンクをよろしくお願いいたします。\n\n" + "※このメールは送信専用です。\n" + "ご返信いただきましてもお返事できませんので、ご了承ください。\n\n"
+						+ "このメールにお心当たりのない方は、muratsuchi-takuma-plusdojo2025@seplus2016.onmicrosoft.com までご連絡ください。\n\n"
+						+ "CollectForce Inc.\n" + "東京都万代田区味噌町１－２－３\n" + "C4ビルディング 3F\n", newUserId);
 
-パスワードを忘れた場合は、お手数ですが再度新規登録をお願いいたします。
+				// メール送信（メールアドレスがto）
+				MailUtil.sendMail(email, "【おもいやリンク】登録完了のお知らせ", body);
 
-今後ともおもいやリンクをよろしくお願いいたします。
-
-※このメールは送信専用です。
-ご返信いただきましてもお返事できませんので、ご了承ください。
-
-このメールにお心当たりのない方は、muratsuchi-takuma-plusdojo2025@seplus2016.onmicrosoft.com までご連絡ください。
-
-CollectForce.Inc
-東京都万代田区味噌町１－２－３
-C4ビルディング 3F
-					""");
-			response.sendRedirect("/WEB-INF/jsp/login.jsp");
-
+				// 登録完了後はログイン画面へリダイレクト
+				response.sendRedirect("OmoiyalinkLogin");
+			} else {
+				// 登録失敗
+				request.setAttribute("errorMessage", "登録に失敗しました。やり直してください。");
+				request.getRequestDispatcher("/WEB-INF/jsp/userRegist.jsp").forward(request, response);
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
-			request.setAttribute("errorMessage", e.getMessage());
-			request.getRequestDispatcher("error.jsp").forward(request, response);
+			request.setAttribute("errorMessage", "システムエラー: " + e.getMessage());
+			request.getRequestDispatcher("/WEB-INF/jsp/userRegist.jsp").forward(request, response);
 		}
 	}
 }
