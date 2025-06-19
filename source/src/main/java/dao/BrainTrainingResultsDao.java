@@ -21,7 +21,7 @@ public class BrainTrainingResultsDao extends CustomTemplateDao<BrainTrainingResu
 			conn = conn();
 			// ソート条件
 			String order = orderByScoreAsc ? "ASC" : "DESC";
-			String sql = "SELECT * FROM brain_training_results WHERE user_id = ? ORDER BY score " + order
+			String sql = "SELECT * FROM game_results WHERE user_id = ? ORDER BY score " + order
 					+ ", played_at DESC";
 			PreparedStatement pStmt = conn.prepareStatement(sql);
 			pStmt.setInt(1, userId);
@@ -55,7 +55,7 @@ public class BrainTrainingResultsDao extends CustomTemplateDao<BrainTrainingResu
 		try {
 			conn = conn();
 			String sql = """
-					    INSERT INTO brain_training_results (user_id, score, game_type, played_at)
+					    INSERT INTO game_results (user_id, score, game_type, played_at)
 					    VALUES (?, ?, ?, ?)
 					""";
 			PreparedStatement pStmt = conn.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
@@ -85,7 +85,7 @@ public class BrainTrainingResultsDao extends CustomTemplateDao<BrainTrainingResu
 		try {
 			conn = conn();
 			String sql = """
-					    UPDATE brain_training_results
+					    UPDATE game_results
 					    SET user_id = ?, score = ?, game_type = ?, played_at = ?
 					    WHERE result_id = ?
 					""";
@@ -112,7 +112,7 @@ public class BrainTrainingResultsDao extends CustomTemplateDao<BrainTrainingResu
 		boolean result = false;
 		try {
 			conn = conn();
-			String sql = "DELETE FROM brain_training_results WHERE result_id = ?";
+			String sql = "DELETE FROM game_results WHERE result_id = ?";
 			PreparedStatement pStmt = conn.prepareStatement(sql);
 			pStmt.setInt(1, dto.getResult_id());
 			if (pStmt.executeUpdate() == 1) {
