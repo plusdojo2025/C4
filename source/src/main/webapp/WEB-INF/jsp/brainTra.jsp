@@ -14,9 +14,14 @@
     <P>表示されている手に勝つ</P>
     <p>手を選択してじゃんけんに勝とう!</p>
 
-<form method = "post" action = "brainTra">
-	<button type = "submit" name ="action" value = "start">ゲーム開始</button>
-	<button type = "submit" name ="action" value = "history">閲覧履歴</button>
-</form>
+<div class="buttons">
+<form action ="<%=request.getContextPath() %>/OmoiyalinkBrainTraPlay" method="get">
+	<button type="submit">ゲーム開始</button>
+</form>	
+
+<form action ="<%=request.getContextPath() %>/OmoiyalinkBrainTraMng" method="get">
+	<button type="submit">履歴閲覧</button>
+</form>	
+</div>
 </body>
 </html>
