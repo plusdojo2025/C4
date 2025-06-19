@@ -14,22 +14,22 @@ public class PostsDao extends CustomTemplateDao<PostsDto>{
 
 	@Override
 	public List<PostsDto> select(PostsDto dto) {
-		Connection conn = null;
+		Connection connection = null;
 		List<PostsDto> postsList = new ArrayList<PostsDto>();
 
 		try {
-			conn = conn();
+			connection = conn();
 
 			// SQL文を準備する
 			String sql = "SELECT * FROM posts INNER JOIN users ON posts.user_id = users.user_id WHERE prefecture LIKE ? AND city LIKE ?";
-			PreparedStatement pStmt = conn.prepareStatement(sql);
+			PreparedStatement pStmt = connection.prepareStatement(sql);
 
 			// SQL文を完成させる
 			String prefecture = null; 
 			String city = null;
 			pStmt.setInt(1, dto.getPostId());
-	        pStmt.setString(1, prefecture == null ? "%" : prefecture + "%");
-	        pStmt.setString(2, city == null ? "%" : city + "%");
+	        pStmt.setString(2, prefecture == null ? "%" : prefecture + "%");
+	        pStmt.setString(3, city == null ? "%" : city + "%");
 
 
 			// SQL文を実行し、結果表を取得する
@@ -51,7 +51,7 @@ public class PostsDao extends CustomTemplateDao<PostsDto>{
 			postsList = null;
 		} finally {
 			// データベースを切断
-			close(conn);
+			close(connection);
 		}
 
 		// 結果を返す
@@ -115,18 +115,18 @@ public class PostsDao extends CustomTemplateDao<PostsDto>{
 	
 	//マイ投稿の検索
     public List<PostsDto> selectByUserId(int userId) throws SQLException {
-		Connection conn = null;
+		Connection connection = null;
 
         List<PostsDto> postsList = new ArrayList<>();
         
         try {
         
 			// データベースに接続する
-			conn = conn();
+        	connection = conn();
 			
 			//SQL文を用意する
 	        String sql = "SELECT * FROM posts WHERE userId = ? ORDER BY createdAT DESC";
-			PreparedStatement stmt = conn.prepareStatement(sql);
+			PreparedStatement stmt = connection.prepareStatement(sql);
 			
 
             stmt.setInt(1, userId);
@@ -143,7 +143,7 @@ public class PostsDao extends CustomTemplateDao<PostsDto>{
             }
         } finally {
 			// データベースを切断
-			close(conn);
+			close(connection);
 		}
 
         return postsList;
