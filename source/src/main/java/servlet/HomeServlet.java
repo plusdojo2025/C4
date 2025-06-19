@@ -27,7 +27,7 @@ public class HomeServlet extends CustomTemplateServlet {
             throws ServletException, IOException {
 
         // （1）未ログインの場合はチェック用メソッドで中断（ログイン画面にリダイレクトなど）
-        if (checkNoneLogin(request, response)) {
+        if (checkNoneLogin(request, response) || checkLogout(request, response)) {
             return;
         }
 

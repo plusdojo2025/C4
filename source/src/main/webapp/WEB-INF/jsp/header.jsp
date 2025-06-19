@@ -82,7 +82,7 @@ ul li a:hover {
 				<i class="fa-solid fa-comments"></i>掲示板</a></li>
     <li><a href="${pageContext.request.contextPath}/OmoiyalinkBrainTra"> <i
 				class="fa-solid fa-brain"></i> 脳トレ</a></li>
-    <li><a href="/c4/LogoutServlet" >
+    <li><a href="?logout=1">
     			<i class="fa-solid fa-right-from-bracket"></i>ログアウト</a></li>
   </ul>
 

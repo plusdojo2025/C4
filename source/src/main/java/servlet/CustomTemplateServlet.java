@@ -17,7 +17,8 @@ public abstract class CustomTemplateServlet extends HttpServlet {
 		if (result) {
 			HttpSession session =  request.getSession();
 			session.removeAttribute("id"); //idを出している
-			checkNoneLogin(request,response);
+//			checkNoneLogin(request,response);
+			response.sendRedirect("OmoiyalinkLogin");
 		}
 		return result;
 	}

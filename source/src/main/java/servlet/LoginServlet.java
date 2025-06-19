@@ -14,7 +14,7 @@ import javax.servlet.http.HttpSession;
 
 import utility.DBUtil;
 
-@WebServlet(urlPatterns = { "/", "/OmoiyalinkLogin" })
+@WebServlet(urlPatterns = { "", "/OmoiyalinkLogin" })
 public class LoginServlet extends CustomTemplateServlet {
 	private static final long serialVersionUID = 1L;
 
