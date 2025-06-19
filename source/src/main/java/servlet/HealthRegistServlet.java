@@ -28,8 +28,8 @@ public class HealthRegistServlet extends CustomTemplateServlet {
 			return;
 		}
 		
-		// ログインページにフォワードする
-		RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/home.jsp");
+		// 体調登録ページにフォワードする
+		RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/medRegist.jsp");
 		dispatcher.forward(request, response);
 	}
 
