@@ -25,10 +25,10 @@ public class OnboardRegistServlet extends HttpServlet {
         }
 
         HttpSession session = request.getSession();
-        String prefecture = (String) session.getAttribute("prefecture");
+        String pref = (String) session.getAttribute("pref");
         String city = (String) session.getAttribute("city");
 
-        request.setAttribute("prefecture", prefecture);
+        request.setAttribute("pref", pref);
         request.setAttribute("city", city);
 
         request.getRequestDispatcher("/WEB-INF/jsp/onboardRegist.jsp").forward(request, response);
@@ -54,17 +54,13 @@ public class OnboardRegistServlet extends HttpServlet {
         request.setCharacterEncoding("UTF-8");
 
         try {
-            String title = request.getParameter("title");
-            String content = request.getParameter("content");
-            String[] tags = request.getParameterValues("tags");
-
             HttpSession session = request.getSession(false);
             if (session == null) {
                 System.out.println("セッションが存在しません");
                 response.sendRedirect("LoginPage");
                 return;
             }
-
+        	
             Object userIdObj = session.getAttribute("userId");
             if (userIdObj == null) {
                 System.out.println("userIdがセッションに存在しません");
@@ -73,7 +69,13 @@ public class OnboardRegistServlet extends HttpServlet {
             }
 
             int userId = (int) userIdObj;
-
+            
+            String pref = request.getParameter("pref");
+            String city = request.getParameter("city");
+            String title = request.getParameter("title");
+            String content = request.getParameter("content");
+            String[] tags = request.getParameterValues("tags");
+            
             // 必須チェック
             if (title == null || title.isEmpty() ||
                 content == null || content.isEmpty() ||
@@ -85,7 +87,7 @@ public class OnboardRegistServlet extends HttpServlet {
             }
 
             String tag = String.join(",", tags);
-            PostsDto post = new PostsDto(userId, tag, title, content, new Date());
+            PostsDto post = new PostsDto(userId, tag, title, content, new Date(), pref, city);
 
             PostsDao dao = new PostsDao();
             dao.insert(post);

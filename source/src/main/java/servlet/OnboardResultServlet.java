@@ -1,6 +1,7 @@
 package servlet;
 
 import java.io.IOException;
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -44,11 +45,13 @@ public class OnboardResultServlet extends CustomTemplateServlet {
 	        request.setCharacterEncoding("UTF-8");
 
 	        String prefecture = request.getParameter("prefecture");
+	        String tag = request.getParameter("tag");
+	        String title = request.getParameter("title");
+	        String content = request.getParameter("content");
 	        String city = request.getParameter("city");
-	        String tags = request.getParameter("tags");
 
 	        // 検索条件をもとにDtoを作成
-	        PostsDto searchDto = new PostsDto(0, prefecture, city, tags, null);
+	        PostsDto searchDto = new PostsDto(0, tag, title, content, new Date(), prefecture, city);
 	        PostsDao dao = new PostsDao();
 	        List<PostsDto> postsList = dao.select(searchDto);
 

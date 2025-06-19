@@ -26,7 +26,7 @@
         <h3>${post.title}</h3>
         <p>${post.content}</p>
         <p><strong>場所:</strong> ${post.pref} / ${post.city}</p>
-        <p><strong>タグ:</strong> ${post.tags}</p>
+        <p><strong>タグ:</strong> ${post.tag}</p>
         <p><strong>投稿日:</strong> ${post.postDate}</p>
     </div>
 </c:forEach>
@@ -35,8 +35,6 @@
 <button onclick="location.href='OmoiyalinkHome'">ホームへ戻る</button>
 
 </body>
-</html>
-
 <style>
 /* === ページ全体ベース === */
 html, body {
@@ -65,3 +63,4 @@ label, .label {
     color: #22292F;
     font-weight: bold;
 }</style>
+</html>

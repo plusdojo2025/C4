@@ -11,9 +11,12 @@ public class PostsDto extends CustomeTemplateDto implements Serializable {
 	private String title;
 	private String content;
 	private Date createdAT;
+	private String pref;
+	private String city;
+	
 	
 	public PostsDto( int userId, String tag, String title,
-			String content, Date createdAT) {
+			String content, Date createdAT, String pref, String city) {
 		
 		super();
 		
@@ -22,10 +25,12 @@ public class PostsDto extends CustomeTemplateDto implements Serializable {
 		this.title = title;
 		this.content = content;
 		this.createdAT = createdAT;
+		this.pref = pref;
+		this.city = city;
 		// TODO 自動生成されたコンストラクター・スタブ
 	}
 	public PostsDto() {
-		this(0,"","","",new Date());
+		this(0,"","","",new Date(),"","");
 }
 
 	public int getPostId() {
@@ -75,6 +80,18 @@ public class PostsDto extends CustomeTemplateDto implements Serializable {
 
 	public void setCreatedAT(Date createdAT) {
 		this.createdAT = createdAT;
+	}
+	public String getPref() {
+		return pref;
+	}
+	public void setPref(String pref) {
+		this.pref = pref;
+	}
+	public String getCity() {
+		return city;
+	}
+	public void setCity(String city) {
+		this.city = city;
 	}
 }
 	
