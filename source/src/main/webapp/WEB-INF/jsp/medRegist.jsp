@@ -29,7 +29,7 @@
             <input type="text" name="intake_time"><br>
         </label>
         <label>
-            容量
+            用量
             <input type="text" name="dosage"><br>
         </label>
         <label>
@@ -54,7 +54,7 @@
     	const formalName = document.getElementById('regist_form').formalName.value;
     	const intake_time = document.getElementById('regist_form').intake_time.value;
         if (formalName ==='' || intake_time ===''){
-            document.getElementById('regist').textContent ='体温と睡眠休養感を入力してください';
+            document.getElementById('regist').textContent ='薬の正式名称と服薬時間を入力してください';
             event.preventDefault();
         }
     }
