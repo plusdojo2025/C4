@@ -1,15 +1,12 @@
 package servlet;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import dao.BrainTrainingResultsDao;
 import dto.BrainTrainingResultsDto;
@@ -18,50 +15,43 @@ import dto.BrainTrainingResultsDto;
 public class BrainTraResultServlet extends CustomTemplateServlet {
 	private static final long serialVersionUID = 1L;
 
+	// POSTでスコアを受信＆保存
 	@Override
-	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		HttpSession session = request.getSession();
+		request.setCharacterEncoding("UTF-8");
 
-		Integer winCount = (Integer) session.getAttribute("winCount");
-		if (winCount == null)
-			winCount = 0;
-		@SuppressWarnings("unchecked")
-		List<String> history = (List<String>) session.getAttribute("history");
-		if (history == null)
-			history = new ArrayList<>();
-
-		// すでにDB登録済なら何もしない、未登録なら保存
-		Boolean saved = (Boolean) session.getAttribute("braintra_saved");
-		if (saved == null)
-			saved = false;
-
-		if (winCount > 0 && !saved) {
-			try {
-				int userId = (int) session.getAttribute("userId"); // 認証必須
-				BrainTrainingResultsDto dto = new BrainTrainingResultsDto();
-				dto.setUser_id(userId);
-				dto.setScore(winCount);
-				dto.setGame_type("後出しじゃんけん");
-				dto.setPlayed_at(new Date());
-				BrainTrainingResultsDao dao = new BrainTrainingResultsDao();
-				boolean result = dao.insert(dto);
-				request.setAttribute("saveResult", result ? "スコア保存完了" : "スコア保存失敗");
-				session.setAttribute("braintra_saved", true); // 一度だけ保存
-			} catch (Exception e) {
-				request.setAttribute("saveResult", "スコア保存時にエラーが発生しました");
-			}
+		int winCount = 0;
+		try {
+			winCount = Integer.parseInt(request.getParameter("winCount"));
+		} catch (Exception e) {
+			// 万が一パースエラーなら0のまま
 		}
 
+		// 認証済みユーザーID
+		int userId = (int) request.getSession().getAttribute("userId");
+
+		// DB保存
+		BrainTrainingResultsDto dto = new BrainTrainingResultsDto();
+		dto.setUser_id(userId);
+		dto.setScore(winCount);
+		dto.setGame_type("後出しじゃんけん");
+		dto.setPlayed_at(new Date());
+
+		BrainTrainingResultsDao dao = new BrainTrainingResultsDao();
+		boolean saved = dao.insert(dto);
+
+		// 表示用
 		request.setAttribute("winCount", winCount);
-		request.setAttribute("history", history);
+		request.setAttribute("saveResult", saved ? "スコア保存しました" : "保存に失敗しました");
 
 		request.getRequestDispatcher("/WEB-INF/jsp/brainTraResult.jsp").forward(request, response);
 	}
 
+	// GETは直接アクセスさせない（またはエラー画面へ）
 	@Override
-	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		doGet(request, response);
+		response.sendRedirect(request.getContextPath() + "/OmoiyalinkBrainTra");
 	}
 }

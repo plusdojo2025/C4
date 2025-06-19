@@ -4,64 +4,67 @@
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
-<title>後出しじゃんけん（ゲーム開始）</title>
+<title>後出しじゃんけん（60秒バトル）</title>
 <style>
 body {
-	background: #f6fcff;
 	font-family: 'メイリオ', 'Meiryo', sans-serif;
+	background: #f6fcff;
 	color: #264;
 	padding: 32px;
 }
 
 h1 {
-	font-size: 2em;
 	color: #2692c7;
-	margin-bottom: 14px;
+	font-size: 2em;
 }
 
 .timer-box {
 	font-size: 1.3em;
-	background: #fff;
-	padding: 12px 23px;
-	border-radius: 11px;
-	display: inline-block;
-	margin-bottom: 20px;
-	border: 2px solid #c1e7ff;
-	color: #0a5d89;
+	margin: 12px 0 18px 0;
+	color: #1993d1;
 	font-weight: bold;
 }
 
-.janken-select {
-	margin: 28px 0;
-	text-align: center;
+.cpu-box {
+	font-size: 1.2em;
+	margin: 17px 0 16px 0;
 }
 
 .janken-img {
 	width: 110px;
 	height: 110px;
-	margin: 0 24px;
-	border-radius: 15px;
-	box-shadow: 0 1px 8px #bce;
+	margin: 0 22px;
+	border-radius: 12px;
 	cursor: pointer;
-	background: #fff;
-	transition: box-shadow 0.2s, transform 0.2s;
 	border: 2px solid #d1eaff;
+	background: #fff;
+	box-shadow: 0 2px 8px #bbd8;
 }
 
 .janken-img:hover {
-	box-shadow: 0 4px 16px #b3dbff;
-	transform: scale(1.07);
 	border-color: #67c1ff;
+	box-shadow: 0 4px 14px #bce;
 }
 
-@media ( max-width : 600px) {
+.score-box {
+	margin: 18px 0;
+	font-size: 1.15em;
+	color: #196;
+}
+
+.result-msg {
+	font-size: 1.13em;
+	color: #c24b3b;
+	font-weight: bold;
+	margin: 13px 0 5px 0;
+	height: 2em;
+}
+
+@media ( max-width :600px) {
 	.janken-img {
 		width: 70px;
 		height: 70px;
 		margin: 0 7px;
-	}
-	.timer-box {
-		font-size: 1.1em;
 	}
 }
 </style>
@@ -69,50 +72,83 @@ h1 {
 <body>
 	<h1>後出しじゃんけん</h1>
 	<div class="timer-box">
-		制限時間：<span id="timer">60</span>秒
+		残り <span id="timer">60</span> 秒
 	</div>
-
-	<form id="handForm"
-		action="<%=request.getContextPath()%>/OmoiyalinkBrainTraPlay"
-		method="post">
-		<input type="hidden" name="hand" id="handInput" />
-		<div class="janken-select">
-			<img src="<%=request.getContextPath()%>/img/janken_gu.png" alt="グー"
-				class="janken-img" onclick="submitHand('グー')"> <img
-				src="<%=request.getContextPath()%>/img/janken_choki.png" alt="チョキ"
-				class="janken-img" onclick="submitHand('チョキ')"> <img
-				src="<%=request.getContextPath()%>/img/janken_pa.png" alt="パー"
-				class="janken-img" onclick="submitHand('パー')">
-		</div>
+	<div class="score-box">
+		現在の勝利数: <span id="winCount">0</span>
+	</div>
+	<div class="cpu-box">
+		相手の手：<span id="cpuHand" style="font-size: 1.3em;">?</span>
+	</div>
+	<div class="result-msg" id="resultMsg"></div>
+	<div style="text-align: center; margin-top: 24px;">
+		<img src="<%=request.getContextPath()%>/img/janken_gu.png" alt="グー"
+			class="janken-img" onclick="play('グー')"> <img
+			src="<%=request.getContextPath()%>/img/janken_choki.png" alt="チョキ"
+			class="janken-img" onclick="play('チョキ')"> <img
+			src="<%=request.getContextPath()%>/img/janken_pa.png" alt="パー"
+			class="janken-img" onclick="play('パー')">
+	</div>
+	<form id="resultForm"
+		action="<%=request.getContextPath()%>/OmoiyalinkBrainTraResult"
+		method="post" style="display: none;">
+		<input type="hidden" name="winCount" id="formWinCount">
 	</form>
-
 	<script>
-    'use strict';
-    // ゲーム開始前の注意
-    window.onload = function() {
-        setTimeout(function(){
-            alert('準備はよろしいでしょうか？\n※OKを押すとゲームが始まります');
-        }, 200);
-    };
+const hands = ["グー", "チョキ", "パー"];
+let time = 60;
+let winCount = 0;
 
-    // 60秒タイマー
-    let time = 60;
-    const timer = document.getElementById("timer");
-    const interval = setInterval(() => {
-        time--;
-        timer.textContent = time;
-        if (time === 0) {
-            clearInterval(interval);
-            // 制限時間終了後、自動で結果画面へ
-            window.location.href = "<%=request.getContextPath()%>/OmoiyalinkBrainTraResult";
-        }
-    }, 1000);
+// 開始時にCPUの手を表示
+let cpuHand = randomHand();
+document.getElementById("cpuHand").textContent = cpuHand;
 
-    // 手の選択→フォーム送信
-    function submitHand(hand) {
-        document.getElementById("handInput").value = hand;
-        document.getElementById("handForm").submit();
+const timer = setInterval(() => {
+    time--;
+    document.getElementById("timer").textContent = time;
+    if (time === 0) {
+        clearInterval(timer);
+        endGame();
     }
-    </script>
+}, 1000);
+
+function randomHand() {
+    return hands[Math.floor(Math.random() * hands.length)];
+}
+
+function play(userHand) {
+    // すでにタイマーが切れていたら何もしない
+    if (time <= 0) return;
+
+    // 判定
+    let result;
+    if (isUserWin(userHand, cpuHand)) {
+        result = "勝ち！";
+        winCount++;
+    } else if (userHand === cpuHand) {
+        result = "あいこ";
+    } else {
+        result = "負け";
+    }
+    document.getElementById("resultMsg").textContent = "あなた: " + userHand + " ／ 相手: " + cpuHand + " → " + result;
+    document.getElementById("winCount").textContent = winCount;
+
+    // 新しいCPUの手を即表示
+    cpuHand = randomHand();
+    document.getElementById("cpuHand").textContent = cpuHand;
+}
+
+function isUserWin(user, cpu) {
+    return (user === "グー" && cpu === "チョキ") ||
+           (user === "チョキ" && cpu === "パー") ||
+           (user === "パー" && cpu === "グー");
+}
+
+function endGame() {
+    // 最終スコアをサーバーへPOST
+    document.getElementById("formWinCount").value = winCount;
+    document.getElementById("resultForm").submit();
+}
+</script>
 </body>
 </html>
