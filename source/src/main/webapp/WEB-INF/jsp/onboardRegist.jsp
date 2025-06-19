@@ -25,20 +25,20 @@
     <div class="error">${errorMessage}</div>
 </c:if>
 
-<form action="OnboardRegist" method="post">
+<form action="OnboardRegist" method="post" id="postForm">
 
     <!-- 都道府県と市区町村は自動表示（読み取り専用） -->
     <label>都道府県</label>
-    <div class="readonly-info">${sessionScope.pref}</div>
+    <div class="readonly-info">${prefecture != null ? prefecture : sessionScope.pref}</div>
     <label>市区町村</label>
-    <div class="readonly-info">${sessionScope.city}</div>
+    <div class="readonly-info">${city != null ? city : sessionScope.city}</div>
 
     <!-- hiddenで値をサーバーに送る -->
-    <input type="hidden" name="pref" value="${sessionScope.pref}">
-    <input type="hidden" name="city" value="${sessionScope.city}">
+    <input type="hidden" name="pref" value="${prefecture != null ? prefecture : sessionScope.pref}">
+    <input type="hidden" name="city" value="${city != null ? city : sessionScope.city}">
 
-    <!-- タグ（チェックボックス） -->
-    <label>タグ（複数選択可）</label>
+    <!-- タグ（複数選択可） -->
+    <label>タグ（複数選択可） <span style="color:red;">*</span></label>
     <div class="checkbox-group">
         <label><input type="checkbox" name="tags" value="運動"> 運動</label>
         <label><input type="checkbox" name="tags" value="集会"> 集会</label>
@@ -47,17 +47,13 @@
     </div>
 
     <!-- タイトル -->
-    <label for="title">タイトル</label>
+    <label for="title">タイトル <span style="color:red;">*</span></label>
     <input type="text" id="title" name="title" required maxlength="100">
 
     <!-- 内容 -->
-    <label for="content">投稿内容</label>
+    <label for="content">投稿内容 <span style="color:red;">*</span></label>
     <textarea id="content" name="content" rows="6" maxlength="1000" required></textarea>
 
     <button type="submit">投稿する</button>
     <button type="button" onclick="location.href='OmoiyalinkMyPosts'">マイ投稿へ</button>
-    <button type="button" onclick="location.href='OnboardSearch'">検索画面へ</button>
-</form>
-
-</body>
-</html>
+   

@@ -1,7 +1,6 @@
 package servlet;
 
 import java.io.IOException;
-import java.util.Date;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -18,40 +17,45 @@ import dto.PostsDto;
 public class OnboardResultServlet extends CustomTemplateServlet {
     private static final long serialVersionUID = 1L;
 
-	@Override
-	protected void doGet(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-		if (checkNoneLogin(request, response) || checkLogout(request, response)) {
-			return;
-		}
-		try {
-		       // PostsDaoを使用して検索実行
-	        PostsDao dao = new PostsDao(); // PostsDaoをインスタンス化
-	        PostsDto searchDto = new  PostsDto( 0, "", "", "", new Date());
-	        List<PostsDto> postsList = dao.select(searchDto);
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        if (checkNoneLogin(request, response) || checkLogout(request, response)) {
+            return;
+        }
 
-			// 検索結果をリクエストスコープに格納する
-			request.setAttribute("postsList", postsList);
-			
-			//postsList = dao.select(prefecture, city);どう動くか分からない
-
-	        // 検索結果をリクエストに保存
-	        request.getRequestDispatcher("/WEB-INF/jsp/onboardResult.jsp").forward(request, response);
-
-
-					} catch (Exception e) {
-			// TODO 自動生成された catch ブロック
-			e.printStackTrace();
-		}
-
+        // 検索画面から直接GETで来たら空条件で全件表示、でもよい
+        request.getRequestDispatcher("/WEB-INF/jsp/searchForm.jsp").forward(request, response);
     }
 
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-		if (checkNoneLogin(request, response) || checkLogout(request, response)) {
-			return;
-		}
+	        throws ServletException, IOException {
+	    if (checkNoneLogin(request, response) || checkLogout(request, response)) {
+	        return;
+	    }
+
+	    try {
+	        request.setCharacterEncoding("UTF-8");
+
+	        String prefecture = request.getParameter("prefecture");
+	        String city = request.getParameter("city");
+	        String tags = request.getParameter("tags");
+
+	        // 検索条件をもとにDtoを作成
+	        PostsDto searchDto = new PostsDto(0, prefecture, city, tags, null);
+
+	        PostsDao dao = new PostsDao();
+	        List<PostsDto> postsList = dao.select(searchDto);
+
+	        request.setAttribute("postsList", postsList);
+	        request.getRequestDispatcher("/WEB-INF/jsp/onboardResult.jsp").forward(request, response);
+
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        // エラー画面に飛ばす処理を追加しても◎
+	    }
+	
 	}	
 
 }

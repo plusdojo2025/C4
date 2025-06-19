@@ -19,7 +19,7 @@
 
 <h1>投稿検索</h1>
 
-<form action="OnboardResult" method="get">
+<form action="OnboardResult" method="post">
     <!-- 都道府県 -->
     <label for="pref">都道府県</label>
     <input type="text" id="pref" name="pref">
@@ -28,7 +28,7 @@
     <label for="city">市区町村</label>
     <input type="text" id="city" name="city">
 
-    <!-- タグ（複数選択可） -->
+    <!-- タグ -->
     <label>タグ（複数選択可）</label>
     <div class="checkbox-group">
         <label><input type="checkbox" name="tags" value="運動"> 運動</label>
@@ -38,8 +38,6 @@
     </div>
 
     <button type="submit">検索</button>
-    <button type="button" onclick="location.href='OnboardRegist'">投稿画面へ</button>
-    <button type="button" onclick="location.href='OmoiyalinkMyPosts'">マイ投稿へ</button>
 </form>
 
 </body>

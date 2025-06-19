@@ -12,12 +12,14 @@ import javax.servlet.http.HttpServletResponse;
 public class OnboardSearchServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
+    @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        // 検索フォームの初期表示を設定
+        if (checkNoneLogin(request, response) || checkLogout(request, response)) {
+            return; // チェックに引っかかったら処理終了
+        }
+
         request.getRequestDispatcher("/WEB-INF/jsp/onboardSearch.jsp").forward(request, response);
-        
-        if (checkNoneLogin(request, response) || checkLogout(request, response));
     }
 
 	private boolean checkLogout(HttpServletRequest request, HttpServletResponse response) {
