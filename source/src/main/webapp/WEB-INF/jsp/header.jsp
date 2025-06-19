@@ -68,10 +68,12 @@ ul li a:hover {
  <!-- ヘッダー（ここから） -->
 <header>
   <h1 id="logo" >
-   <a href="c4/HomeServlet"><img src="logo1.png" width="130" height="100" alt="おもいやリンク"></a>
+   <a href="${pageContext.request.contextPath}/OmoiyalinkHome">
+   <img src="${pageContext.request.contextPath}/img/logo.png"  width="130" height="100" alt="おもいやリンク"></a>
   </h1>
   <ul id="nav">
-    <li><a href="/c4/HomeServlet">ホーム</a></li>
+    <li><a href="${pageContext.request.contextPath}/OmoiyalinkHome">
+    			<i class="fa-solid fa-house"></i>ホーム</a></li>
     <li><a href="${pageContext.request.contextPath}/OmoiyalinkHealthRegist">
 				<i class="fa-solid fa-heart-pulse"></i>体調管理</a></li>
     <li><a href="${pageContext.request.contextPath}/OmoiyalinkMedMng"> <i
@@ -80,13 +82,14 @@ ul li a:hover {
 				<i class="fa-solid fa-comments"></i>掲示板</a></li>
     <li><a href="${pageContext.request.contextPath}/OmoiyalinkBrainTra"> <i
 				class="fa-solid fa-brain"></i> 脳トレ</a></li>
-    <li><a href="/c4/LogoutServlet" >ログアウト</a></li>
+    <li><a href="/c4/LogoutServlet" >
+    			<i class="fa-solid fa-right-from-bracket"></i>ログアウト</a></li>
   </ul>
 
 </header>
   <!-- ヘッダー（ここまで） -->
 
-<!-- サブタイトル 　上のCSSと合わせてこぴぺしてください↓
+<!-- サブタイトル 　上のCSSも一緒にこぴぺしてください↓
 
 <div class="sub-header">
   <h2>ページの名前</h2>
