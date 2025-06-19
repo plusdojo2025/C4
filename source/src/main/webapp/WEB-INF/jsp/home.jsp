@@ -98,7 +98,7 @@ body {
 				href="${pageContext.request.contextPath}/OmoiyalinkMedMng"> <i
 				class="fa-solid fa-capsules"></i> 服薬管理
 			</a> <a class="menu-btn"
-				href="${pageContext.request.contextPath}/OmoiyalinkOnboardRegist">
+				href="${pageContext.request.contextPath}/OnboardSearch">
 				<i class="fa-solid fa-comments"></i> 掲示板
 			</a> <a class="menu-btn"
 				href="${pageContext.request.contextPath}/OmoiyalinkBrainTra"> <i

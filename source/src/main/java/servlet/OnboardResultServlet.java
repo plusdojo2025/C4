@@ -23,7 +23,12 @@ public class OnboardResultServlet extends CustomTemplateServlet {
         if (checkNoneLogin(request, response) || checkLogout(request, response)) {
             return;
         }
-
+        PostsDao dao = new PostsDao();
+        PostsDto searchDto = new PostsDto();
+        List<PostsDto> PostsList = dao.select(searchDto);
+        
+       // 4. 取得結果をJSPに渡す（cardList という名前でセット）
+		request.setAttribute("postsList", PostsList);
         // 検索画面から直接GETで来たら空条件で全件表示、でもよい
         request.getRequestDispatcher("/WEB-INF/jsp/searchForm.jsp").forward(request, response);
     }
@@ -44,7 +49,6 @@ public class OnboardResultServlet extends CustomTemplateServlet {
 
 	        // 検索条件をもとにDtoを作成
 	        PostsDto searchDto = new PostsDto(0, prefecture, city, tags, null);
-
 	        PostsDao dao = new PostsDao();
 	        List<PostsDto> postsList = dao.select(searchDto);
 
