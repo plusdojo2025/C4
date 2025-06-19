@@ -18,9 +18,9 @@
 	<input type="hidden" name="hand" id="handInput">
 	
 	<!-- 画像で手を選択する -->
-	<img src="img/janken_gu.png" alt="グー" class="janken-img" onclick="submitHand('グー')">
-	<img src="img/janken_choki.png" alt="チョキ" class="janken-img" onclick="submitHand('チョキ')">
-	<img src="img/janken_pa.png" alt="パー" class="janken-img" onclick="submitHand('パー')">
+	<img src="<%= request.getContextPath() %>/img/janken_gu.png" alt="グー" class="janken-img" onclick="submitHand('グー')">
+	<img src="<%= request.getContextPath() %>/img/janken_choki.png" alt="チョキ" class="janken-img" onclick="submitHand('チョキ')">
+	<img src="<%= request.getContextPath() %>/img/janken_pa.png" alt="パー" class="janken-img" onclick="submitHand('パー')">
 	
 </form>
 
@@ -34,7 +34,13 @@
 	const interval = setInterval(() => {
 	time--;
 	timer.textContent = time;
-	if (time <= 0) clearInterval (interval);
+	
+	if (time === 0) {
+		clearInterval (interval);
+	
+	//制限時間終了後、強制的にBrainTraResultに移行
+	window.location.href = "<%= request.getContextPath() %>/OmoiyalinkBrainTraResult";
+		}
 	}, 1000);
 	
 	function submitHand(hand) {
