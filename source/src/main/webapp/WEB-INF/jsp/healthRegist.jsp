@@ -8,12 +8,14 @@
 	<title>体調登録</title>
 </head>
 <body>
+<header>
 	<!-- ヘッダー-->
     <!-- 共通ヘッダー -->
     <%-- <%@ include file="/WEB-INF/jsp/header.jsp" %> --%>
     <h1>体調登録</h1>
     <!-- ヘッダーここまで -->
-    <!-- メイン -->
+</header>    
+
     <main>
         <p>本日の体調を入力してください！</p>
         <form method="POST" action="${pageContext.request.contextPath}/OmoiyalinkHealthRegist" autocomplete="off" id="regist_form" >
@@ -56,9 +58,11 @@
 	</main>
     <!-- メインここまで -->
 
+<footer>
     <!-- フッター -->
      <%-- <%@ include file="/WEB-INF/jsp/footer.jsp" %> --%>
     <!-- フッターここまで -->
+</footer>
 
     <!-- Javascriptの設定 -->
     <script>
