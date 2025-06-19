@@ -14,13 +14,13 @@
 <div>制限時間:<span id="timer">60</span>秒</div>
 
 
-<form id ="handForm" action ="BrainTraServlet" method ="post">
-	<input type="hidden" name="hand" id=""handInput>
+<form id ="handForm" action ="OmoiyalinkBrainTraPlay" method ="post">
+	<input type="hidden" name="hand" id="handInput">
 	
 	<!-- 画像で手を選択する -->
-	<img src="image/janken_gu.png" alt="グー" class="janken-img" onclick="submithand('グー')">
-	<img src="image/janken_choki.png" alt="チョキ" class="janken-img" onclick="submithand('チョキ')">
-	<img src="image/janken_pa.png" alt="パー" class="janken-img" onclick="submithand('パー')">
+	<img src="<%= request.getContextPath() %>/img/janken_gu.png" alt="グー" class="janken-img" onclick="submitHand('グー')">
+	<img src="<%= request.getContextPath() %>/img/janken_choki.png" alt="チョキ" class="janken-img" onclick="submitHand('チョキ')">
+	<img src="<%= request.getContextPath() %>/img/janken_pa.png" alt="パー" class="janken-img" onclick="submitHand('パー')">
 	
 </form>
 
@@ -34,12 +34,18 @@
 	const interval = setInterval(() => {
 	time--;
 	timer.textContent = time;
-	if (time <= 0) clearInterval (interval);
+	
+	if (time === 0) {
+		clearInterval (interval);
+	
+	//制限時間終了後、強制的にBrainTraResultに移行
+	window.location.href = "<%= request.getContextPath() %>/OmoiyalinkBrainTraResult";
+		}
 	}, 1000);
 	
 	function submitHand(hand) {
 		document.getElementById("handInput").value = hand;
-		document.getElementById("handForm").submit;
+		document.getElementById("handForm").submit();
 	}
 
 </script>

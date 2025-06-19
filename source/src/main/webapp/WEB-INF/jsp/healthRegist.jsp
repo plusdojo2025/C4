@@ -42,11 +42,11 @@
             睡眠休養感(必須項目)
             <select name="sleep" required>
                 <option value="">選択してください</option>
-                <option value="よく眠れた">よく眠れた</option>
-                <option value="まぁまぁ眠れた">まぁまぁ眠れた</option>
-                <option value="普通">普通</option>
-                <option value="あまり眠れなかった">あまり眠れなかった</option>
-                <option value="全然眠れなかった">全然眠れなかった</option>
+                <option value="5">よく眠れた</option>
+                <option value="4">まぁまぁ眠れた</option>
+                <option value="3">普通</option>
+                <option value="2">あまり眠れなかった</option>
+                <option value="1">全然眠れなかった</option>
             </select><br>
             <label>
                 メモ

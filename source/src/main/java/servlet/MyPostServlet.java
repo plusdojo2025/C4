@@ -15,49 +15,63 @@ import dto.PostsDto;
 import dto.UsersDto;
 
 /**
- * Servlet implementation class MyPostServlet
+ * マイ投稿一覧画面サーブレット ログインユーザーの投稿だけを一覧表示
  */
 @WebServlet("/OmoiyalinkMyPost")
 public class MyPostServlet extends CustomTemplateServlet {
 	private static final long serialVersionUID = 1L;
 
+	/**
+	 * GETリクエスト時 ログインチェック→自分の投稿一覧をJSPへ渡して表示
+	 */
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+
+		// 1. 未ログイン・ログアウトの場合はログイン画面などにリダイレクト
 		if (checkNoneLogin(request, response) || checkLogout(request, response)) {
 			return;
 		}
-		//マイ投稿の検索
-		try {		
-	        // ログインユーザーの取得
-	        HttpSession session = request.getSession();
-	        UsersDto user = (UsersDto) session.getAttribute("user_id");
-	        int userId = user.getUserId();
 
-			// ユーザーの投稿を取得
-	        PostsDao postDao = new PostsDao();
-	        List<PostsDto> myPosts = postDao.selectByUserId(userId);
+		try {
+			// 2. セッションからログインユーザー情報を取得
+			HttpSession session = request.getSession(false);
+			// UsersDtoは "user" または "loginUser" で格納することを推奨
+			UsersDto user = (UsersDto) session.getAttribute("user");
+			if (user == null) {
+				response.sendRedirect(request.getContextPath() + "/OmoiyalinkLogin");
+				return;
+			}
+			int userId = user.getUserId();
 
-			// 検索結果をリクエストスコープに格納する
+			// 3. 自分の投稿のみDBから取得
+			PostsDao postDao = new PostsDao();
+			List<PostsDto> myPosts = postDao.selectByUserId(userId);
+
+			// 4. JSPへ渡す
 			request.setAttribute("myPosts", myPosts);
 
-			// 結果ページにフォワードする
-			RequestDispatcher dispatcher = request.getRequestDispatcher(request.getContextPath() + "/myPost.jsp");
+			// 5. マイ投稿一覧JSPへフォワード（/WEB-INF/jsp/myPost.jspなどが一般的）
+			RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/myPost.jsp");
 			dispatcher.forward(request, response);
+		} catch (Exception e) {
+			e.printStackTrace();
+			// 6. エラー時はトップページやエラー画面に遷移
+			request.setAttribute("message", "エラーが発生しました。投稿一覧を取得できませんでした。");
+			request.getRequestDispatcher("/WEB-INF/jsp/home.jsp").forward(request, response);
 		}
-		catch (Exception e) {
-	        e.printStackTrace();
-	        request.setAttribute("message", "エラーが発生しました。お薬情報を取得できませんでした");
-	        request.getRequestDispatcher(request.getContextPath() + "/HomeServlet").forward(request, response);
-	    }
 	}
-	
-	
+
+	/**
+	 * POSTリクエスト時（未使用ならGETへ転送 or 405返却でもOK）
+	 */
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		if (checkNoneLogin(request, response) || checkLogout(request, response)) {
-			return;
-		}
-	}	
+		// GETに統一する場合
+		doGet(request, response);
+		// または
+		// response.sendError(HttpServletResponse.SC_METHOD_NOT_ALLOWED,
+		// "POSTは未サポートです");
+	}
 }
