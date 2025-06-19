@@ -99,6 +99,9 @@ const hands = ["グー", "チョキ", "パー"];
 let time = 60;
 let winCount = 0;
 
+	alert('準備はよろしいでしょうか　\n※OKを押すとゲームが始まります'); {
+}
+
 // 開始時にCPUの手を表示
 let cpuHand = randomHand();
 document.getElementById("cpuHand").textContent = cpuHand;
