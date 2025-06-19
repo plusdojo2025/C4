@@ -29,6 +29,8 @@ public class BrainTraResultServlet extends CustomTemplateServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) 
 			throws ServletException, IOException {
 		
+		
+		
 		HttpSession session = request.getSession();
 		
 		//勝利数の履歴を取得

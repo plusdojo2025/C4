@@ -26,6 +26,7 @@ public class BrainTraPlayServlet extends CustomTemplateServlet {
 	//じゃんけんの選択画面を表示
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+		
 		request.getRequestDispatcher("/WEB-INF/jsp/brainTraPlay.jsp").forward(request, response);
 		
 	}
