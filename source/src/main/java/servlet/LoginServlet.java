@@ -35,7 +35,6 @@ public class LoginServlet extends CustomTemplateServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
-		// 文字化け対応
 		request.setCharacterEncoding("UTF-8");
 
 		if (checkDoneLogin(request, response)) {
@@ -47,24 +46,16 @@ public class LoginServlet extends CustomTemplateServlet {
 		String name = request.getParameter("name");
 		String birth_date = request.getParameter("birth_date");
 
-		// 必要に応じて型変換
-		int userIdInt = 0;
-		int birthDateInt = 0;
+		int userIdInt;
+		int birthDateInt;
 		try {
 			userIdInt = Integer.parseInt(user_id);
 			birthDateInt = Integer.parseInt(birth_date);
 		} catch (NumberFormatException e) {
 			request.setAttribute("error", "IDと生年月日は半角数字で入力してください。");
-			RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/login.jsp");
-			dispatcher.forward(request, response);
+			request.getRequestDispatcher("/WEB-INF/jsp/login.jsp").forward(request, response);
 			return;
 		}
-
-		System.out.println("user_id: [" + user_id + "]");
-		System.out.println("userIdInt: " + userIdInt);
-		System.out.println("name: [" + name + "]");
-		System.out.println("birth_date: [" + birth_date + "]");
-		System.out.println("birthDateInt: " + birthDateInt);
 
 		// DB認証
 		boolean isAuthenticated = false;
@@ -79,36 +70,35 @@ public class LoginServlet extends CustomTemplateServlet {
 			ResultSet rs = stmt.executeQuery();
 			if (rs.next()) {
 				isAuthenticated = true;
-				name = rs.getString("name");
+				name = rs.getString("name"); // DB値で上書き（大文字小文字などを揃えるため）
 				pref = rs.getString("pref");
 				city = rs.getString("city");
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			request.setAttribute("error", "システムエラーが発生しました。管理者に連絡してください。");
-			RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/login.jsp");
-			dispatcher.forward(request, response);
+			request.getRequestDispatcher("/WEB-INF/jsp/login.jsp").forward(request, response);
 			return;
 		}
 
 		if (isAuthenticated) {
 			// 認証OK→セッションへセット
 			HttpSession session = request.getSession();
-			session.setAttribute("userId", userIdInt); // int型で格納（ここが重要！）
-			// 既存コードも下位互換で残しても良い
-			session.setAttribute("user_id", user_id); // String型
+			session.setAttribute("userId", userIdInt); // int型で格納（全サーブレットで利用！）
 			session.setAttribute("userName", name);
 			session.setAttribute("birth_date", birth_date);
 			session.setAttribute("pref", pref);
 			session.setAttribute("city", city);
+
+			// 既存システム互換でString型のuser_idも一応残す（不要なら削除OK）
+			session.setAttribute("user_id", user_id);
 
 			// ホームへリダイレクト
 			response.sendRedirect("OmoiyalinkHome");
 		} else {
 			// 認証NG
 			request.setAttribute("error", "ID・氏名・生年月日が一致しません。再度ご確認ください。");
-			RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/login.jsp");
-			dispatcher.forward(request, response);
+			request.getRequestDispatcher("/WEB-INF/jsp/login.jsp").forward(request, response);
 		}
 	}
 }
