@@ -29,7 +29,8 @@
 			<button type="submit">ログイン</button>
 		</form>
 		<!-- 新規登録ボタン -->
-		<a href="${pageContext.request.contextPath}/OmoiyalinkUserRegistServlet"
+		<a
+			href="${pageContext.request.contextPath}/OmoiyalinkUserRegistServlet"
 			class="register-btn">新規登録はこちら</a>
 	</div>
 
