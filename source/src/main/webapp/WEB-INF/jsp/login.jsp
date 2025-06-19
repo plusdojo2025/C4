@@ -309,8 +309,6 @@ footer, .site-footer {
 }
 </style>
 <script>
-//common.js - 全ページ共通JS
-
 /** ----------- ローディング表示制御 ----------- **/
 function showLoading(message = '読み込み中…') {
     let loader = document.getElementById('global-loading');
@@ -424,14 +422,9 @@ function formatTime(date) {
     const mi = ('0' + d.getMinutes()).slice(-2);
     return `${h}:${mi}`;
 }
-
-/* 追加で必要なものは随時このcommon.jsに追記してください */
-
 </script>
 </head>
 <body>
-	<!-- ヘッダー（共通パーツにしたい場合はinclude） -->
-	<%-- <%@ include file="/WEB-INF/jsp/common/header.jsp" %> --%>
 
 	<div class="login-container">
 		<h2>ログイン</h2>
@@ -454,7 +447,6 @@ function formatTime(date) {
 			class="register-btn">新規登録はこちら</a>
 	</div>
 
-	<!-- フッターも共通化したい場合はここでinclude -->
-	<%-- <%@ include file="/WEB-INF/jsp/common/footer.jsp" %> --%>
+<%@ include file="/WEB-INF/jsp/footer.jsp" %> 
 </body>
 </html>

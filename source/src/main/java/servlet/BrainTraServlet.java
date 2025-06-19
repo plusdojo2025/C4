@@ -25,6 +25,8 @@ public class BrainTraServlet extends CustomTemplateServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) 
 			throws ServletException, IOException {
 		
+		
+		
 		request.getRequestDispatcher("/WEB-INF/jsp/brainTra.jsp").forward(request, response);
     }
 		// TODO Auto-generated method stub
@@ -37,7 +39,7 @@ public class BrainTraServlet extends CustomTemplateServlet {
         if ("start".equals(action)) {
             response.sendRedirect("BrainTraPlayServlet");     //ゲーム開始ボタン
         } else if ("history".equals(action)) {
-            response.sendRedirect("BrainTraMng");		     //履歴閲覧
+            response.sendRedirect("BrainTraMngServlet");		     //履歴閲覧
         } else {
             response.sendRedirect("OmoiyalinkBrainTra");	// メニューに戻る
         }
