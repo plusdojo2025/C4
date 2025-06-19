@@ -15,23 +15,32 @@ import dto.BrainTrainingResultsDto;
 public class BrainTraResultServlet extends CustomTemplateServlet {
 	private static final long serialVersionUID = 1L;
 
-	// POSTでスコアを受信＆保存
+	// スコア受信・DB保存・結果画面遷移
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		request.setCharacterEncoding("UTF-8");
 
+		// 1. 勝利回数の取得
 		int winCount = 0;
 		try {
 			winCount = Integer.parseInt(request.getParameter("winCount"));
 		} catch (Exception e) {
-			// 万が一パースエラーなら0のまま
+			System.out.println("[DEBUG] winCountパースエラー: " + e.getMessage());
 		}
+		System.out.println("[DEBUG] 受信 winCount: " + winCount);
 
-		// 認証済みユーザーID
-		int userId = (int) request.getSession().getAttribute("userId");
+		// 2. ユーザーIDの取得（セッションから）＋nullチェック
+		Integer userIdObj = (Integer) request.getSession().getAttribute("userId");
+		if (userIdObj == null) {
+			System.out.println("[DEBUG] userId is null! ログイン画面へリダイレクト");
+			response.sendRedirect(request.getContextPath() + "/OmoiyalinkLogin");
+			return;
+		}
+		int userId = userIdObj;
+		System.out.println("[DEBUG] セッション userId: " + userId);
 
-		// DB保存
+		// 3. DB保存処理
 		BrainTrainingResultsDto dto = new BrainTrainingResultsDto();
 		dto.setUser_id(userId);
 		dto.setScore(winCount);
@@ -40,15 +49,17 @@ public class BrainTraResultServlet extends CustomTemplateServlet {
 
 		BrainTrainingResultsDao dao = new BrainTrainingResultsDao();
 		boolean saved = dao.insert(dto);
+		System.out.println("[DEBUG] DAO.insert結果: " + saved);
 
-		// 表示用
+		// 4. JSPへ値渡し
 		request.setAttribute("winCount", winCount);
 		request.setAttribute("saveResult", saved ? "スコア保存しました" : "保存に失敗しました");
 
+		// 5. 結果画面へ遷移
 		request.getRequestDispatcher("/WEB-INF/jsp/brainTraResult.jsp").forward(request, response);
 	}
 
-	// GETは直接アクセスさせない（またはエラー画面へ）
+	// GETは直接アクセスさせない
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
