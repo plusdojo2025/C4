@@ -128,7 +128,7 @@ input:focus, select:focus, textarea:focus {
     background: #fcf8f0;
 }
 
-/* ヘッダー・フッターサンプル */
+/* ヘッダー・フッターサンプル 
 header, .site-header {
     width: 100vw;
     background: #fff;
@@ -150,3 +150,4 @@ footer, .site-footer {
     font-size: 0.98em;
     margin-top: 40px;
 }
+*/
