@@ -14,12 +14,10 @@ import dto.HealthrecordDto;
 @WebServlet("/OmoiyalinkHealthMng")
 public class HealthMngServlet extends CustomTemplateServlet {
 	private static final long serialVersionUID = 1L;
-
-	// 1ページあたりの表示件数（固定値。変更したい場合はここを修正）
 	private static final int PAGE_SIZE = 10;
 
 	/**
-	 * GETリクエスト時の処理：体調記録一覧（10件単位・ページ送り付き）を表示
+	 * 体調記録一覧（10件単位・ページ送り付き）を表示
 	 */
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -30,8 +28,22 @@ public class HealthMngServlet extends CustomTemplateServlet {
 			return;
 		}
 
-		// ★ログインユーザーIDの取得（セッションから取り出す）
-		int userId = (int) request.getSession().getAttribute("userId");
+		// ★ログインユーザーIDの取得（セッションから取り出す。userId or user_id に合わせて！）
+		Object userIdObj = request.getSession().getAttribute("userId");
+		if (userIdObj == null) {
+			// 未ログイン時はログイン画面へリダイレクト（例）
+			response.sendRedirect(request.getContextPath() + "/OmoiyalinkLogin");
+			return;
+		}
+
+		int userId;
+		try {
+			userId = Integer.parseInt(userIdObj.toString());
+		} catch (NumberFormatException e) {
+			// 不正値ならエラー表示またはログアウト等
+			response.sendRedirect(request.getContextPath() + "/OmoiyalinkLogin");
+			return;
+		}
 
 		// ページ番号を取得（未指定・不正な値は0：最新ページ扱い）
 		int page = 0;
