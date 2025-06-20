@@ -103,7 +103,7 @@ public class OnboardRegistServlet extends HttpServlet {
 			PostsDao dao = new PostsDao();
 			dao.insert(post);
 
-			response.sendRedirect("OmoiyalinkMyPosts");
+			response.sendRedirect("OmoiyalinkMyPost");
 
 		} catch (Exception e) {
 			e.printStackTrace();

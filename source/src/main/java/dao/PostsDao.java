@@ -13,7 +13,7 @@ import utility.DBUtil;
 
 public class PostsDao {
 
-    // ユーザーIDで自分の投稿だけ取得（user_idがカラム名）
+    // ユーザーIDで自分の投稿だけ取得
     public List<PostsDto> selectByUserId(int userId) {
         List<PostsDto> list = new ArrayList<>();
         String sql = "SELECT * FROM posts WHERE user_id = ? ORDER BY created_at DESC";
@@ -98,7 +98,7 @@ public class PostsDao {
     // 1行のResultSetからDtoを作る（共通処理）
     private PostsDto convertRow(ResultSet rs) throws SQLException {
         PostsDto dto = new PostsDto();
-        dto.setId(rs.getInt("id"));
+        dto.setPostId(rs.getInt("post_id")); // ←ここを「id」→「post_id」に修正
         dto.setUserId(rs.getInt("user_id"));
         dto.setTag(rs.getString("tag"));
         dto.setTitle(rs.getString("title"));

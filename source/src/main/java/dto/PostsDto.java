@@ -34,7 +34,7 @@ public class PostsDto extends CustomeTemplateDto implements Serializable {
     public int getId() {            // ← postId→id
         return id;
     }
-    public void setId(int id) {
+    public void setPostId(int id) {
         this.id = id;
     }
 
