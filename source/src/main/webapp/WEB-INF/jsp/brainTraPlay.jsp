@@ -128,7 +128,7 @@ h1 {
 	const timer = setInterval(() => {
 		time--;
 		document.getElementById("timer").textContent = time;
-		if (time >= 0) {  // >= を === に直す
+		if (time === 0) {  // >= を === に直す
 			clearInterval(timer);
 			endGame();
 		}
