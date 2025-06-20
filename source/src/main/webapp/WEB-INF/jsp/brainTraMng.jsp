@@ -110,17 +110,17 @@ table td {
 		</tbody>
 	</table border="1">
 
-	<div class="paging">
+	<!--  <div class="paging">
 		<c:if test="${hasPrev}">
 			<a href="OmoiyalinkBrainTraMng?page=${page - 1}&order=${order}">&laquo;
 				前の10件</a>
-		</c:if>
+		</c:if>-->
 		<!--  <span>ページ：${page + 1}</span>
 		<c:if test="${hasNext}">
 			<a href="OmoiyalinkBrainTraMng?page=${page + 1}&order=${order}">次の10件
 				&raquo;</a>
-		</c:if>-->
-	</div>
+		</c:if>
+	</div>-->
 	
 </body>
 </html>
