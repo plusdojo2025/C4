@@ -13,7 +13,7 @@ form {
  max-width: 600px; margin: 0 auto;
   }
 label { 
-display: block; margin-top: 1em;
+display: block; margin-top: 2em;
  }
 input[type="text"], select {
  width: 100%; padding: 0.5em;
@@ -69,17 +69,28 @@ input, select, textarea {
 input:focus, select:focus, textarea:focus {
     outline: none;
     border-color: #46B1E1;
-    background: #fcf8f0;
+    background: #fcf8f0;  
+}
+<!-- サブタイトルのCSS -->
+.sub-header {
+  background-color: #46B1E1; /* 青色 */
+  color: #FFFEEF;
+  padding: 15px 30px;
+  margin-top: 100px; /* ヘッダーがfixedなので被らないようにする */
 }
 
-
-
-
-
-
-
+.sub-header h2 {
+  margin: 0;
+   background-color: #46B1E1; /* 青色 */
+  color: #FFFEEF;
+  font-size: 2rem;
+  text-align: center; 
+}
+ <!-- サブタイトルのCSS　ここまで -->
+ 
 </style>
 </head>
+<main>
 <body>
 
 
@@ -87,13 +98,12 @@ input:focus, select:focus, textarea:focus {
 
 <!-- サブタイトル 　上のCSSも一緒にこぴぺしてください↓ -->
 <%@ include file="/WEB-INF/jsp/header.jsp"%>
-
 <div class="sub-header">
   <h2>検索</h2>
 </div>
 
  
-<h1>投稿検索</h1>
+
 <form action="OnboardSearch" method="post">
 	<!-- タグ -->
     <label>タグ（複数選択可）</label>
@@ -130,7 +140,9 @@ input:focus, select:focus, textarea:focus {
     </a>
     
 </form>
+</main>
 <%@ include file="/WEB-INF/jsp/footer.jsp" %>
+
 <script>
     // 都道府県に応じた市区町村の選択肢（例）
     const cityData = {
