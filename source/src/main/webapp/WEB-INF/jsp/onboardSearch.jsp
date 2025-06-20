@@ -82,6 +82,17 @@ input:focus, select:focus, textarea:focus {
 </head>
 <body>
 
+
+ 
+
+<!-- サブタイトル 　上のCSSも一緒にこぴぺしてください↓ -->
+<%@ include file="/WEB-INF/jsp/header.jsp"%>
+
+<div class="sub-header">
+  <h2>検索</h2>
+</div>
+
+ 
 <h1>投稿検索</h1>
 <form action="OnboardSearch" method="post">
 	<!-- タグ -->
@@ -119,6 +130,7 @@ input:focus, select:focus, textarea:focus {
     </a>
     
 </form>
+<%@ include file="/WEB-INF/jsp/footer.jsp" %>
 <script>
     // 都道府県に応じた市区町村の選択肢（例）
     const cityData = {
@@ -146,6 +158,7 @@ input:focus, select:focus, textarea:focus {
             });
         }
     }
+    
 </script>
 
 </body>

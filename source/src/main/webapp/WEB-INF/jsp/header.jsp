@@ -10,6 +10,7 @@
   body {
   margin: 0;
   padding: 0;
+  padding-top: 100px; /* ← これを追加したよ */
   color: #041117;
   font-family: 'Noto Sans JP', sans-serif;
   background: #FFFEEF;
