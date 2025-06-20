@@ -131,4 +131,5 @@ iframe.braintra {
 
 		</div>
 	</div>
+	<%@ include file="footer.jsp"%>
 </body>

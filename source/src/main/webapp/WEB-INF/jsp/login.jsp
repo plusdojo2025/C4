@@ -41,6 +41,19 @@ label, .label {
 	font-weight: bold;
 }
 
+.sub-header {
+	background-color: #46B1E1; /* 青色 */
+	color: #FFFEEF;
+	padding: 15px 30px;
+	margin-top: 100px; /* ヘッダーがfixedなので被らないようにする */
+}
+
+.sub-header h2 {
+	margin: 0;
+	font-size: 2rem;
+	text-align: center;
+}
+
 /* === レスポンシブ設計 === */
 @media ( max-width : 600px) {
 	html, body {
@@ -283,30 +296,6 @@ input:focus, select:focus, textarea:focus {
 	border-color: #46B1E1;
 	background: #fcf8f0;
 }
-
-/* ヘッダー・フッターサンプル */
-header, .site-header {
-	width: 100vw;
-	background: #fff;
-	border-bottom: 2px solid #46B1E1;
-	padding: 14px 0 8px 0;
-	color: #46B1E1;
-	font-weight: bold;
-	letter-spacing: 1.2px;
-	text-align: center;
-	font-size: 1.6em;
-}
-
-footer, .site-footer {
-	width: 100vw;
-	background: #fff;
-	border-top: 1px solid #46B1E1;
-	color: #22292F;
-	text-align: center;
-	padding: 12px 0 8px 0;
-	font-size: 0.98em;
-	margin-top: 40px;
-}
 </style>
 <script>
 /** ----------- ローディング表示制御 ----------- **/
@@ -425,9 +414,10 @@ function formatTime(date) {
 </script>
 </head>
 <body>
-
+	<div class="sub-header">
+		<h2>おもいやリンクへようこそ</h2>
+	</div>
 	<div class="login-container">
-		<h2>ログイン</h2>
 		<c:if test="${not empty error}">
 			<div class="error">${error}</div>
 		</c:if>
@@ -447,6 +437,6 @@ function formatTime(date) {
 			class="register-btn">新規登録はこちら</a>
 	</div>
 
-<%@ include file="/WEB-INF/jsp/footer.jsp" %> 
+	<%@ include file="footer.jsp"%>
 </body>
 </html>
