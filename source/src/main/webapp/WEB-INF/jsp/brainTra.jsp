@@ -19,43 +19,70 @@ html, body {
     line-height: 1.8;
 }
 
-h1, h2 {
-    color:  #fff;
-    margin-top: 1em;
-    margin-bottom: .7em;
+h1, h2, h3, h4, h5 {
+    color: #fff;
+    margin-top: ;
+    margin-bottom:px;
     font-weight: bold;
-    text-align: center;
-    background:#46B1E1;
-}
-
-
-button, .btn {
     background: #46B1E1;
-    color: #fff;
-    border: none;
-    border-radius: 9px;
-    padding: 0.65em 1.6em;
-    margin: 6px 0;
-    cursor: pointer;
-    font-size: 1em;
-    font-family: inherit;
-    transition: background 0.22s;
 }
 
-button:hover, .btn:hover {
-    background: #2d7ea3;
-    color: #fff;
+header {
+  width: 100%;
+  background: #FFFEEF;
+  display: flex; /* ヘッターをページ上部に固定 */
+  align-items: center; /* 上下中央に揃える */
+  justify-content: space-between; /* 両端に配置 */
+  /*padding-left: 30px;*/
+  /*padding-right: 30px;*/
+  /*position: fixed;*/
+  top: 0;
+  box-sizing: border-box;
 }
-rule {
-	text-align: center;
+
+ul {
+  list-style: none;
+  display: flex;
 }
+ul li a {
+  font-size: 1.3rem;
+  padding: 10px 15px;
+  color: #46B1E1;
+  text-decoration: none;
+  font-weight: bold;
+}
+
 </style>
 </head>
+
 <body>
-	<h1>後出しじゃんけん</h1>
+
+<header>
+  <h1 id="logo" >
+   <a href="${pageContext.request.contextPath}/OmoiyalinkHome">
+   <img src="${pageContext.request.contextPath}/img/logo.png"  width="130" height="100" alt="おもいやリンク"></a>
+  </h1>
+  <ul id="nav">
+    <li><a href="${pageContext.request.contextPath}/OmoiyalinkHome">
+    			<i class="fa-solid fa-house"></i>ホーム</a></li>
+    <li><a href="${pageContext.request.contextPath}/OmoiyalinkHealthRegist">
+				<i class="fa-solid fa-heart-pulse"></i>体調管理</a></li>
+    <li><a href="${pageContext.request.contextPath}/OmoiyalinkMedMng"> <i
+				class="fa-solid fa-capsules"></i>服薬管理</a></li>
+    <li><a href="${pageContext.request.contextPath}/OmoiyalinkOnboardRegist">
+				<i class="fa-solid fa-comments"></i>掲示板</a></li>
+    <li><a href="${pageContext.request.contextPath}/OmoiyalinkBrainTra"> <i
+				class="fa-solid fa-brain"></i> 脳トレ</a></li>
+    <li><a href="?logout=1">
+    			<i class="fa-solid fa-right-from-bracket"></i>ログアウト</a></li>
+  </ul>
+
+</header>
+
+	<h2>後出しじゃんけん</h2>
 
 	<div class="rule">
-		<h2>～ルール説明～</h2>
+		<h3>～ルール説明～</h3>
 		<ul>
 			<li>制限時間は1分間</li>
 			<li>表示されている手に<strong>勝つ</strong>手を選ぼう！
