@@ -9,53 +9,54 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import dto.UsersDto;
+
 /**
- * ホーム画面（トップページ）サーブレット
- * ログインユーザー名をJSPに渡して表示
+ * ホーム画面（トップページ）サーブレット ログインユーザー名をJSPに渡して表示
  */
 @WebServlet("/OmoiyalinkHome")
 public class HomeServlet extends CustomTemplateServlet {
-    private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
 
-    /**
-     * GETリクエスト時の処理
-     * ・未ログインならログイン画面へリダイレクト
-     * ・ログイン済みならユーザー名を取得しJSPに渡してホーム画面を表示
-     */
-    @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+	/**
+	 * GETリクエスト時の処理 ・未ログインならログイン画面へリダイレクト ・ログイン済みならユーザー名を取得しJSPに渡してホーム画面を表示
+	 */
+	@Override
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 
-        // （1）未ログインの場合はチェック用メソッドで中断（ログイン画面にリダイレクトなど）
-        if (checkNoneLogin(request, response) || checkLogout(request, response)) {
-            return;
-        }
+		// （1）未ログインの場合はチェック用メソッドで中断（ログイン画面にリダイレクトなど）
+		if (checkNoneLogin(request, response) || checkLogout(request, response)) {
+			return;
+		}
 
-        // （2）セッションからユーザー名を取得
-        HttpSession session = request.getSession(false); // セッションがなければnull
-        String userName = null;
-        if (session != null) {
-            userName = (String) session.getAttribute("userName"); // 属性名は統一推奨
-        }
-        if (userName == null) {
-            userName = "ゲスト"; // 万一セッション切れ時用
-        }
+		// （2）セッションからユーザー名を取得
+		HttpSession session = request.getSession(false);
+		String userName = null;
+		if (session != null) {
+			UsersDto user = (UsersDto) session.getAttribute("user");
+			if (user != null) {
+				userName = user.getName();
+			}
+		}
+		if (userName == null) {
+			userName = "ゲスト";
+		}
 
-        // （3）ユーザー名をリクエストスコープにセット（JSPで${userName}で使える）
-        request.setAttribute("userName", userName);
+		// （3）ユーザー名をリクエストスコープにセット（JSPで${userName}で使える）
+		request.setAttribute("userName", userName);
 
-        // （4）JSP（ホーム画面）へフォワード
-        RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/home.jsp");
-        dispatcher.forward(request, response);
-    }
+		// （4）JSP（ホーム画面）へフォワード
+		RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/home.jsp");
+		dispatcher.forward(request, response);
+	}
 
-    /**
-     * POSTリクエスト時もGETの内容に転送
-     * 不要なら省略も可（ボタンクリックなどでPOSTになる場合に備える）
-     */
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        doGet(request, response);
-    }
+	/**
+	 * POSTリクエスト時もGETの内容に転送 不要なら省略も可（ボタンクリックなどでPOSTになる場合に備える）
+	 */
+	@Override
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		doGet(request, response);
+	}
 }

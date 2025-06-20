@@ -87,6 +87,7 @@ public class LoginServlet extends CustomTemplateServlet {
 			// 認証OK→セッションに「user」属性で保存
 			HttpSession session = request.getSession();
 			session.setAttribute("user", userDto);
+			session.setAttribute("id", userDto.getUserId());
 
 			// ホームへリダイレクト
 			response.sendRedirect("OmoiyalinkHome");
