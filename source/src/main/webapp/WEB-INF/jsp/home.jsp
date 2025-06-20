@@ -111,7 +111,7 @@ iframe.braintra {
 				href="${pageContext.request.contextPath}/OmoiyalinkHealthRegist">
 				<i class="fa-solid fa-heart-pulse"></i> 体調管理
 			</a> <a class="menu-btn"
-				href="${pageContext.request.contextPath}/OmoiyalinkMedMng"> <i
+				href="${pageContext.request.contextPath}/OmoiyalinkTlkMedMng"> <i
 				class="fa-solid fa-capsules"></i> 服薬管理
 			</a> <a class="menu-btn"
 				href="${pageContext.request.contextPath}/OnboardSearch"> <i
