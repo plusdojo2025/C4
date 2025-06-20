@@ -70,19 +70,19 @@ ul li a:hover {
 <header>
   <h1 id="logo" >
    <a href="${pageContext.request.contextPath}/OmoiyalinkHome">
-   <img src="${pageContext.request.contextPath}/img/logo.png"  width="130" height="100" alt="おもいやリンク"></a>
+   <img src="${pageContext.request.contextPath}/img/logo.png"  width="120" height="100" alt="おもいやリンク"></a>
   </h1>
   <ul id="nav">
     <li><a href="${pageContext.request.contextPath}/OmoiyalinkHome">
     			<i class="fa-solid fa-house"></i>ホーム</a></li>
     <li><a href="${pageContext.request.contextPath}/OmoiyalinkHealthRegist">
 				<i class="fa-solid fa-heart-pulse"></i>体調管理</a></li>
-    <li><a href="${pageContext.request.contextPath}/OmoiyalinkMedMng"> <i
+    <li><a href="${pageContext.request.contextPath}/OmoiyalinkTlkMedRegist"> <i
 				class="fa-solid fa-capsules"></i>服薬管理</a></li>
-    <li><a href="${pageContext.request.contextPath}/OmoiyalinkOnboardRegist">
+    <li><a href="${pageContext.request.contextPath}/OnboardRegist">
 				<i class="fa-solid fa-comments"></i>掲示板</a></li>
-    <li><a href="${pageContext.request.contextPath}/OmoiyalinkBrainTra"> <i
-				class="fa-solid fa-brain"></i> 脳トレ</a></li>
+    <!-- <li><a href="${pageContext.request.contextPath}/OmoiyalinkBrainTra"> <i
+				class="fa-solid fa-brain"></i> 脳トレ</a></li>-->
     <li><a href="?logout=1">
     			<i class="fa-solid fa-right-from-bracket"></i>ログアウト</a></li>
   </ul>

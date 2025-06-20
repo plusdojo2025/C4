@@ -128,8 +128,7 @@ input:focus {
 		max-width: 99vw;
 		padding: 6vw 2vw;
 	}
-	
-		h1, h2 {
+	h1, h2 {
 		font-size: 1.25em !important;
 	}
 }
