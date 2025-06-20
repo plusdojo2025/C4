@@ -15,7 +15,7 @@ import dto.HealthrecordDto;
 import dto.UsersDto;
 
 /**
- * 体調記録登録サーブレット GET: 体調記録フォーム表示 POST: 記録を登録し、結果に応じて遷移
+ * 体調記録登録サーブレット GET: 体調記録フォーム表示 POST: 記録を登録し、結果に応じて画面遷移
  */
 @WebServlet("/OmoiyalinkHealthRegist")
 public class HealthRegistServlet extends CustomTemplateServlet {
@@ -27,12 +27,11 @@ public class HealthRegistServlet extends CustomTemplateServlet {
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		// ログインチェック（未ログインならリダイレクト）
+		// ログインチェック（未ログイン時は強制リダイレクト）
 		if (checkNoneLogin(request, response)) {
 			return;
 		}
-
-		// 体調登録画面（/WEB-INF/jsp/healthRegist.jsp）にフォワード
+		// 体調登録画面にフォワード
 		RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/healthRegist.jsp");
 		dispatcher.forward(request, response);
 	}
@@ -48,7 +47,7 @@ public class HealthRegistServlet extends CustomTemplateServlet {
 			return;
 		}
 
-		request.setCharacterEncoding("UTF-8"); // 文字化け対策
+		request.setCharacterEncoding("UTF-8");
 
 		try {
 			// --- 入力値取得 ---
@@ -61,6 +60,13 @@ public class HealthRegistServlet extends CustomTemplateServlet {
 			String sleepStr = request.getParameter("sleep");
 			String memo = request.getParameter("memo");
 
+			// --- 必須項目の入力チェック ---
+			if (createdAtStr == null || createdAtStr.isEmpty() || temperatureStr == null || temperatureStr.isEmpty()) {
+				request.setAttribute("message", "日付・体温は必須です。");
+				request.getRequestDispatcher("/WEB-INF/jsp/healthRegist.jsp").forward(request, response);
+				return;
+			}
+
 			// --- データ型変換・未入力対応 ---
 			Date date = Date.valueOf(createdAtStr);
 			double temperature = Double.parseDouble(temperatureStr);
@@ -69,12 +75,13 @@ public class HealthRegistServlet extends CustomTemplateServlet {
 			Integer pulseRate = (pulseRateStr == null || pulseRateStr.isEmpty()) ? null
 					: Integer.parseInt(pulseRateStr);
 			Double pulseOx = (pulseOxStr == null || pulseOxStr.isEmpty()) ? null : Double.parseDouble(pulseOxStr);
-			int sleep = Integer.parseInt(sleepStr);
+			int sleep = (sleepStr == null || sleepStr.isEmpty()) ? 0 : Integer.parseInt(sleepStr);
 
-			// --- セッションからユーザー情報を取得（DTO型で統一推奨）---
+			// --- セッションからユーザーDTO取得 ---
 			HttpSession session = request.getSession();
-			UsersDto user = (UsersDto) session.getAttribute("user"); // "user"や"loginUser"で統一推奨
+			UsersDto user = (UsersDto) session.getAttribute("user");
 			if (user == null) {
+				// 万一セッションが切れていた場合はログイン画面へ
 				response.sendRedirect(request.getContextPath() + "/OmoiyalinkLogin");
 				return;
 			}
@@ -95,12 +102,14 @@ public class HealthRegistServlet extends CustomTemplateServlet {
 			// --- DAOで登録 ---
 			boolean result = new HealthrecordDao().insert(dto);
 
-			// --- 結果をセットして画面遷移 ---
+			// --- 結果に応じて画面遷移 ---
 			if (result) {
-				// PRGパターン推奨（リダイレクトして一覧へ）
-				request.getSession().setAttribute("message", "本日の体調を登録しました。");
+				// 成功時は一覧画面へリダイレクト（PRGパターン）
+				session.setAttribute("message", "本日の体調を登録しました。");
+				// ※下記URLが@WebServlet("/OmoiyalinkHealthMng")等で有効か要確認
 				response.sendRedirect(request.getContextPath() + "/OmoiyalinkHealthMng");
 			} else {
+				// 失敗時は登録画面へ戻す
 				request.setAttribute("message", "登録に失敗しました。");
 				request.getRequestDispatcher("/WEB-INF/jsp/healthRegist.jsp").forward(request, response);
 			}

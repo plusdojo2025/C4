@@ -121,7 +121,7 @@ public class PostsDao extends CustomTemplateDao<PostsDto>{
     public List<PostsDto> selectByUserId(int userId) throws SQLException {
 		Connection connection = null;
 
-        List<PostsDto> postsList = new ArrayList<>();
+        List<PostsDto> myList = new ArrayList<>();
         
         try {
         
@@ -137,7 +137,7 @@ public class PostsDao extends CustomTemplateDao<PostsDto>{
             ResultSet rs = stmt.executeQuery();
 
             while (rs.next()) {
-                postsList.add(new PostsDto(
+            	myList.add(new PostsDto(
                     rs.getInt("user_id"),
                     rs.getString("tag"),
                     rs.getString("title"),
@@ -152,7 +152,7 @@ public class PostsDao extends CustomTemplateDao<PostsDto>{
 			close(connection);
 		}
 
-        return postsList;
+        return myList;
     }
 
 }
