@@ -33,7 +33,7 @@ body {
 	background-color: #46B1E1; /* 青色 */
 	color: #FFFEEF;
 	padding: 15px 30px;
-	margin-top: 100px; /* ヘッダーがfixedなので被らないようにする */
+	margin-top: 0px; /* ヘッダーがfixedなので被らないようにする */
 }
 
 .sub-header h2 {
