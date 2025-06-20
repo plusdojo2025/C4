@@ -62,7 +62,7 @@ button, .menu-btn {
 }
 
 button:hover, .menu-btn:hover {
-	background: #217fcf;
+	background:#46B1E1;
 }
 
 .saveMsg {
@@ -70,7 +70,23 @@ button:hover, .menu-btn:hover {
 	font-size: 1.05em;
 	margin-bottom: 8px;
 }
+
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    background: #FFFEEF;  /* 背景色指定 */
+    color: #22292F;       /* 薄めの黒（ややグレー系：#22292F） */
+    font-family: 'メイリオ', 'Meiryo', 'sans-serif';
+    font-size: 17px;
+    line-height: 1.8;
+}
+
+
 </style>
+
+
 </head>
 <body>
 	<h1>結果発表</h1>

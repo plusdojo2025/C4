@@ -19,39 +19,45 @@ html, body {
     line-height: 1.8;
 }
 
-h1, h2 {
-    color:  #fff;
-    margin-top: 1em;
+h1, h2, h3, h4, h5 {
+    color: #fff;
+    margin-top: 0;
     margin-bottom: .7em;
     font-weight: bold;
-    text-align: center;
-    background:#46B1E1;
-}
-
-
-button, .btn {
     background: #46B1E1;
-    color: #fff;
-    border: none;
-    border-radius: 9px;
-    padding: 0.65em 1.6em;
-    margin: 6px 0;
-    cursor: pointer;
-    font-size: 1em;
-    font-family: inherit;
-    transition: background 0.22s;
 }
 
-button:hover, .btn:hover {
-    background: #2d7ea3;
-    color: #fff;
-}
-rule {
+button, .menu-btn {
+	padding: 13px 32px;
+	font-size: 1.1em;
+	background: #47aaf2;
+	color: #fff;
+	border: none;
+	border-radius: 9px;
+	box-shadow: 0 2px 8px #ccd8f0;
+	cursor: pointer;
+	transition: background .2s;
+	text-decoration: none;
+	margin-bottom: 8px;
 	text-align: center;
+}
+
+button:hover, .menu-btn:hover {
+	background:#46B1E1;
+}
+
+.saveMsg {
+	color: #c24b3b;
+	font-size: 1.05em;
+	margin-bottom: 8px;
 }
 </style>
 </head>
+
 <body>
+
+
+
 	<h1>後出しじゃんけん</h1>
 
 	<div class="rule">
