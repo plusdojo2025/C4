@@ -49,7 +49,44 @@ public class MedicationsDao extends CustomTemplateDao<MedicationsDto> {
 		// 結果を返す
 		return medicationList;
 	}
+	
+	
+	//薬情報をユーザーIDで取得するメソッド
+		public List<MedicationsDto> selectByUser(int userId) {
+		    Connection conn = null;
+		    List<MedicationsDto> list = new ArrayList<>();
 
+		    try {
+		        conn = conn();
+
+		        String sql = "SELECT * FROM medications WHERE user_id = ? ORDER BY intake_time";
+		        PreparedStatement ps = conn.prepareStatement(sql);
+		        ps.setInt(1, userId);
+
+		        ResultSet rs = ps.executeQuery();
+
+		        while (rs.next()) {
+		            MedicationsDto dto = new MedicationsDto();
+		            dto.setMedicationId(rs.getInt("medication_id"));
+		            dto.setUserId(rs.getInt("user_id"));
+		            dto.setNickName(rs.getString("nickname"));
+		            dto.setFormalName(rs.getString("formal_name"));
+		            dto.setDosage(rs.getString("dosage"));
+		            dto.setIntakeTime(rs.getTime("intake_time")); // intake_time が TIME型 の場合
+		            list.add(dto);
+		        }
+
+		    } catch (Exception e) {
+		        e.printStackTrace();
+		        return new ArrayList<>(); 
+		    } finally {
+		        close(conn);
+		    }
+
+		    return list;
+		}
+		
+		
 	@Override
 	public boolean insert(MedicationsDto dto) {
 		Connection conn = null;
@@ -62,13 +99,13 @@ public class MedicationsDao extends CustomTemplateDao<MedicationsDto> {
 
 			// SQL文を準備する
 			String sql = """
-					INSERT Medications(userId , nickName , formalName , dosage , createdAt , memo , intakeTime)
+					INSERT Medications(userId , nickname , formalName , dosage , createdAt , memo , intakeTime)
 										VALEUS(       ?,                ?,                   ?,            ?,             ? ,          ?,                ?)
 					""";
 			PreparedStatement pStmt = conn.prepareStatement(sql);
 
 			pStmt.setInt(1, dto.getUserId());
-			pStmt.setString(2, dto.getNickName());
+			pStmt.setString(2, dto.getNickname());
 			pStmt.setString(3, dto.getFormalName());
 			pStmt.setString(4, dto.getDosage());
 			pStmt.setDate(5, new java.sql.Date(dto.getCreatedAt().getTime()));
@@ -122,7 +159,7 @@ public class MedicationsDao extends CustomTemplateDao<MedicationsDto> {
 
 			// SQL文を完成させる
 			pStmt.setInt(1, dto.getUserId());
-			pStmt.setString(2, dto.getNickName());
+			pStmt.setString(2, dto.getNickname());
 			pStmt.setString(3, dto.getFormalName());
 			pStmt.setString(4, dto.getDosage());
 			pStmt.setDate(5, new java.sql.Date(dto.getCreatedAt().getTime()));

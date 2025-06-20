@@ -2,6 +2,7 @@ package servlet;
 
 import java.io.IOException;
 import java.sql.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 import javax.servlet.RequestDispatcher;
@@ -29,10 +30,9 @@ public class TlkMedMngServlet extends CustomTemplateServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		// ログインチェック
-		if (checkNoneLogin(request, response)) {
+		if (checkNoneLogin(request, response) || checkLogout(request, response)) 
 			return;
-		}
-
+	
 		try {
 			// セッションからユーザー情報を取得
 			HttpSession session = request.getSession();
@@ -43,15 +43,23 @@ public class TlkMedMngServlet extends CustomTemplateServlet {
 			}
 			int userId = user.getUserId();
 
-			// このユーザーの服薬記録を検索
+			
+			 // 年月パラメータの取得（指定なければ今月）
+            LocalDate now = LocalDate.now();
+            int year = parseOrDefault(request.getParameter("year"), now.getYear());
+            int month = parseOrDefault(request.getParameter("month"), now.getMonthValue());
+			
+            // このユーザーの服薬記録を検索
 			MedicationLogsDao dao = new MedicationLogsDao();
 			MedicationLogsDto searchDto = new MedicationLogsDto();
 			searchDto.setUserId(userId);
-			List<MedicationLogsDto> mlogList = dao.select(searchDto);
-
+			List<MedicationLogsDto> mlogList = dao.selectByMonth(userId, year, month);
+			
 			// 検索結果をリクエストスコープにセット
 			request.setAttribute("mlogList", mlogList);
-
+			request.setAttribute("year", year);
+            request.setAttribute("month", month);
+            
 			// 一覧表示JSPへフォワード
 			RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/TlkMedMng.jsp");
 			dispatcher.forward(request, response);
@@ -62,6 +70,13 @@ public class TlkMedMngServlet extends CustomTemplateServlet {
 			request.getRequestDispatcher("/WEB-INF/jsp/home.jsp").forward(request, response);
 		}
 	}
+	private int parseOrDefault(String value, int defaultVal) {
+        try {
+            return Integer.parseInt(value);
+        } catch (Exception e) {
+            return defaultVal;
+        }
+    }
 
 	/**
 	 * 服薬記録の更新・削除（POST時） submitパラメータの値で処理を分岐する
@@ -91,7 +106,7 @@ public class TlkMedMngServlet extends CustomTemplateServlet {
 			String takenTimeStr = request.getParameter("takenTime");
 			String takenMed = request.getParameter("takenMed");
 			String memo = request.getParameter("memo");
-			String nickName = request.getParameter("nickName");
+			String nickName = request.getParameter("nickname");
 			String formalName = request.getParameter("formalName");
 			String dosage = request.getParameter("dosage");
 			int medicationId = Integer.parseInt(request.getParameter("medicationId"));

@@ -8,7 +8,7 @@ import java.util.Date;
 public class MedicationsDto extends CustomeTemplateDto  implements Serializable{
 	private int medicationId;
 	private int userId;
-	private String nickName;
+	private String nickname;
 	private String formalName;
 	private String dosage;
 	private Date createdAt;
@@ -16,12 +16,12 @@ public class MedicationsDto extends CustomeTemplateDto  implements Serializable{
 	private Date intakeTime;
 
 
-	public MedicationsDto(int medicationId, int userId, String nickName, String formalName, String dosage,
+	public MedicationsDto(int medicationId, int userId, String nickname, String formalName, String dosage,
 			Date createdAt, String memo, Date intakeTime) {
 		super();
 		this.medicationId = medicationId;
 		this.userId = userId;
-		this.nickName = nickName;
+		this.nickname = nickname;
 		this.formalName = formalName;
 		this.dosage = dosage;
 		this.createdAt = createdAt;
@@ -55,13 +55,13 @@ public class MedicationsDto extends CustomeTemplateDto  implements Serializable{
 	}
 
 
-	public String getNickName() {
-		return nickName;
+	public String getNickname() {
+		return nickname;
 	}
 
 
-	public void setNickName(String nickName) {
-		this.nickName = nickName;
+	public void setNickName(String nickname) {
+		this.nickname = nickname;
 	}
 
 

@@ -16,7 +16,7 @@ public class MedicationLogsDto extends CustomeTemplateDto implements Serializabl
 	private String dosage;
 	
 	
-	public MedicationLogsDto(int log_id,int medication_id,int userId,Date taken_time,String memo, String takenMed , String nickname, String formalName, String dosage) {
+	public MedicationLogsDto(int logId , int medicationId , int userId , Date takenTime , String memo , String takenMed , String nickname, String formalName, String dosage) {
 		this.logId = logId;
 		this.medicationId = medicationId;
 		this.userId = userId;
