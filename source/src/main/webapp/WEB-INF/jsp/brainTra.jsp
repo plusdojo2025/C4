@@ -20,11 +20,12 @@ html, body {
 }
 
 h1, h2 {
-    color: #46B1E1;
+    color:  #fff;
     margin-top: 1em;
     margin-bottom: .7em;
     font-weight: bold;
-    text-align: center
+    text-align: center;
+    background:#46B1E1;
 }
 
 
