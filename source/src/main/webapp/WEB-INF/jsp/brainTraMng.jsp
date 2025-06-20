@@ -6,6 +6,38 @@
 <meta charset="UTF-8">
 <title>脳トレ履歴一覧</title>
 <style>
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    background: #FFFEEF;  /* 背景色指定 */
+    color: #22292F;       /* 薄めの黒（ややグレー系：#22292F） */
+    font-family: 'メイリオ', 'Meiryo', 'sans-serif';
+    font-size: 17px;
+    line-height: 1.8;
+}
+
+h2 {
+    color: #46B1E1;
+    margin-top: 1em;
+    margin-bottom: .7em;
+    font-weight: bold;
+}
+
+button, .btn {
+    background: #46B1E1;
+    color: #fff;
+    border: none;
+    border-radius: 9px;
+    padding: 0.65em 1.6em;
+    margin: 6px 0;
+    cursor: pointer;
+    font-size: 1em;
+    font-family: inherit;
+    transition: background 0.22s;
+}
+
 </style>
 </head>
 <body>
