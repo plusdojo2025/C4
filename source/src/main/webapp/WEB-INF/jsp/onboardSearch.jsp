@@ -54,6 +54,30 @@ label, .label {
     color: #22292F;
     font-weight: bold;
 }
+/* 入力フォーム */
+input, select, textarea {
+    width: 98%;
+    padding: 0.48em;
+    font-size: 1.05em;
+    margin-bottom: 1.2em;
+    border: 1px solid #a3cde2;
+    border-radius: 8px;
+    background: #FFFEF9;
+    color: #22292F;
+    box-sizing: border-box;
+}
+input:focus, select:focus, textarea:focus {
+    outline: none;
+    border-color: #46B1E1;
+    background: #fcf8f0;
+}
+
+
+
+
+
+
+
 </style>
 </head>
 <body>
