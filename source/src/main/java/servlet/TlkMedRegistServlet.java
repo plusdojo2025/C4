@@ -17,7 +17,7 @@ import dto.UsersDto;
 /**
  * 服薬記録登録サーブレット GET: 登録画面表示 POST: 服薬記録を登録（複数選択可）
  */
-@WebServlet("/OmoiyalinkTlkMedRegistServlet")
+@WebServlet("/OmoiyalinkTlkMedRegist")
 public class TlkMedRegistServlet extends CustomTemplateServlet {
 	private static final long serialVersionUID = 1L;
 
@@ -28,7 +28,7 @@ public class TlkMedRegistServlet extends CustomTemplateServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		// ログインチェック（未ログイン時は強制リダイレクト）
-		if (checkNoneLogin(request, response)) {
+		if (checkNoneLogin(request, response) || checkLogout(request, response)) {
 			return;
 		}
 		// 登録フォーム（tlkMedRegist.jsp）へフォワード
@@ -102,7 +102,7 @@ public class TlkMedRegistServlet extends CustomTemplateServlet {
 			}
 			// 登録後は一覧画面へリダイレクト（PRGパターン推奨）
 			request.getSession().setAttribute("message", message);
-			response.sendRedirect(request.getContextPath() + "/TlkMedMngServlet");
+			response.sendRedirect(request.getContextPath() + "/OmoiyalinkTlkMedMng");
 
 		} catch (Exception e) {
 			e.printStackTrace();
