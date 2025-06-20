@@ -18,7 +18,7 @@ import dto.UsersDto;
 /**
  * 服薬記録管理サーブレット（一覧表示・更新・削除）
  */
-@WebServlet("/TlkMedMngServlet")
+@WebServlet("/OmoiyalinkTlkMedMng")
 public class TlkMedMngServlet extends CustomTemplateServlet {
 	private static final long serialVersionUID = 1L;
 
@@ -53,7 +53,7 @@ public class TlkMedMngServlet extends CustomTemplateServlet {
 			request.setAttribute("mlogList", mlogList);
 
 			// 一覧表示JSPへフォワード
-			RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/TlkmedMng.jsp");
+			RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/TlkMedMng.jsp");
 			dispatcher.forward(request, response);
 
 		} catch (Exception e) {
@@ -119,12 +119,12 @@ public class TlkMedMngServlet extends CustomTemplateServlet {
 
 			// 完了メッセージをリクエストにセット（リダイレクト推奨）
 			request.getSession().setAttribute("message", message);
-			response.sendRedirect(request.getContextPath() + "/TlkMedMngServlet");
+			response.sendRedirect(request.getContextPath() + "/OmoiyalinkTlkMedMng");
 
 		} catch (Exception e) {
 			e.printStackTrace();
 			request.setAttribute("message", "エラーが発生しました。入力内容を確認してください。");
-			request.getRequestDispatcher("/WEB-INF/jsp/TlkmedMng.jsp").forward(request, response);
+			request.getRequestDispatcher("/WEB-INF/jsp/TlkMedMng.jsp").forward(request, response);
 		}
 	}
 }

@@ -52,6 +52,13 @@
 			</tbody>
 		</table>
 	</div>
+	<!-- TlkMedMng.jsp のヘッダー下など適当な位置に -->
+<a href="${pageContext.request.contextPath}/TlkMedRegist.jsp" class="btn" style="margin-bottom:18px; display:inline-block;">
+    服薬登録画面へ
+</a>
+<a href="${pageContext.request.contextPath}/OmoiyalinkMedRegistServlet" class="btn" style="margin-bottom:18px; display:inline-block;">
+    服薬登録画面へ(S)
+</a>
 	<footer class="site-footer">© 2025 おもいやリンク</footer>
 </body>
 </html>
