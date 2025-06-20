@@ -15,7 +15,37 @@
         .readonly-info { background: #f4f4f4; padding: 0.5em; }
         .error { color: red; margin-top: 1em; }
         button { margin-top: 1em; }
+        
+        
+/* === ページ全体ベース === */
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    background: #FFFEEF;  /* 背景色指定 */
+    color: #22292F;       /* 薄めの黒（ややグレー系：#22292F） */
+    font-family: 'メイリオ', 'Meiryo', 'sans-serif';
+    font-size: 17px;
+    line-height: 1.8;
+}
+
+a { color: #46B1E1; text-decoration: none; }
+a:hover { text-decoration: underline; color: #286e93; }
+
+h1, h2, h3, h4, h5 {
+    color: #46B1E1;
+    margin-top: 1em;
+    margin-bottom: .7em;
+    font-weight: bold;
+}
+
+label, .label {
+    color: #22292F;
+    font-weight: bold;
+}
     </style>
+    
 </head>
 <body>
 
@@ -55,33 +85,10 @@
     <textarea id="content" name="content" rows="6" maxlength="1000" required></textarea>
 
     <button type="submit">投稿する</button>
-    <button type="button" onclick="location.href='OmoiyalinkMyPosts'">マイ投稿へ</button>
-   
-<style>
-/* === ページ全体ベース === */
-html, body {
-    height: 100%;
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    background: #FFFEEF;  /* 背景色指定 */
-    color: #22292F;       /* 薄めの黒（ややグレー系：#22292F） */
-    font-family: 'メイリオ', 'Meiryo', 'sans-serif';
-    font-size: 17px;
-    line-height: 1.8;
-}
-
-a { color: #46B1E1; text-decoration: none; }
-a:hover { text-decoration: underline; color: #286e93; }
-
-h1, h2, h3, h4, h5 {
-    color: #46B1E1;
-    margin-top: 1em;
-    margin-bottom: .7em;
-    font-weight: bold;
-}
-
-label, .label {
-    color: #22292F;
-    font-weight: bold;
-}</style>
+    
+    <a href="OmoiyalinkMyPost">
+    <button type="button">マイ投稿へ移動</button>
+    </a>
+   </form>
+   </body>
+</html>

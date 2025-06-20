@@ -86,6 +86,14 @@ label, .label {
 		</select>
 	</div>
     <button type="submit">検索</button>
+    
+    <a href="OnboardRegist">
+    <button type="button">投稿へ移動</button>
+    </a>
+    <a href="OmoiyalinkMyPost">
+    <button type="button">マイ投稿へ移動</button>
+    </a>
+    
 </form>
 <script>
     // 都道府県に応じた市区町村の選択肢（例）

@@ -53,6 +53,8 @@ public class OnboardSearchServlet extends CustomTemplateServlet {
 		// 結果ページにフォワードする
 		RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/onboardResult.jsp");
 		dispatcher.forward(request, response);
+		
+		
 
 	}
 }
