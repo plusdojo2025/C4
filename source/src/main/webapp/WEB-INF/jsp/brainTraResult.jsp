@@ -24,6 +24,7 @@ h1 {
 	font-size: 2em;
 	color: #2692c7;
 	margin-bottom: 18px;
+	text-align: center;
 }
 
 .result-box {
@@ -33,6 +34,7 @@ h1 {
 	margin-bottom: 22px;
 	border-radius: 9px;
 	font-size: 1.23em;
+	text-align: center;
 }
 
 .button-row {
@@ -40,6 +42,7 @@ h1 {
 	display: flex;
 	gap: 22px;
 	flex-wrap: wrap;
+	
 }
 
 button, .menu-btn {
@@ -54,6 +57,7 @@ button, .menu-btn {
 	transition: background .2s;
 	text-decoration: none;
 	margin-bottom: 8px;
+	text-align: center;
 }
 
 button:hover, .menu-btn:hover {

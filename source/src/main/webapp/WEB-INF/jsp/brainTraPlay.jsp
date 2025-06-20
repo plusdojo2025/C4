@@ -21,6 +21,7 @@ html, body {
 h1 {
 	color: #2692c7;
 	font-size: 2em;
+	text-align: center
 }
 
 .timer-box {
@@ -28,11 +29,13 @@ h1 {
 	margin: 12px 0 18px 0;
 	color: #1993d1;
 	font-weight: bold;
+	
 }
 
 .cpu-box {
 	font-size: 1.2em;
 	margin: 17px 0 16px 0;
+	text-align: center
 }
 
 .janken-img {

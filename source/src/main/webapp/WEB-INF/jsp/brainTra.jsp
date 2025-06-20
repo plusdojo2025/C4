@@ -24,6 +24,7 @@ h1, h2 {
     margin-top: 1em;
     margin-bottom: .7em;
     font-weight: bold;
+    text-align: center
 }
 
 

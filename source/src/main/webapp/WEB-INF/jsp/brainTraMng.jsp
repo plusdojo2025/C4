@@ -23,6 +23,7 @@ h2 {
     margin-top: 1em;
     margin-bottom: .7em;
     font-weight: bold;
+    text-align: center;
 }
 
 button, .btn {
@@ -37,7 +38,23 @@ button, .btn {
     font-family: inherit;
     transition: background 0.22s;
 }
+table {
+	margin-left: auto;
+	margin-right:auto;
+	 border-collapse: separate;
+	 border-spacing: 1px;
+	 background: #eaf6fe;
+	 width:40%;
+}
 
+table th {
+	color:#fff;
+	background: #46B1E1;
+}
+
+table td {
+  text-align: center;
+}
 </style>
 </head>
 <body>
@@ -53,6 +70,10 @@ button, .btn {
 				&raquo;</a>
 		</c:if>
 	</div>
+	
+	<!-- メニューに戻るボタン -->
+	<a href="<%=request.getContextPath()%>/OmoiyalinkBrainTra"
+		class="menu-btn">脳トレメニューに戻る</a>
 
 	<form method="get" action="OmoiyalinkBrainTraMng"
 		style="text-align: center; margin-bottom: 16px;">
@@ -61,7 +82,7 @@ button, .btn {
 		<button class="sort-btn" type="submit" name="order" value="asc">勝利回数順↑</button>
 	</form>
 
-	<table>
+	<table border="1">
 		<thead>
 			<tr>
 				<th>実施日</th>
@@ -85,22 +106,19 @@ button, .btn {
 				</c:otherwise>
 			</c:choose>
 		</tbody>
-	</table>
+	</table border="1">
 
 	<div class="paging">
 		<c:if test="${hasPrev}">
 			<a href="OmoiyalinkBrainTraMng?page=${page - 1}&order=${order}">&laquo;
 				前の10件</a>
 		</c:if>
-		<span>ページ：${page + 1}</span>
+		<!--  <span>ページ：${page + 1}</span>
 		<c:if test="${hasNext}">
 			<a href="OmoiyalinkBrainTraMng?page=${page + 1}&order=${order}">次の10件
 				&raquo;</a>
-		</c:if>
+		</c:if>-->
 	</div>
-
-	<!-- メニューに戻るボタン -->
-	<a href="<%=request.getContextPath()%>/OmoiyalinkBrainTra"
-		class="menu-btn">脳トレメニューに戻る</a>
+	
 </body>
 </html>
