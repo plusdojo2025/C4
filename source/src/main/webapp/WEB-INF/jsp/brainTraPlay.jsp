@@ -19,13 +19,14 @@ html, body {
 }
 
 h1 {
-	color: #2692c7;
+	color:  #fff;;
 	font-size: 2em;
-	text-align: center
+	text-align: center;
+	background:#46B1E1;
 }
 
 .timer-box {
-	font-size: 1.3em;
+	font-size: 50px;
 	margin: 12px 0 18px 0;
 	color: #1993d1;
 	font-weight: bold;
@@ -126,7 +127,7 @@ h1 {
 	const timer = setInterval(() => {
 		time--;
 		document.getElementById("timer").textContent = time;
-		if (time === 0) {
+		if (time >= 0) {  // >= を === に直す
 			clearInterval(timer);
 			endGame();
 		}

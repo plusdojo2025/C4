@@ -22,9 +22,10 @@ html, body {
 
 h1 {
 	font-size: 2em;
-	color: #2692c7;
+	color: #fff;
 	margin-bottom: 18px;
 	text-align: center;
+	background: #46B1E1;
 }
 
 .result-box {
