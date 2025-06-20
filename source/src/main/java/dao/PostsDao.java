@@ -4,155 +4,108 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
 import dto.PostsDto;
+import utility.DBUtil;
 
-public class PostsDao extends CustomTemplateDao<PostsDto>{
+public class PostsDao {
 
-
-	@Override
-	public List<PostsDto> select(PostsDto dto) {
-		Connection connection = null;
-		List<PostsDto> postsList = new ArrayList<PostsDto>();
-
-		try {
-			connection = conn();
-
-			// SQL文を準備する
-			String sql = "SELECT * FROM posts INNER JOIN users ON posts.user_id = users.user_id WHERE users.pref LIKE ?"
-					+ " AND users.city LIKE ? AND posts.tag LIKE ?";
-			PreparedStatement pStmt = connection.prepareStatement(sql);
-
-			// SQL文を完成させる
-	        String pref = dto.getPref();
-	        String city = dto.getCity();
-	        String tag = dto.getTag();
-	        pStmt.setString(1, pref == null || pref.isEmpty() ? "%" : pref + "%");
-	        pStmt.setString(2, city == null || city.isEmpty() ? "%" : city + "%");
-	        pStmt.setString(3, tag == null || tag.isEmpty() ? "%" : tag + "%");
-
-
-			// SQL文を実行し、結果表を取得する
-			// ResultSetはJDBC特有のなにか
-			ResultSet rs = pStmt.executeQuery();
-
-			// 結果表をコレクションにコピーする
-			while (rs.next()) {
-				PostsDto posts = new PostsDto(
-						rs.getInt("user_id"), 
-						rs.getString("tag"), 
-						rs.getString("title"), 
-						rs.getString("content"), 
-						rs.getDate("created_at"),
-						rs.getString("pref"),
-						rs.getString("city"));
-				postsList.add(posts);
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-			postsList = null;
-		} finally {
-			// データベースを切断
-			close(connection);
-		}
-
-		// 結果を返す
-		return postsList;
-	}
-
-	@Override
-	public boolean update(PostsDto dto) {
-		// TODO 自動生成されたメソッド・スタブ
-		return false;
-	}
-
-	@Override
-	public boolean delete(PostsDto dto) {
-		// TODO 自動生成されたメソッド・スタブ
-		return false;
-	}
-
-	@Override
-	public boolean insert(PostsDto dto) {
-		Connection conn = null;
-		boolean result = false;
-
-		try {
-			// JDBCドライバを読み込む
-			// データベースに接続する
-			conn = conn();
-
-			// SQL文を準備する
-			String sql = """
-					INSERT INTO posts (userId, tag, title, content, createdAT) VALUES (?, ?, ?, ?, ?)
-					""";
-			PreparedStatement pStmt = conn.prepareStatement(sql);
-
-			// SQL文を完成させる
-			pStmt.setInt(1, dto.getUserId());
-			pStmt.setString(2, dto.getTag());
-			pStmt.setString(3, dto.getTitle());
-			pStmt.setString(4, dto.getContent());
-			pStmt.setDate(5, new java.sql.Date(dto.getCreatedAT().getTime()));
-		
-
-			// SQL文を実行する
-			if (pStmt.executeUpdate() == 1) {
-				ResultSet res = pStmt.getGeneratedKeys();
-				res.next();
-				dto.setPostId(res.getInt(1));			
-				result = true;
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			// データベースを切断
-			close(conn);
-		}
-
-		// 結果を返す
-		return result;
-	}
-    
-	
-	//マイ投稿の検索
-    public List<PostsDto> selectByUserId(int userId) throws SQLException {
-		Connection connection = null;
-
-        List<PostsDto> myList = new ArrayList<>();
-        
-        try {
-        
-			// データベースに接続する
-        	connection = conn();
-			
-			//SQL文を用意する
-	        String sql = "SELECT * FROM posts INNER JOIN users ON posts.user_id = users.user_id WHERE userId = ? ORDER BY createdAT DESC";
-			PreparedStatement stmt = connection.prepareStatement(sql);
-			
-
-            stmt.setInt(1, userId);
-            ResultSet rs = stmt.executeQuery();
-
-            while (rs.next()) {
-            	myList.add(new PostsDto(
-                    rs.getInt("user_id"),
-                    rs.getString("tag"),
-                    rs.getString("title"),
-                    rs.getString("content"),
-                    rs.getDate("createdAT"),
-                    rs.getString("pref"),
-                    rs.getString("city")
-                ));
+    // ユーザーIDで自分の投稿だけ取得（user_idがカラム名）
+    public List<PostsDto> selectByUserId(int userId) {
+        List<PostsDto> list = new ArrayList<>();
+        String sql = "SELECT * FROM posts WHERE user_id = ? ORDER BY created_at DESC";
+        try (Connection conn = DBUtil.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, userId);
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    list.add(convertRow(rs));
+                }
             }
-        } finally {
-			// データベースを切断
-			close(connection);
-		}
-
-        return myList;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return list;
     }
 
+    // 新規投稿（insert）
+    public boolean insert(PostsDto dto) {
+        String sql = "INSERT INTO posts (user_id, tag, title, content, created_at, pref, city) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        try (Connection conn = DBUtil.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, dto.getUserId());
+            ps.setString(2, dto.getTag());
+            ps.setString(3, dto.getTitle());
+            ps.setString(4, dto.getContent());
+            ps.setTimestamp(5, new Timestamp(dto.getCreatedAt().getTime()));
+            ps.setString(6, dto.getPref());
+            ps.setString(7, dto.getCity());
+            return ps.executeUpdate() == 1;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    // 検索条件で取得（タグ・都道府県・市区町村などを使って）
+    public List<PostsDto> select(PostsDto condition) {
+        List<PostsDto> list = new ArrayList<>();
+        StringBuilder sql = new StringBuilder("SELECT * FROM posts WHERE 1=1");
+        List<Object> params = new ArrayList<>();
+
+        if (condition.getTag() != null && !condition.getTag().isEmpty()) {
+            sql.append(" AND tag LIKE ?");
+            params.add("%" + condition.getTag() + "%");
+        }
+        if (condition.getPref() != null && !condition.getPref().isEmpty()) {
+            sql.append(" AND pref = ?");
+            params.add(condition.getPref());
+        }
+        if (condition.getCity() != null && !condition.getCity().isEmpty()) {
+            sql.append(" AND city = ?");
+            params.add(condition.getCity());
+        }
+        if (condition.getTitle() != null && !condition.getTitle().isEmpty()) {
+            sql.append(" AND title LIKE ?");
+            params.add("%" + condition.getTitle() + "%");
+        }
+        if (condition.getContent() != null && !condition.getContent().isEmpty()) {
+            sql.append(" AND content LIKE ?");
+            params.add("%" + condition.getContent() + "%");
+        }
+
+        sql.append(" ORDER BY created_at DESC");
+
+        try (Connection conn = DBUtil.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql.toString())) {
+            for (int i = 0; i < params.size(); i++) {
+                ps.setObject(i + 1, params.get(i));
+            }
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    list.add(convertRow(rs));
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+
+    // 1行のResultSetからDtoを作る（共通処理）
+    private PostsDto convertRow(ResultSet rs) throws SQLException {
+        PostsDto dto = new PostsDto();
+        dto.setId(rs.getInt("id"));
+        dto.setUserId(rs.getInt("user_id"));
+        dto.setTag(rs.getString("tag"));
+        dto.setTitle(rs.getString("title"));
+        dto.setContent(rs.getString("content"));
+        dto.setCreatedAt(rs.getTimestamp("created_at"));
+        dto.setPref(rs.getString("pref"));
+        dto.setCity(rs.getString("city"));
+        return dto;
+    }
 }
