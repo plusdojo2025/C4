@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import dto.MedicationsDto;
@@ -32,16 +33,9 @@ public class MedicationsDao extends CustomTemplateDao<MedicationsDto> {
 
 			// 結果表をコレクションにコピーする
 			while (rs.next()) {
-				MedicationsDto Medications = new MedicationsDto(
-						rs.getInt("medication_id"), 
-						rs.getInt("user_id"),
-						rs.getString("nickname"), 
-						rs.getString("formal_name"), 
-						rs.getString("dosage"),
-						rs.getDate("created_at"), 
-						rs.getString("memo"),
-						rs.getDate("intake_time")
-						);
+				MedicationsDto Medications = new MedicationsDto(rs.getInt("medication_id"), rs.getInt("user_id"),
+						rs.getString("nickname"), rs.getString("formal_name"), rs.getString("dosage"),
+						rs.getDate("created_at"), rs.getString("memo"), rs.getDate("intake_time"));
 				medicationList.add(Medications);
 			}
 		} catch (SQLException e) {
@@ -182,4 +176,37 @@ public class MedicationsDao extends CustomTemplateDao<MedicationsDto> {
 		// 結果を返す
 		return result;
 	}
+
+	private MedicationsDto mapRowToMedicationsDto(ResultSet rs) throws SQLException {
+		MedicationsDto dto = new MedicationsDto();
+		dto.setMedicationId(rs.getInt("medication_id"));
+		dto.setUserId(rs.getInt("user_id"));
+		dto.setNickName(rs.getString("nickname"));
+		dto.setFormalName(rs.getString("formal_name"));
+		dto.setDosage(rs.getString("dosage"));
+		dto.setCreatedAt(rs.getTimestamp("created_at"));
+		dto.setMemo(rs.getString("memo"));
+		dto.setIntakeTime(rs.getTimestamp("intake_time"));
+		return dto;
+	}
+
+	// MedicationsDao.java内
+	public List<MedicationsDto> findByIntakeTime(Date intakeTime) {
+		List<MedicationsDto> result = new ArrayList<>();
+		try (Connection conn = conn()) {
+			// intake_timeが「±数分以内」も許可したい場合はBETWEENで幅をもたせる
+			String sql = "SELECT * FROM medications WHERE intake_time = ?";
+			PreparedStatement stmt = conn.prepareStatement(sql);
+			stmt.setTimestamp(1, new java.sql.Timestamp(intakeTime.getTime()));
+			ResultSet rs = stmt.executeQuery();
+			while (rs.next()) {
+				result.add(mapRowToMedicationsDto(rs));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return result;
+	}
+	// mapRowToMedicationsDtoは各カラム→Dto変換ロジック
+
 }
