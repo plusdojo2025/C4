@@ -44,6 +44,73 @@ label, .label {
     color: #22292F;
     font-weight: bold;
 }
+
+/* 入力フォーム */
+select, textarea {
+    width: 98%;
+    padding: 0.48em;
+    font-size: 1.05em;
+    margin-bottom: 1.2em;
+    border: 1px solid #a3cde2;
+    border-radius: 8px;
+    background: #FFFEF9;
+    color: #22292F;
+    box-sizing: border-box;
+}
+input:focus, select:focus, textarea:focus {
+    outline: none;
+    border-color: #46B1E1;
+    background: #fcf8f0;  
+}
+
+/* ボタン共通 */
+button, .btn {
+    background: #46B1E1;
+    color: #fff;
+    border: none;
+    border-radius: 9px;
+    padding: 0.65em 1.6em;
+    margin: 6px 0;
+    cursor: pointer;
+    font-size: 1em;
+    font-family: inherit;
+    transition: background 0.22s;
+}
+button:hover, .btn:hover {
+    background: #2d7ea3;
+    color: #fff;
+}
+<!-- サブタイトルのCSS -->
+.sub-header {
+  background-color: #46B1E1; /* 青色 */
+  color: #FFFEEF;
+  padding: 15px 30px;
+  margin-top: 100px; /* ヘッダーがfixedなので被らないようにする */
+}
+
+.sub-header h2 {
+  margin: 0;
+   background-color: #46B1E1; /* 青色 */
+  color: #FFFEEF;
+  font-size: 2rem;
+  text-align: center; 
+}
+ <!-- サブタイトルのCSS　ここまで -->
+ 
+</style>
+</head>
+<main>
+<body>
+
+
+ 
+
+<!-- サブタイトル 　上のCSSも一緒にこぴぺしてください↓ -->
+<%@ include file="/WEB-INF/jsp/header.jsp"%>
+<div class="sub-header">
+  <h2>検索</h2>
+</div>
+
     </style>
     
 </head>
@@ -58,25 +125,18 @@ label, .label {
 <form action="OnboardRegist" method="post" id="postForm">
 
     <!-- 都道府県と市区町村は自動表示（読み取り専用） -->
-    <label>都道府県</label>
+    <!--<label>都道府県</label>
     <div class="readonly-info">${pref != null ? pref : sessionScope.pref}</div>
     <label>市区町村</label>
     <div class="readonly-info">${city != null ? city : sessionScope.city}</div>
 
     
     <!-- hiddenで値をサーバーに送る -->
-    <input type="hidden" name="pref" value="${pref != null ? pref : sessionScope.pref}">
-    <input type="hidden" name="city" value="${city != null ? city : sessionScope.city}">
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+    <!-- <input type="hidden" name="pref" value="${pref != null ? pref : sessionScope.pref}">
+    <input type="hidden" name="city" value="${city != null ? city : sessionScope.city}">-->
+     <!-- 都道府県 -->
+    <!--<label for="title">都道府県 <span style="color:red;">*</span></label>
+    <input type="text" id="pref" name="pref" required maxlength="100">
     
     
     <!-- タグ（複数選択可） -->
@@ -87,6 +147,12 @@ label, .label {
         <label><input type="checkbox" name="tags" value="お裾分け"> お裾分け</label>
         <label><input type="checkbox" name="tags" value="日記"> 日記</label>
     </div>
+ <!--都道府県 -->
+    <label for="pref">都道府県 <span style="color:red;">*</span></label>
+    <textarea id="pref" name="pref" maxlength="100" required></textarea>
+ <!--市区町村 -->
+    <label for="city">都道府県 <span style="color:red;">*</span></label>
+    <textarea id="city" name="city" maxlength="100" required></textarea>
 
     <!-- タイトル -->
     <label for="title">タイトル <span style="color:red;">*</span></label>
