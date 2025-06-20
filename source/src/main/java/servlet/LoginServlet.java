@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import dto.UsersDto;
 import utility.DBUtil;
 
 @WebServlet(urlPatterns = { "", "/OmoiyalinkLogin" })
@@ -21,12 +22,10 @@ public class LoginServlet extends CustomTemplateServlet {
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-
-		// すでにログイン済みならホームへリダイレクト
+		// すでにログイン済みならホームへ
 		if (checkDoneLogin(request, response)) {
 			return;
 		}
-		// ログインページへフォワード
 		RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/login.jsp");
 		dispatcher.forward(request, response);
 	}
@@ -58,21 +57,24 @@ public class LoginServlet extends CustomTemplateServlet {
 		}
 
 		// DB認証
-		boolean isAuthenticated = false;
-		String pref = null;
-		String city = null;
+		UsersDto userDto = null;
 		try (Connection conn = DBUtil.getConnection()) {
-			String sql = "SELECT name, pref, city FROM users WHERE user_id = ? AND name = ? AND birth_date = ?";
+			String sql = "SELECT * FROM users WHERE user_id = ? AND name = ? AND birth_date = ?";
 			PreparedStatement stmt = conn.prepareStatement(sql);
 			stmt.setInt(1, userIdInt);
 			stmt.setString(2, name);
 			stmt.setInt(3, birthDateInt);
 			ResultSet rs = stmt.executeQuery();
 			if (rs.next()) {
-				isAuthenticated = true;
-				name = rs.getString("name"); // DB値で上書き（大文字小文字などを揃えるため）
-				pref = rs.getString("pref");
-				city = rs.getString("city");
+				// UsersDtoに値を詰める
+				userDto = new UsersDto();
+				userDto.setUserId(rs.getInt("user_id"));
+				userDto.setName(rs.getString("name"));
+				userDto.setBirthDate(rs.getInt("birth_date"));
+				userDto.setPref(rs.getString("pref"));
+				userDto.setCity(rs.getString("city"));
+				userDto.setEmail(rs.getString("email"));
+				// 追加カラムがある場合もセットする
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -81,17 +83,10 @@ public class LoginServlet extends CustomTemplateServlet {
 			return;
 		}
 
-		if (isAuthenticated) {
-			// 認証OK→セッションへセット
+		if (userDto != null) {
+			// 認証OK→セッションに「user」属性で保存
 			HttpSession session = request.getSession();
-			session.setAttribute("userId", userIdInt); // int型で格納（全サーブレットで利用！）
-			session.setAttribute("userName", name);
-			session.setAttribute("birth_date", birth_date);
-			session.setAttribute("pref", pref);
-			session.setAttribute("city", city);
-
-			// 既存システム互換でString型のuser_idも一応残す（不要なら削除OK）
-			session.setAttribute("user_id", user_id);
+			session.setAttribute("user", userDto);
 
 			// ホームへリダイレクト
 			response.sendRedirect("OmoiyalinkHome");

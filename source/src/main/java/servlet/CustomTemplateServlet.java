@@ -8,51 +8,60 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+/**
+ * 全サーブレット共通のテンプレート。ログイン・ログアウトチェックなどを集約
+ */
 public abstract class CustomTemplateServlet extends HttpServlet {
-	
-	public boolean checkLogout(HttpServletRequest request, HttpServletResponse response)
-			throws IOException {
-		String logout = request.getParameter("logout");
-		boolean result = (logout != null);
-		if (result) {
-			HttpSession session =  request.getSession();
-			session.removeAttribute("id"); //idを出している
-//			checkNoneLogin(request,response);
-			response.sendRedirect("OmoiyalinkLogin");
-		}
-		return result;
-	}
-	
-	protected final boolean checkNoneLogin(HttpServletRequest request, HttpServletResponse response) 
-			   throws IOException {
-//		HttpSession session = request.getSession();
-//		boolean result = (session.getAttribute("id") == null);  //removeしたらbooleanの結果がtrueになる
-//		if (result) { 
-//			// loginにリダイレクトする
-//			response.sendRedirect("OmoiyalinkLogin");
-//		}
-//		return result;
-		return false;
-	}
-	
-	protected final boolean checkDoneLogin(HttpServletRequest request, HttpServletResponse response) 
-			   throws IOException {
-//		HttpSession session = request.getSession();
-//		boolean result = (session.getAttribute("id") != null);
-//		if (result) {
-//			// homeにリダイレクトする
-//			response.sendRedirect("OmoiyalinkHome");
-//		}
-//		return result;
-		return false;
-	}
 
-	@Override
-	protected abstract void doGet(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException;
-	
-	@Override
-	protected abstract void doPost(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException;
+    /**
+     * ログアウト処理（?logout=1 などで呼ばれる想定）
+     */
+    public boolean checkLogout(HttpServletRequest request, HttpServletResponse response)
+            throws IOException {
+        String logout = request.getParameter("logout");
+        boolean result = (logout != null);
+        if (result) {
+            HttpSession session =  request.getSession();
+            session.removeAttribute("user"); // ← user属性だけで統一する！
+            response.sendRedirect("OmoiyalinkLogin");
+        }
+        return result;
+    }
+
+    /**
+     * 未ログイン時のチェック（未ログインならtrue＋ログイン画面に飛ばす）
+     */
+    protected final boolean checkNoneLogin(HttpServletRequest request, HttpServletResponse response) 
+               throws IOException {
+        HttpSession session = request.getSession(false);
+        boolean result = (session == null || session.getAttribute("user") == null);
+        if (result) { 
+            // 未ログインなのでログイン画面にリダイレクト
+            response.sendRedirect("OmoiyalinkLogin");
+        }
+        return result;
+    }
+
+    /**
+     * すでにログイン済みのチェック（ログイン済みならtrue＋ホーム画面に飛ばす）
+     */
+    protected final boolean checkDoneLogin(HttpServletRequest request, HttpServletResponse response) 
+               throws IOException {
+        HttpSession session = request.getSession(false);
+        boolean result = (session != null && session.getAttribute("user") != null);
+        if (result) {
+            // すでにログインしていればホームへ
+            response.sendRedirect("OmoiyalinkHome");
+        }
+        return result;
+    }
+
+    @Override
+    protected abstract void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException;
+
+    @Override
+    protected abstract void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException;
 
 }

@@ -116,39 +116,41 @@ input:focus, select:focus, textarea:focus {
 </head>
 <body>
 <header>
-	<!-- ヘッダー-->
-    <!-- 共通ヘッダー -->
-    <%-- <%@ include file="/WEB-INF/jsp/header.jsp" %> --%>
     <h1>体調登録</h1>
-    <!-- ヘッダーここまで -->
-</header>    
+</header>
 
-    <main>
-        <h2>本日の体調を入力してください！</h2>
-        <form method="POST" action="${pageContext.request.contextPath}/OmoiyalinkHealthRegist" autocomplete="off" 
-        id="regist_form" class="form-box">
-            <label>
-                体温（必須項目）
-                <input type="text" name="temperature"><br>
-            </label>
-            <label>
-                最大血圧
-                <input type="text" name="highBp"><br>
-            </label>
-            <label>
-                最小血圧
-                <input type="text" name="lowBp"><br>
-            </label>
-            <label>
-                脈拍
-                <input type="text" name="pulseRate"><br>
-            </label>
-            <label>
-                血中酸素濃度
-                <input type="text" name="pulseOx"><br>
-            </label>
-            <label>
-            	睡眠休養感(必須項目)
+<main>
+    <h2>本日の体調を入力してください！</h2>
+    <form method="POST" action="${pageContext.request.contextPath}/OmoiyalinkHealthRegist"
+          autocomplete="off" id="regist_form" class="form-box">
+        <!-- ★ 本日日付の自動入力欄を追加（サーブレットがcreatedAtを期待しているため） -->
+        <label>
+            日付
+            <input type="date" name="createdAt" required
+                   value="<%= new java.text.SimpleDateFormat("yyyy-MM-dd").format(new java.util.Date()) %>">
+        </label>
+        <label>
+            体温
+            <input type="text" name="temperature" required pattern="\d+(\.\d+)?">
+        </label>
+        <label>
+            最大血圧
+            <input type="text" name="highBp" pattern="\d*">
+        </label>
+        <label>
+            最小血圧
+            <input type="text" name="lowBp" pattern="\d*">
+        </label>
+        <label>
+            脈拍
+            <input type="text" name="pulseRate" pattern="\d*">
+        </label>
+        <label>
+            血中酸素濃度
+            <input type="text" name="pulseOx" pattern="\d+(\.\d+)?">
+        </label>
+        <label>
+            睡眠休養感（必須項目）
             <select name="sleep" required>
                 <option value="">選択してください</option>
                 <option value="5">よく眠れた</option>
@@ -156,36 +158,39 @@ input:focus, select:focus, textarea:focus {
                 <option value="3">普通</option>
                 <option value="2">あまり眠れなかった</option>
                 <option value="1">全然眠れなかった</option>
-            </select><br>
-            </label>
-            <label>
-                メモ
-                <input type="text" name="memo"><br>
-            </label>
-            <p id="regist"></p>
-            <button type="submit">登録する</button>
-        </form>
-
-	</main>
-    <!-- メインここまで -->
+            </select>
+        </label>
+        <label>
+            メモ
+            <input type="text" name="memo">
+        </label>
+        <p id="regist"></p>
+        <button type="submit">登録する</button>
+    </form>
+</main>
 
 <footer>
     <!-- フッター -->
-     <%-- <%@ include file="/WEB-INF/jsp/footer.jsp" %> --%>
-    <!-- フッターここまで -->
 </footer>
 
-    <!-- Javascriptの設定 -->
-    <script>
-    'use strict';
-    document.getElementById('regist_form').onsubmit= function(){
-    	const temperature = document.getElementById('regist_form').temperature.value;
-    	const sleep = document.getElementById('regist_form').sleep.value;
-        if (temperature ==='' || sleep ===''){
-            document.getElementById('regist').textContent ='体温と睡眠休養感を入力してください';
-            event.preventDefault();
-        }
+<!-- Javascriptの設定 -->
+<script>
+'use strict';
+document.getElementById('regist_form').onsubmit = function(event){
+    const temperature = this.temperature.value;
+    const sleep = this.sleep.value;
+    const createdAt = this.createdAt.value;
+    if (temperature === '' || sleep === '' || createdAt === '') {
+        document.getElementById('regist').textContent = '日付・体温・睡眠休養感は必須です';
+        event.preventDefault();
     }
-    </script>	
+    // ★追加：体温の数字バリデーション（任意：pattern属性も有効）
+    // 例: 小数点OK
+    if (!/^\d+(\.\d+)?$/.test(temperature)) {
+        document.getElementById('regist').textContent = '体温は数字で入力してください';
+        event.preventDefault();
+    }
+}
+</script>
 </body>
 </html>
