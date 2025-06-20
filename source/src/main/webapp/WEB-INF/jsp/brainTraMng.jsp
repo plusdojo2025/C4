@@ -25,6 +25,7 @@ h2 {
     font-weight: bold;
     text-align: center;
     background:#46B1E1;
+    margin-top: 0;
 }
 
 button, .btn {
@@ -45,7 +46,7 @@ table {
 	 border-collapse: separate;
 	 border-spacing: 1px;
 	 background: #eaf6fe;
-	 width:40%;
+	 width:90%;
 }
 
 table th {

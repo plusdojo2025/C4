@@ -19,14 +19,23 @@ html, body {
     line-height: 1.8;
 }
 
-h1, h2, h3, h4, h5 {
+h1 {
     color: #fff;
     margin-top: 0;
     margin-bottom: .7em;
     font-weight: bold;
     background: #46B1E1;
+    text-align: center;
 }
 
+h2 {
+    color: #46B1E1;
+    margin-top: 0;
+    margin-bottom: .7em;
+    font-weight: bold;
+    text-align: center;
+    
+}
 button, .menu-btn {
 	padding: 13px 32px;
 	font-size: 1.1em;
@@ -39,9 +48,8 @@ button, .menu-btn {
 	transition: background .2s;
 	text-decoration: none;
 	margin-bottom: 8px;
-	text-align: center;
+	
 }
-
 button:hover, .menu-btn:hover {
 	background:#46B1E1;
 }
@@ -51,6 +59,28 @@ button:hover, .menu-btn:hover {
 	font-size: 1.05em;
 	margin-bottom: 8px;
 }
+
+.container {
+	text-align: center;
+	margin-top: 40px;
+}
+
+.rule ul {
+	list-style: none;
+	padding: 0;
+	margin: 0 auto;
+	display: inline-block;
+	text-align: center; 
+}
+
+.buttons {
+	display: flex;
+	justify-content: center;
+	gap: 30px;
+	margin-top: 30px;
+}
+
+
 </style>
 </head>
 

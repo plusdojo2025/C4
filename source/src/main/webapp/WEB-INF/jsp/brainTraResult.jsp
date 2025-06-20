@@ -26,11 +26,12 @@ h1 {
 	margin-bottom: 18px;
 	text-align: center;
 	background: #46B1E1;
+	margin-top: 0;
 }
 
 .result-box {
-	background: #fff9ed;
-	border-left: 7px solid #ffd35b;
+	background:#EFEFEF;
+	border-left: 7px solid #F4B5B2;
 	padding: 22px 30px;
 	margin-bottom: 22px;
 	border-radius: 9px;
@@ -40,6 +41,8 @@ h1 {
 
 .button-row {
 	margin-top: 36px;
+	margin-left: 120px;
+
 	display: flex;
 	gap: 22px;
 	flex-wrap: wrap;
@@ -48,6 +51,7 @@ h1 {
 
 button, .menu-btn {
 	padding: 13px 32px;
+	padding-left: 30px;
 	font-size: 1.1em;
 	background: #47aaf2;
 	color: #fff;
@@ -58,7 +62,6 @@ button, .menu-btn {
 	transition: background .2s;
 	text-decoration: none;
 	margin-bottom: 8px;
-	text-align: center;
 }
 
 button:hover, .menu-btn:hover {

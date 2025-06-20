@@ -23,10 +23,11 @@ h1 {
 	font-size: 2em;
 	text-align: center;
 	background:#46B1E1;
+	margin-top: 0;
+	
 }
 
 .timer-box {
-	font-size: 50px;
 	margin: 12px 0 18px 0;
 	color: #1993d1;
 	font-weight: bold;
@@ -92,7 +93,7 @@ h1 {
 
 	<div class="cpu-box">
 		
-		<img id="cpuHandImg" src="<%=request.getContextPath()%>/img/question.png" alt="相手の手" style="height: 280px;">
+		<img id="cpuHandImg" src="<%=request.getContextPath()%>/img/question.png" alt="相手の手" style="height: 120px;">
 	</div>
 
 	<div class="result-msg" id="resultMsg"></div>
@@ -127,7 +128,7 @@ h1 {
 	const timer = setInterval(() => {
 		time--;
 		document.getElementById("timer").textContent = time;
-		if (time === 0) {  // >= を === に直す
+		if (time >= 0) {  // >= を === に直す
 			clearInterval(timer);
 			endGame();
 		}
