@@ -21,15 +21,17 @@ public class PostsDao extends CustomTemplateDao<PostsDto>{
 			connection = conn();
 
 			// SQL文を準備する
-			String sql = "SELECT * FROM posts INNER JOIN users ON posts.user_id = users.user_id WHERE prefecture LIKE ? AND city LIKE ?";
+			String sql = "SELECT * FROM posts INNER JOIN users ON posts.user_id = users.user_id WHERE users.pref LIKE ?"
+					+ " AND users.city LIKE ? AND posts.tag LIKE ?";
 			PreparedStatement pStmt = connection.prepareStatement(sql);
 
 			// SQL文を完成させる
-			String prefecture = null; 
-			String city = null;
-			pStmt.setInt(1, dto.getPostId());
-	        pStmt.setString(2, prefecture == null ? "%" : prefecture + "%");
-	        pStmt.setString(3, city == null ? "%" : city + "%");
+	        String pref = dto.getPref();
+	        String city = dto.getCity();
+	        String tag = dto.getTag();
+	        pStmt.setString(1, pref == null || pref.isEmpty() ? "%" : pref + "%");
+	        pStmt.setString(2, city == null || city.isEmpty() ? "%" : city + "%");
+	        pStmt.setString(3, tag == null || tag.isEmpty() ? "%" : tag + "%");
 
 
 			// SQL文を実行し、結果表を取得する
@@ -43,7 +45,9 @@ public class PostsDao extends CustomTemplateDao<PostsDto>{
 						rs.getString("tag"), 
 						rs.getString("title"), 
 						rs.getString("content"), 
-						rs.getDate("created_at"));
+						rs.getDate("created_at"),
+						rs.getString("pref"),
+						rs.getString("city"));
 				postsList.add(posts);
 			}
 		} catch (SQLException e) {
@@ -138,7 +142,9 @@ public class PostsDao extends CustomTemplateDao<PostsDto>{
                     rs.getString("tag"),
                     rs.getString("title"),
                     rs.getString("content"),
-                    rs.getDate("createdAT")
+                    rs.getDate("createdAT"),
+                    rs.getString("pref"),
+                    rs.getString("city")
                 ));
             }
         } finally {
