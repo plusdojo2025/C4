@@ -69,6 +69,7 @@ button:hover, .menu-btn:hover {
 	list-style: none;
 	padding: 0;
 	margin: 0 auto;
+	margin-left: 95px;
 	display: inline-block;
 	text-align: center; 
 }
