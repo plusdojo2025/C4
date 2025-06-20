@@ -7,6 +7,31 @@
 <title>薬の新規登録</title>
 <style>
 /* === ページ全体ベース === */
+form {
+    max-width: 600px; margin: 0 auto;
+ }
+label {
+    display: block; margin-top: 1em;
+}
+        
+input[type="text"], textarea {
+    width: 100%; padding: 0.5em;
+}
+.checkbox-group {
+margin-top: 0.5em;
+}
+.checkbox-group label {
+    display: inline-block; margin-right: 1em;
+}
+.readonly-info {
+    background: #f4f4f4; padding: 0.5em;
+}
+.error {
+    color: red; margin-top: 1em;
+}
+button {
+    margin-top: 1em;
+}
 html, body {
 	height: 100%;
 	margin: 0;

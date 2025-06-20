@@ -1,5 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html>
@@ -8,6 +7,32 @@
 <title>薬の編集・削除</title>
 <style>
 /* === ページ全体ベース === */
+form {
+    max-width: 600px; margin: 0 auto;
+ }
+label {
+    display: block; margin-top: 1em;
+}
+        
+input[type="text"], textarea {
+    width: 100%; padding: 0.5em;
+}
+.checkbox-group {
+margin-top: 0.5em;
+}
+.checkbox-group label {
+    display: inline-block; margin-right: 1em;
+}
+.readonly-info {
+    background: #f4f4f4; padding: 0.5em;
+}
+.error {
+    color: red; margin-top: 1em;
+}
+button {
+    margin-top: 1em;
+}
+
 html, body {
 	height: 100%;
 	margin: 0;
@@ -106,17 +131,39 @@ input:focus, select:focus, textarea:focus {
 	border-color: #46B1E1;
 	background: #fcf8f0;
 }
+
 #regist {
-    text-align: center;
-    font-size: 1.5rem;
-    color: #FF6368;
+	text-align: center;
+	font-size: 1.5rem;
+	color: #FF6368;
+}
+input[name="delete"], input[name="submit"]{
+    background: #46B1E1;
+	color: #fff;
+	border: none;
+	border-radius: 9px;
+	padding: 0.65em 1.6em;
+	margin: 6px 0;
+	cursor: pointer;
+	font-size: 1em;
+	font-family: inherit;
+	transition: background 0.22s;
+
+}
+.button-group {
+  display: flex;
+  gap: 10px; /* ボタンの間隔 */
 }
 
+.button-group form {
+  margin: 0;
+}
 </style>
 </head>
 <body>
 <header>
     <!-- 共通ヘッダー -->
+<%@ include file="/WEB-INF/jsp/header.jsp"%>
     <h1>薬の編集・削除</h1>
 </header>
 <main>
@@ -143,17 +190,21 @@ input:focus, select:focus, textarea:focus {
                 メモ
                 <input type="text" name="memo" value="${e.memo}"><br>
             </label>
-            <label>
+            <label class="button-group">
                 <input type="submit" name="submit" value="更新">
                 <input type="submit" name="delete" value="削除">
             </label>        
         </form>
         <p id="regist"></p>
     </c:forEach>
-    <c:if test="${empty cardList}"></c:if>
+    <c:if test="${empty cardList}">
 	<p>指定された条件に一致するデータはありません。</p>
+	</c:if>
 </main>
 
+<footer>
+    <%@ include file="/WEB-INF/jsp/footer.jsp"%>
+</footer>
 <!-- Javascriptの設定 -->
 <script>
 'use strict';
@@ -161,7 +212,7 @@ input:focus, select:focus, textarea:focus {
     	const formalName = document.getElementById('regist_form').formalName.value;
     	const intake_time = document.getElementById('regist_form').intake_time.value;
         if (formalName ==='' || intake_time ===''){
-            document.getElementById('regist').textContent ='薬の正式名称と服薬時間を入力してください';
+            document.getElementById('regist').textContent ='体温と睡眠休養感を入力してください';
             event.preventDefault();
         }
     }

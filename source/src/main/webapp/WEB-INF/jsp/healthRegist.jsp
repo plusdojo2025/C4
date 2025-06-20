@@ -114,8 +114,11 @@ input:focus, select:focus, textarea:focus {
 }
 </style>
 </head>
-<%@ include file="/WEB-INF/jsp/header.jsp"%>
+
 <body>
+<header>
+<%@ include file="/WEB-INF/jsp/header.jsp"%>
+</header>
 	<main>
 		<h2>本日の体調を入力してください！</h2>
 		<div style="text-align: center; margin-top: 18px;">
@@ -152,9 +155,9 @@ input:focus, select:focus, textarea:focus {
 
 
 	</main>
-
+<footer>
 	<%@ include file="/WEB-INF/jsp/footer.jsp"%>
-
+</footer>
 	<!-- Javascriptの設定 -->
 	<script>
 'use strict';
