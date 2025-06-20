@@ -137,7 +137,7 @@ input:focus, select:focus, textarea:focus {
 </header>
 	<main>
 		<div class="sub-header">
-	  		<h2>マイ投稿</h2>
+	  		<h2>体調登録</h2>
 		</div>
 		<h2>本日の体調を入力してください！</h2>
 		<div style="text-align: center; margin-top: 18px;">

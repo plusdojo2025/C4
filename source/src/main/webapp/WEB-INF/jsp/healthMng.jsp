@@ -457,9 +457,15 @@ function formatTime(date) {
 
 </script>
 </head>
+<header>
+<%@ include file="/WEB-INF/jsp/header.jsp"%>
+</header>
 <body>
-	<%@ include file="/WEB-INF/jsp/header.jsp"%>
-	<h2>体調記録一覧</h2>
+	<main>
+		<div class="sub-header">
+	  		<h2>体調管理</h2>
+		</div>
+		<h2>登録した体調の一覧</h2>
 
 	<div style="text-align: center; margin-top: 18px;">
 		<a href="${pageContext.request.contextPath}/OmoiyalinkHealthRegist"
@@ -546,5 +552,6 @@ function formatTime(date) {
 		</c:if>
 	</div>
 	<%@ include file="/WEB-INF/jsp/footer.jsp"%>
+	</main>
 </body>
 </html>
