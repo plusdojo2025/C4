@@ -40,6 +40,14 @@ button, .btn {
     font-family: inherit;
     transition: background 0.22s;
 }
+
+button:hover, .btn:hover {
+    background: #2d7ea3;
+    color: #fff;
+}
+rule {
+	text-align: center;
+}
 </style>
 </head>
 <body>
