@@ -154,20 +154,38 @@ input[name="delete"], input[name="submit"]{
   display: flex;
   gap: 10px; /* ボタンの間隔 */
 }
-
 .button-group form {
   margin: 0;
 }
+<!-- サブタイトルのCSS -->
+.sub-header {
+  background-color: #46B1E1; /* 青色 */
+  color: #FFFEEF;
+  padding: 15px 30px;
+  margin-top: 100px !important; /* ヘッダーがfixedなので被らないようにする */
+}
+.sub-header h2 {
+  margin: 0;
+  font-size: 2rem;
+  text-align: center; 
+  color: #FFFEEF;
+  background-color: #46B1E1;
+}
+
 </style>
 </head>
 <body>
 <header>
     <!-- 共通ヘッダー -->
 <%@ include file="/WEB-INF/jsp/header.jsp"%>
-    <h1>薬の編集・削除</h1>
+
 </header>
 <main>
-    <h2>登録されているお薬の一覧</h2>
+	<div class="sub-header">
+	  <h2>薬の編集・削除</h2>
+	</div>
+
+    <h3>登録されているお薬の一覧</h3>
     <c:forEach var="e" items="${cardList}" >
         <form method="POST" action="${pageContext.request.contextPath}/OmoiyalinkMedMng" id="regist_form">
             <label>
