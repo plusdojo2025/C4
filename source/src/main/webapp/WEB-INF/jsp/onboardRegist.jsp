@@ -59,14 +59,26 @@ label, .label {
 
     <!-- 都道府県と市区町村は自動表示（読み取り専用） -->
     <label>都道府県</label>
-    <div class="readonly-info">${prefecture != null ? prefecture : sessionScope.pref}</div>
+    <div class="readonly-info">${pref != null ? pref : sessionScope.pref}</div>
     <label>市区町村</label>
     <div class="readonly-info">${city != null ? city : sessionScope.city}</div>
 
+    
     <!-- hiddenで値をサーバーに送る -->
-    <input type="hidden" name="pref" value="${prefecture != null ? prefecture : sessionScope.pref}">
+    <input type="hidden" name="pref" value="${pref != null ? pref : sessionScope.pref}">
     <input type="hidden" name="city" value="${city != null ? city : sessionScope.city}">
-
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     <!-- タグ（複数選択可） -->
     <label>タグ（複数選択可） <span style="color:red;">*</span></label>
     <div class="checkbox-group">

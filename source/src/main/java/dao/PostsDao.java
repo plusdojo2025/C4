@@ -53,7 +53,7 @@ public class PostsDao {
     // 検索条件で取得（タグ・都道府県・市区町村などを使って）
     public List<PostsDto> select(PostsDto condition) {
         List<PostsDto> list = new ArrayList<>();
-        StringBuilder sql = new StringBuilder("SELECT * FROM posts WHERE 1=1");
+        StringBuilder sql = new StringBuilder("SELECT * FROM posts  WHERE 1=1");
         List<Object> params = new ArrayList<>();
 
         if (condition.getTag() != null && !condition.getTag().isEmpty()) {

@@ -13,7 +13,7 @@ form {
  max-width: 600px; margin: 0 auto;
   }
 label { 
-display: block; margin-top: 2em;
+display: block; margin-top: 3em;
  }
 input[type="text"], select {
  width: 100%; padding: 0.5em;
@@ -55,7 +55,7 @@ label, .label {
     font-weight: bold;
 }
 /* 入力フォーム */
-input, select, textarea {
+select, textarea {
     width: 98%;
     padding: 0.48em;
     font-size: 1.05em;
@@ -70,6 +70,24 @@ input:focus, select:focus, textarea:focus {
     outline: none;
     border-color: #46B1E1;
     background: #fcf8f0;  
+}
+
+/* ボタン共通 */
+button, .btn {
+    background: #46B1E1;
+    color: #fff;
+    border: none;
+    border-radius: 9px;
+    padding: 0.65em 1.6em;
+    margin: 6px 0;
+    cursor: pointer;
+    font-size: 1em;
+    font-family: inherit;
+    transition: background 0.22s;
+}
+button:hover, .btn:hover {
+    background: #2d7ea3;
+    color: #fff;
 }
 <!-- サブタイトルのCSS -->
 .sub-header {
@@ -106,12 +124,13 @@ input:focus, select:focus, textarea:focus {
 
 <form action="OnboardSearch" method="post">
 	<!-- タグ -->
-    <label>タグ（複数選択可）</label>
+    <p>タグ（複数選択可）<br>
     <div class="checkbox-group">
-        <label><input type="checkbox" name="tags" value="運動"> 運動</label>
-        <label><input type="checkbox" name="tags" value="集会"> 集会</label>
-        <label><input type="checkbox" name="tags" value="お裾分け"> お裾分け</label>
-        <label><input type="checkbox" name="tags" value="日記"> 日記</label><br>
+        <input type="checkbox" name="tags" value="運動">運動 
+       <input type="checkbox" name="tags" value="集会"> 集会
+        <input type="checkbox" name="tags" value="お裾分け"> お裾分け
+        <input type="checkbox" name="tags" value="日記"> 日記
+        </p>
         
     	<!-- 都道府県 -->
 		<label for="pref">都道府県</label>
