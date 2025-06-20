@@ -141,7 +141,7 @@ input:focus, select:focus, textarea:focus {
 <body>
 <header>
 <!-- 共通ヘッダー -->
-    <%-- <%@ include file="/WEB-INF/jsp/header.jsp" %> --%>
+    <%@ include file="/WEB-INF/jsp/header.jsp" %>
     <h1>薬の新規登録</h1>
 </header>
 
@@ -178,7 +178,7 @@ input:focus, select:focus, textarea:focus {
 
 <footer>
 <!-- 共通フッター -->
-    <%-- <%@ include file="/WEB-INF/jsp/footer.jsp" %> --%>
+    <%@ include file="/WEB-INF/jsp/footer.jsp" %>
 </footer>
 
 <!-- Javascriptの設定 -->

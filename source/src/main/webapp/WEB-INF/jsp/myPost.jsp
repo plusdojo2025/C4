@@ -80,7 +80,7 @@ button:hover, .btn:hover {
 	color: #fff;
 }
 /* コンテナ */
-.container, .login-container, .form-box {
+.container, .login-container, .form-box, .post {
 	max-width: 450px;
 	margin: 50px auto;
 	background: #fff;
@@ -112,14 +112,34 @@ input:focus, select:focus, textarea:focus {
 	font-size: 1.5rem;
 	color: #FF6368;
 }
+ <!-- サブタイトルのCSS -->
+.sub-header {
+  background-color: #46B1E1; /* 青色 */
+  color: #FFFEEF;
+  padding: 15px 30px;
+  margin-top: 100px !important; /* ヘッダーがfixedなので被らないようにする */
+}
+
+.sub-header h2 {
+  margin: 0;
+  font-size: 2rem;
+  text-align: center; 
+  color: #FFFEEF;
+  background-color: #46B1E1;
+}
 </style>
 </head>
+
 <body>
 <header>
-<%@ include file="/WEB-INF/jsp/header.jsp"%>
-    <h1>マイ投稿</h1>
+	<%@ include file="/WEB-INF/jsp/header.jsp"%>
+	
 </header>
 <main>
+	<div class="sub-header">
+	  <h2>マイ投稿</h2>
+	</div>
+
     <c:if test="${empty myPosts}">
         <p>該当する投稿が見つかりませんでした。</p>
     </c:if>
@@ -137,5 +157,8 @@ input:focus, select:focus, textarea:focus {
         <button type="button">掲示板投稿へ</button>
     </a>
 </main>
+<footer>
+	<%@ include file="/WEB-INF/jsp/footer.jsp" %>
+</footer>
 </body>
 </html>

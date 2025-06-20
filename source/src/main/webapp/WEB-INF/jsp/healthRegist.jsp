@@ -112,6 +112,22 @@ input:focus, select:focus, textarea:focus {
 	font-size: 1.5rem;
 	color: #FF6368;
 }
+ <!-- サブタイトルのCSS -->
+.sub-header {
+  background-color: #46B1E1; /* 青色 */
+  color: #FFFEEF;
+  padding: 15px 30px;
+  margin-top: 100px !important; /* ヘッダーがfixedなので被らないようにする */
+}
+
+.sub-header h2 {
+  margin: 0;
+  font-size: 2rem;
+  text-align: center; 
+  color: #FFFEEF;
+  background-color: #46B1E1;
+}
+
 </style>
 </head>
 
@@ -120,9 +136,12 @@ input:focus, select:focus, textarea:focus {
 <%@ include file="/WEB-INF/jsp/header.jsp"%>
 </header>
 	<main>
+		<div class="sub-header">
+	  		<h2>マイ投稿</h2>
+		</div>
 		<h2>本日の体調を入力してください！</h2>
 		<div style="text-align: center; margin-top: 18px;">
-			<a href="${pageContext.request.contextPath}/OmoiyalinkHealthMng"
+			<a href="OmoiyalinkHealthMng"
 				class="btn" style="background: #A9C9E1;"> 一覧を見る </a>
 		</div>
 
