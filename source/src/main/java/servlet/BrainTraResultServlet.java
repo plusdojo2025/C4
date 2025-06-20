@@ -31,7 +31,7 @@ public class BrainTraResultServlet extends CustomTemplateServlet {
 		System.out.println("[DEBUG] 受信 winCount: " + winCount);
 
 		// 2. ユーザーIDの取得（セッションから）＋nullチェック
-		Integer userIdObj = (Integer) request.getSession().getAttribute("userId");
+		Integer userIdObj = (Integer) request.getSession().getAttribute("id");
 		if (userIdObj == null) {
 			System.out.println("[DEBUG] userId is null! ログイン画面へリダイレクト");
 			response.sendRedirect(request.getContextPath() + "/OmoiyalinkLogin");
