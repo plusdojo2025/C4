@@ -8,11 +8,16 @@
 <meta charset="UTF-8">
 <title>結果発表</title>
 <style>
-body {
-	font-family: 'メイリオ', 'Meiryo', sans-serif;
-	background: #f6fcff;
-	color: #264;
-	padding: 38px;
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    background: #FFFEEF;  /* 背景色指定 */
+    color: #22292F;       /* 薄めの黒（ややグレー系：#22292F） */
+    font-family: 'メイリオ', 'Meiryo', 'sans-serif';
+    font-size: 17px;
+    line-height: 1.8;
 }
 
 h1 {

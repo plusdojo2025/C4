@@ -129,7 +129,7 @@ public class PostsDao extends CustomTemplateDao<PostsDto>{
         	connection = conn();
 			
 			//SQL文を用意する
-	        String sql = "SELECT * FROM posts WHERE userId = ? ORDER BY createdAT DESC";
+	        String sql = "SELECT * FROM posts INNER JOIN users ON posts.user_id = users.user_id WHERE userId = ? ORDER BY createdAT DESC";
 			PreparedStatement stmt = connection.prepareStatement(sql);
 			
 
