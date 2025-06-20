@@ -27,7 +27,7 @@
         <p>${post.content}</p>
         <p><strong>場所:</strong> ${post.pref} / ${post.city}</p>
         <p><strong>タグ:</strong> ${post.tag}</p>
-        <p><strong>投稿日:</strong> ${post.postDate}</p>
+        <p><strong>投稿日:</strong> ${post.createdAT}</p>
     </div>
 </c:forEach>
 
