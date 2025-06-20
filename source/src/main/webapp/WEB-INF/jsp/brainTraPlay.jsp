@@ -94,7 +94,7 @@ h1 {
 		method="post" style="display: none;">
 		<input type="hidden" name="winCount" id="formWinCount">
 	</form>
-	<script>
+<script>
 const hands = ["グー", "チョキ", "パー"];
 let time = 60;
 let winCount = 0;

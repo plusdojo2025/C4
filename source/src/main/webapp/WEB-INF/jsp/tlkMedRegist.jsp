@@ -8,7 +8,6 @@
 <style>
 </style>
 </head>
-
 <body>
 	<header class="site-header">おもいやリンク 服薬記録登録</header>
 	<div class="container">
