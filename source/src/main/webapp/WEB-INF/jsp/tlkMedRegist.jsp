@@ -36,11 +36,28 @@ h3 {
   font-size: 1.4rem;
   color: #007BFF;
 }
+
+.sub-header {
+	background-color: #46B1E1; /* 青色 */
+	color: #FFFEEF;
+	padding: 15px 30px;
+	margin-top: 0px; /* ヘッダーがfixedなので被らないようにする */
+}
+
+.sub-header h2 {
+	margin: 0;
+	color: #FFFEEF;
+	font-size: 2rem;
+	text-align: center;
+	
+}
 </style>
 </head>
 <body>
-
-<h2>服薬登録</h2>
+	<%@ include file="header.jsp"%>
+	<div class="sub-header">
+		<h2>服薬登録</h2>
+	</div>
 
 <c:if test="${not empty message}">
     <p style="color:red;">${message}</p>
@@ -72,13 +89,15 @@ h3 {
                             <c:if test="${checkedIds.contains(med.medicationId)}">value="${med.memo}" disabled</c:if> />
                     </td>
                 </tr>
+                 
             </c:forEach>
         </table>
+         <button type="submit">登録</button>
         <br>
     </c:forEach>
 
-    <button type="submit">登録</button>
+    
 </form>
-
+<%@ include file="footer.jsp"%>
 </body>
 </html>

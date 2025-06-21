@@ -61,7 +61,7 @@ public class TlkMedMngServlet extends CustomTemplateServlet {
             request.setAttribute("month", month);
             
 			// 一覧表示JSPへフォワード
-			RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/TlkMedMng.jsp");
+			RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/tlkMedMng.jsp");
 			dispatcher.forward(request, response);
 
 		} catch (Exception e) {
@@ -139,7 +139,7 @@ public class TlkMedMngServlet extends CustomTemplateServlet {
 		} catch (Exception e) {
 			e.printStackTrace();
 			request.setAttribute("message", "エラーが発生しました。入力内容を確認してください。");
-			request.getRequestDispatcher("/WEB-INF/jsp/TlkMedMng.jsp").forward(request, response);
+			request.getRequestDispatcher("/WEB-INF/jsp/tlkMedMng.jsp").forward(request, response);
 		}
 	}
 }
