@@ -51,7 +51,7 @@ public abstract class CustomTemplateServlet extends HttpServlet {
         boolean result = (session != null && session.getAttribute("user") != null);
         if (result) {
             // すでにログインしていればホームへ
-            response.sendRedirect("TlkMedMngServlet");
+            response.sendRedirect("OmoiyalinkHome");
         }
         return result;
     }
