@@ -112,52 +112,55 @@ input:focus, select:focus, textarea:focus {
 	font-size: 1.5rem;
 	color: #FF6368;
 }
- <!-- サブタイトルのCSS -->
-.sub-header {
-  background-color: #46B1E1; /* 青色 */
-  color: #FFFEEF;
-  padding: 15px 30px;
-  margin-top: 100px !important; /* ヘッダーがfixedなので被らないようにする */
+
+<!--
+サブタイトルのCSS -->.sub-header {
+	background-color: #46B1E1; /* 青色 */
+	color: #FFFEEF;
+	padding: 15px 30px;
+	margin-top: 100px !important; /* ヘッダーがfixedなので被らないようにする */
 }
 
 .sub-header h2 {
-  margin: 0;
-  font-size: 2rem;
-  text-align: center; 
-  color: #FFFEEF;
-  background-color: #46B1E1;
+	margin: 0;
+	font-size: 2rem;
+	text-align: center;
+	color: #FFFEEF;
+	background-color: #46B1E1;
 }
-
 </style>
 </head>
 
 <body>
-<header>
-<%@ include file="/WEB-INF/jsp/header.jsp"%>
-</header>
+	<header>
+		<%@ include file="/WEB-INF/jsp/header.jsp"%>
+	</header>
 	<main>
 		<div class="sub-header">
-	  		<h2>体調登録</h2>
+			<h2>体調登録</h2>
 		</div>
 		<h2>本日の体調を入力してください！</h2>
 		<div style="text-align: center; margin-top: 18px;">
-			<a href="OmoiyalinkHealthMng"
-				class="btn" style="background: #A9C9E1;"> 一覧を見る </a>
+			<a href="OmoiyalinkHealthMng" class="btn"
+				style="background: #A9C9E1;"> 一覧を見る </a>
 		</div>
 
 		<form method="POST"
 			action="${pageContext.request.contextPath}/OmoiyalinkHealthRegist"
-			autocomplete="off" id="regist_form" class="form-box">
-			<!-- ★ 本日日付の自動入力欄を追加（サーブレットがcreatedAtを期待しているため） -->
+			autocomplete="off" id="regist_form" class="form-box"
+			accept-charset="UTF-8">
 			<label> 日付 <input type="date" name="createdAt" required
 				value="<%= new java.text.SimpleDateFormat("yyyy-MM-dd").format(new java.util.Date()) %>">
 			</label> <label> 体温 <input type="text" name="temperature" required
-				pattern="\d+(\.\d+)?">
-			</label> <label> 最大血圧 <input type="text" name="highBp" pattern="\d*">
-			</label> <label> 最小血圧 <input type="text" name="lowBp" pattern="\d*">
-			</label> <label> 脈拍 <input type="text" name="pulseRate" pattern="\d*">
+				pattern="\d+(\.\d+)?" placeholder="例：36.6">
+			</label> <label> 最大血圧 <input type="text" name="highBp" pattern="\d*"
+				placeholder="例：120">
+			</label> <label> 最小血圧 <input type="text" name="lowBp" pattern="\d*"
+				placeholder="例：80">
+			</label> <label> 脈拍 <input type="text" name="pulseRate" pattern="\d*"
+				placeholder="例：70">
 			</label> <label> 血中酸素濃度 <input type="text" name="pulseOx"
-				pattern="\d+(\.\d+)?">
+				pattern="\d+(\.\d+)?" placeholder="例：98.2">
 			</label> <label> 睡眠休養感（必須項目） <select name="sleep" required>
 					<option value="">選択してください</option>
 					<option value="5">よく眠れた</option>
@@ -166,18 +169,15 @@ input:focus, select:focus, textarea:focus {
 					<option value="2">あまり眠れなかった</option>
 					<option value="1">全然眠れなかった</option>
 			</select>
-			</label> <label> メモ <input type="text" name="memo">
-			</label>
+			</label><!--  <label> メモ <input type="text" name="memo"
+				placeholder="例：薬を飲んだ。頭痛あり。良く眠れた。"></label>-->
 			<p id="regist"></p>
 			<button type="submit">登録する</button>
 		</form>
-
-
 	</main>
-<footer>
-	<%@ include file="/WEB-INF/jsp/footer.jsp"%>
-</footer>
-	<!-- Javascriptの設定 -->
+	<footer>
+		<%@ include file="/WEB-INF/jsp/footer.jsp"%>
+	</footer>
 	<script>
 'use strict';
 document.getElementById('regist_form').onsubmit = function(event){
@@ -188,8 +188,7 @@ document.getElementById('regist_form').onsubmit = function(event){
         document.getElementById('regist').textContent = '日付・体温・睡眠休養感は必須です';
         event.preventDefault();
     }
-    // ★追加：体温の数字バリデーション（任意：pattern属性も有効）
-    // 例: 小数点OK
+    // 体温の数字バリデーション
     if (!/^\d+(\.\d+)?$/.test(temperature)) {
         document.getElementById('regist').textContent = '体温は数字で入力してください';
         event.preventDefault();

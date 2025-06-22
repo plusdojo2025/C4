@@ -11,10 +11,9 @@ public class DBUtil {
 		} catch (ClassNotFoundException e) {
 			throw new SQLException("MySQLドライバが見つかりません", e);
 		}
-		String url = "jdbc:mysql://localhost:3306/c4?useSSL=false&serverTimezone=Asia/Tokyo";
+		String url = "jdbc:mysql://localhost:3306/c4?useSSL=false&serverTimezone=Asia/Tokyo&characterEncoding=UTF-8";
 		String user = "root";
 		String password = "password";
 		return DriverManager.getConnection(url, user, password);
 	}
-
 }

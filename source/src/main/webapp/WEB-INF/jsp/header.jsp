@@ -5,109 +5,129 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<title>ヘッダーメニュー横スクロール対応サンプル</title>
 <link rel="stylesheet"
 	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
 <style>
 body {
 	margin: 0;
 	padding: 0;
-	padding-top: 100px; /* ← これを追加したよ */
+	padding-top: 100px; /* ヘッダー分の余白 */
 	color: #041117;
 	font-family: 'Noto Sans JP', sans-serif;
 	background: #FFFEEF;
-	;
 }
 
 header {
 	width: 100%;
 	height: 100px;
 	background: #FFFEEF;
-	display: flex; /* ヘッターをページ上部に固定 */
-	align-items: center; /* 上下中央に揃える */
-	justify-content: space-between; /* 両端に配置 */
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
 	padding-left: 30px;
 	padding-right: 30px;
 	position: fixed;
 	top: 0;
 	box-sizing: border-box;
+	z-index: 100;
 }
 
-ul {
+#logo img {
+	width: 120px;
+	height: 100px;
+	object-fit: contain;
+}
+
+ul#nav {
 	list-style: none;
 	display: flex;
+	margin: 0;
+	padding: 0;
+	/* ↓通常時はflexで横並び */
+	/* ↓狭いときは下の@mediaで上書き */
 }
 
-ul li a {
+ul#nav li {
+	display: inline-block;
+}
+
+ul#nav li a {
 	font-size: 1.3rem;
 	padding: 10px 15px;
 	color: #46B1E1;
 	text-decoration: none;
 	font-weight: bold;
+	white-space: nowrap; /* 折り返し防止 */
+	display: flex;
+	align-items: center;
+	transition: background 0.16s;
+	border-radius: 10px;
 }
 
-ul li a:hover {
+ul#nav li a:hover {
 	text-decoration: underline;
+	background: #ecf6fc;
 }
 
-<!--
-サブタイトルのCSS -->.sub-header {
-	background-color: #46B1E1; /* 青色 */
-	color: #FFFEEF;
-	padding: 15px 30px;
-	margin-top: 100px; /* ヘッダーがfixedなので被らないようにする */
+/* 横幅が狭いときはulに横スクロールを付ける！ */
+@media ( max-width : 700px) {
+	ul#nav {
+		overflow-x: auto;
+		white-space: nowrap;
+		-webkit-overflow-scrolling: touch;
+		width: 100vw;
+		margin-right: -30px; /* ヘッダー右padding分で右端も見える */
+		margin-left: -30px; /* 左も同様 */
+		padding-left: 30px;
+		padding-right: 30px;
+	}
+	ul#nav li {
+		display: inline-block;
+		margin-right: 0;
+	}
+	ul#nav li a {
+		font-size: 1.05rem;
+		padding: 10px 10px;
+	}
 }
 
-.sub-header h2 {
-	margin: 0;
-	font-size: 2rem;
-	text-align: center;
-}
-<!--
-サブタイトルのCSS　ここまで
- 
--->
+/* スクロールバー消す（スマホではもともと目立たない）*/
+ul#nav::-webkit-scrollbar { display: none; }
+ul#nav { scrollbar-width: none; -ms-overflow-style: none; }
+
 </style>
 </head>
-
 <body>
-	<!-- ヘッダー（ここから） -->
+	<!-- ヘッダー -->
 	<header>
 		<h1 id="logo">
 			<a href="${pageContext.request.contextPath}/OmoiyalinkHome"> <img
-				src="${pageContext.request.contextPath}/img/logo.png" width="120"
-				height="100" alt="おもいやリンク"></a>
+				src="${pageContext.request.contextPath}/img/logo.png" alt="おもいやリンク">
+			</a>
 		</h1>
 		<ul id="nav">
 			<li><a href="${pageContext.request.contextPath}/OmoiyalinkHome">
-					<i class="fa-solid fa-house"></i>ホーム
+					<i class="fa-solid fa-house"></i>&nbsp;ホーム
 			</a></li>
 			<li><a
 				href="${pageContext.request.contextPath}/OmoiyalinkHealthRegist">
-					<i class="fa-solid fa-heart-pulse"></i>体調管理
+					<i class="fa-solid fa-heart-pulse"></i>&nbsp;体調管理
 			</a></li>
 			<li><a
 				href="${pageContext.request.contextPath}/OmoiyalinkTlkMedRegist">
-					<i class="fa-solid fa-capsules"></i>服薬管理
+					<i class="fa-solid fa-capsules"></i>&nbsp;服薬管理
 			</a></li>
-			<li><a href="${pageContext.request.contextPath}/OnboardRegist">
-					<i class="fa-solid fa-comments"></i>掲示板
+			<li><a href="${pageContext.request.contextPath}/OnboardSearch">
+					<i class="fa-solid fa-comments"></i>&nbsp;掲示板
 			</a></li>
-			<!-- <li><a href="${pageContext.request.contextPath}/OmoiyalinkBrainTra"> <i
-				class="fa-solid fa-brain"></i> 脳トレ</a></li>-->
+			<%-- <li><a href="${pageContext.request.contextPath}/OmoiyalinkBrainTra">
+				<i class="fa-solid fa-brain"></i>&nbsp;脳トレ</a></li> --%>
 			<li><a href="?logout=1"> <i
-					class="fa-solid fa-right-from-bracket"></i>ログアウト
+					class="fa-solid fa-right-from-bracket"></i>&nbsp;ログアウト
 			</a></li>
 		</ul>
-
 	</header>
-	<!-- ヘッダー（ここまで） -->
 
-	<!-- サブタイトル 　上のCSSも一緒にこぴぺしてください↓
-
-<div class="sub-header">
-  <h2>ページの名前</h2>
-</div>
-
-  -->
 </body>
 </html>

@@ -312,29 +312,20 @@ thead {
 	font-style: italic;
 }
 
-/* ヘッダー・フッターサンプル 
-header, .site-header {
-    width: 100vw;
-    background: #fff;
-    border-bottom: 2px solid #46B1E1;
-    padding: 14px 0 8px 0;
-    color: #46B1E1;
-    font-weight: bold;
-    letter-spacing: 1.2px;
-    text-align: center;
-    font-size: 1.6em;
+.sub-header {
+	background-color: #46B1E1; /* 青色 */
+	color: #FFFEEF;
+	padding: 15px 30px;
+	margin-top: 0px !important; /* ヘッダーがfixedなので被らないようにする */
 }
-footer, .site-footer {
-    width: 100vw;
-    background: #fff;
-    border-top: 1px solid #46B1E1;
-    color: #22292F;
-    text-align: center;
-    padding: 12px 0 8px 0;
-    font-size: 0.98em;
-    margin-top: 40px;
+
+.sub-header h2 {
+	margin: 0;
+	font-size: 2rem;
+	text-align: center;
+	color: #FFFEEF;
+	background-color: #46B1E1;
 }
-*/
 </style>
 <script>
 //common.js - 全ページ共通JS
@@ -458,100 +449,100 @@ function formatTime(date) {
 </script>
 </head>
 <header>
-<%@ include file="/WEB-INF/jsp/header.jsp"%>
+	<%@ include file="/WEB-INF/jsp/header.jsp"%>
 </header>
 <body>
-	<main>
+
 		<div class="sub-header">
-	  		<h2>体調管理</h2>
+			<h2>体調管理</h2>
 		</div>
 		<h2>登録した体調の一覧</h2>
+	<main>
+		<div style="text-align: center; margin-top: 18px;">
+			<a href="${pageContext.request.contextPath}/OmoiyalinkHealthRegist"
+				class="btn" style="background: #A9C9E1;"> 体調登録に戻る </a>
+		</div>
 
-	<div style="text-align: center; margin-top: 18px;">
-		<a href="${pageContext.request.contextPath}/OmoiyalinkHealthRegist"
-			class="btn" style="background: #A9C9E1;"> 体調登録に戻る </a>
-	</div>
 
-
-	<div class="paging">
-		<c:if test="${hasPrev}">
-			<a href="OmoiyalinkHealthMng?page=${page - 1}">&laquo; 前の10件</a>
-		</c:if>
-		<span>ページ：${page + 1}</span>
-		<c:if test="${hasNext}">
-			<a href="OmoiyalinkHealthMng?page=${page + 1}">次の10件 &raquo;</a>
-		</c:if>
-	</div>
-	<div class="table-scroll-x">
-		<table>
-			<thead>
-				<tr>
-					<th>記録日</th>
-					<th>体温（℃）</th>
-					<th>最高血圧</th>
-					<th>最低血圧</th>
-					<th>脈拍</th>
-					<th>血中酸素</th>
-					<th>睡眠休養感</th>
-					<th>メモ</th>
-				</tr>
-			</thead>
-			<tbody>
-				<c:choose>
-					<c:when test="${not empty records}">
-						<c:forEach var="rec" items="${records}">
+		<div class="paging">
+			<c:if test="${hasPrev}">
+				<a href="OmoiyalinkHealthMng?page=${page - 1}">&laquo; 前の10件</a>
+			</c:if>
+			<span>ページ：${page + 1}</span>
+			<c:if test="${hasNext}">
+				<a href="OmoiyalinkHealthMng?page=${page + 1}">次の10件 &raquo;</a>
+			</c:if>
+		</div>
+		<div class="table-scroll-x">
+			<table>
+				<thead>
+					<tr>
+						<th>記録日</th>
+						<th>体温（℃）</th>
+						<th>最高血圧</th>
+						<th>最低血圧</th>
+						<th>脈拍</th>
+						<th>血中酸素</th>
+						<th>睡眠休養感</th>
+						<!--<th>メモ</th>-->
+					</tr>
+				</thead>
+				<tbody>
+					<c:choose>
+						<c:when test="${not empty records}">
+							<c:forEach var="rec" items="${records}">
+								<tr>
+									<td><c:out value="${rec.date}" /></td>
+									<td><c:out value="${rec.temperature}" /></td>
+									<td><c:choose>
+											<c:when test="${rec.highBp != null}">
+												<c:out value="${rec.highBp}" />
+											</c:when>
+											<c:otherwise>―</c:otherwise>
+										</c:choose></td>
+									<td><c:choose>
+											<c:when test="${rec.lowBp != null}">
+												<c:out value="${rec.lowBp}" />
+											</c:when>
+											<c:otherwise>―</c:otherwise>
+										</c:choose></td>
+									<td><c:choose>
+											<c:when test="${rec.pulseRate != null}">
+												<c:out value="${rec.pulseRate}" />
+											</c:when>
+											<c:otherwise>―</c:otherwise>
+										</c:choose></td>
+									<td><c:choose>
+											<c:when test="${rec.pulseOx != null}">
+												<c:out value="${rec.pulseOx}" />
+											</c:when>
+											<c:otherwise>―</c:otherwise>
+										</c:choose></td>
+									<td><c:out value="${rec.sleep}" /></td>
+									<!-- <td><c:out value="${rec.memo}" /></td>-->
+								</tr>
+							</c:forEach>
+						</c:when>
+						<c:otherwise>
 							<tr>
-								<td><c:out value="${rec.date}" /></td>
-								<td><c:out value="${rec.temperature}" /></td>
-								<td><c:choose>
-										<c:when test="${rec.highBp != null}">
-											<c:out value="${rec.highBp}" />
-										</c:when>
-										<c:otherwise>―</c:otherwise>
-									</c:choose></td>
-								<td><c:choose>
-										<c:when test="${rec.lowBp != null}">
-											<c:out value="${rec.lowBp}" />
-										</c:when>
-										<c:otherwise>―</c:otherwise>
-									</c:choose></td>
-								<td><c:choose>
-										<c:when test="${rec.pulseRate != null}">
-											<c:out value="${rec.pulseRate}" />
-										</c:when>
-										<c:otherwise>―</c:otherwise>
-									</c:choose></td>
-								<td><c:choose>
-										<c:when test="${rec.pulseOx != null}">
-											<c:out value="${rec.pulseOx}" />
-										</c:when>
-										<c:otherwise>―</c:otherwise>
-									</c:choose></td>
-								<td><c:out value="${rec.sleep}" /></td>
-								<td><c:out value="${rec.memo}" /></td>
+								<td class="no-data" colspan="8">体調記録がありません。</td>
 							</tr>
-						</c:forEach>
-					</c:when>
-					<c:otherwise>
-						<tr>
-							<td class="no-data" colspan="8">体調記録がありません。</td>
-						</tr>
-					</c:otherwise>
-				</c:choose>
-			</tbody>
-		</table>
-	</div>
+						</c:otherwise>
+					</c:choose>
+				</tbody>
+			</table>
+		</div>
 
-	<div class="paging">
-		<c:if test="${hasPrev}">
-			<a href="OmoiyalinkHealthMng?page=${page - 1}">&laquo; 前の10件</a>
-		</c:if>
-		<span>ページ：${page + 1}</span>
-		<c:if test="${hasNext}">
-			<a href="OmoiyalinkHealthMng?page=${page + 1}">次の10件 &raquo;</a>
-		</c:if>
-	</div>
-	<%@ include file="/WEB-INF/jsp/footer.jsp"%>
+		<div class="paging">
+			<c:if test="${hasPrev}">
+				<a href="OmoiyalinkHealthMng?page=${page - 1}">&laquo; 前の10件</a>
+			</c:if>
+			<span>ページ：${page + 1}</span>
+			<c:if test="${hasNext}">
+				<a href="OmoiyalinkHealthMng?page=${page + 1}">次の10件 &raquo;</a>
+			</c:if>
+		</div>
+		<%@ include file="/WEB-INF/jsp/footer.jsp"%>
 	</main>
 </body>
 </html>
