@@ -8,9 +8,11 @@ import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import dao.ReactionsDao;
 import dto.ReactionsDto;
+import dto.UsersDto;
 
 /**
  * リアクション取得APIサーブレット 指定したpostIdのリアクション情報（いいね数、ユーザーID一覧など）をJSONで返す
@@ -75,7 +77,24 @@ public class ReactionsServlet extends CustomTemplateServlet {
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		// 必要があればここに実装
-		response.sendError(HttpServletResponse.SC_METHOD_NOT_ALLOWED, "POSTは未サポートです");
+	    if (checkNoneLogin(request, response) || checkLogout(request, response)) {
+	        return;
+	    }
+
+	    // 投稿IDとリアクションタイプを取得
+	    int postId = Integer.parseInt(request.getParameter("postId"));
+	    String type = request.getParameter("type");
+
+	    // セッションから userId を取得
+	    HttpSession session = request.getSession();
+	    UsersDto user = (UsersDto) session.getAttribute("user_id");
+	    int userId = user.getUserId();
+
+	    // リアクションを登録
+	    ReactionsDao dao = new ReactionsDao();
+	    dao.addReaction(postId, userId, type);
+
+        // 一覧表示JSPへフォワード
+        request.getRequestDispatcher("OnboardSearch").forward(request, response);
 	}
 }

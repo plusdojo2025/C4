@@ -151,6 +151,7 @@ input:focus, select:focus, textarea:focus {
         <p><strong>場所:</strong> ${post.pref} / ${post.city}</p>
         <p><strong>タグ:</strong> ${post.tag}</p>
         <p>${post.content}</p>
+        
         </div>
     </c:forEach>
     <a href="OnboardRegist">

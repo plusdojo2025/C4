@@ -16,7 +16,7 @@ public class ReactionsDao extends CustomTemplateDao<ReactionsDto> {
 	@Override
 	public List<ReactionsDto> select(ReactionsDto dto) {
 		Connection conn = null;
-		List<ReactionsDto> userList = new ArrayList<ReactionsDto>();
+		List<ReactionsDto> reactionList = new ArrayList<ReactionsDto>();
 
 		try {
 			conn = conn();
@@ -43,18 +43,18 @@ public class ReactionsDao extends CustomTemplateDao<ReactionsDto> {
 			        ReactionType.valueOf(rs.getString("reaction_type")), 
 			        rs.getDate("reacted_at")
 				);										
-				userList.add(bc);
+			    reactionList.add(bc);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
-			userList = null;
+			reactionList = null;
 		} finally {
 			// データベースを切断
 			close(conn);
 		}
 
 		// 結果を返す
-		return userList;
+		return reactionList;
 	}
 
 	@Override
@@ -194,5 +194,31 @@ public class ReactionsDao extends CustomTemplateDao<ReactionsDto> {
 	            close(conn);
 	        }
 	    return userList;
+	}
+
+	//いいねの登録
+	public void addReaction(int postId, int userId, String type) {
+		Connection conn = null;
+		
+		PreparedStatement stmt;
+		try {
+			// データベースに接続する
+			conn = conn();
+			
+			// SQL文を準備する
+	        String sql = "INSERT INTO reactions (post_id, user_id, type, created_at) VALUES (?, ?, ?, NOW())";
+	        
+	        // SQL文を完成させる
+	        stmt = conn.prepareStatement(sql);
+	        stmt.setInt(1, postId);
+	        stmt.setInt(2, userId);
+	        stmt.setString(3, type);
+	        stmt.executeUpdate();
+	
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    } finally {
+	    	close(conn);
+	    }
 	}
 }
