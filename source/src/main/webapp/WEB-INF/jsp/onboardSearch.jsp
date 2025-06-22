@@ -130,7 +130,6 @@ button:hover, .btn:hover {
        <input type="checkbox" name="tags" value="集会"> 集会
         <input type="checkbox" name="tags" value="お裾分け"> お裾分け
         <input type="checkbox" name="tags" value="日記"> 日記
-        </p>
         
     	<!-- 都道府県 -->
 		<label for="pref">都道府県</label>
