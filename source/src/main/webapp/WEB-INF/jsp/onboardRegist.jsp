@@ -12,7 +12,7 @@ body {
 }
 
 form {
-	max-width: 600px;
+	max-width: 880px;
 	margin: 0 auto;
 }
 
@@ -21,18 +21,30 @@ label {
 	margin-top: 1em;
 }
 
-input[type="text"], textarea, select {
-	width: 100%;
-	padding: 0.5em;
+input[type="text"],
+textarea,
+select {
+	width: 98%;
+	padding: 1em;
+	font-size: 1.2em;
+	margin-bottom: 1.2em;
+	border: 1px solid #a3cde2;
+	border-radius: 8px;  /* 丸角 */
+	background: #FFFEF9; /* やさしい白ベース */
+	color: #22292F;
+	box-sizing: border-box;
 }
 
 .checkbox-group {
-	margin-top: 0.5em;
+	margin-top: 0.2em;
 }
 
 .checkbox-group label {
-	display: inline-block;
-	margin-right: 1em;
+	margin-right: 1.5em;
+	margin-bottom: 0.8em;
+	font-size: 30px; /* ← チェックボックスの文字を大きくしたいなら追加 */
+	display: inline-flex;
+	align-items: center;
 }
 
 .readonly-info {
@@ -57,7 +69,7 @@ html, body {
 	background: #FFFEEF;
 	color: #22292F;
 	font-family: 'メイリオ', 'Meiryo', 'sans-serif';
-	font-size: 17px;
+	font-size: 20px;
 	line-height: 1.8;
 }
 
@@ -81,7 +93,10 @@ h1, h2, h3, h4, h5 {
 label, .label {
 	color: #22292F;
 	font-weight: bold;
+	font-size: 28px; 
 }
+
+
 
 select, textarea {
 	width: 98%;
@@ -101,17 +116,22 @@ input:focus, select:focus, textarea:focus {
 	background: #fcf8f0;
 }
 
+
 button, .btn {
 	background: #46B1E1;
 	color: #fff;
 	border: none;
 	border-radius: 9px;
-	padding: 0.65em 1.6em;
+	padding: 0.65em 1.0em;
 	margin: 6px 0;
 	cursor: pointer;
-	font-size: 1em;
+	font-size: 1.6em;
 	font-family: inherit;
-	transition: background 0.22s;
+	transition: background 0.22s;  
+	
+	
+
+	
 }
 
 button:hover, .btn:hover {
@@ -133,6 +153,58 @@ button:hover, .btn:hover {
 	font-size: 2rem;
 	text-align: center;
 }
+
+
+
+
+
+
+
+/* ボタンの位置 */
+.center-button {
+	display: flex;
+	justify-content: center;
+	margin-top: 2em;
+	bottom: 200px; /* ← 少し上に */
+	padding: 0.85em 4em; /* ← 少し大きめに */
+	font-size: 1.2em; /* ← フォントサイズUP */
+}
+  
+.bottom-right-button {
+    position: fixed;
+    bottom: 100px; /* ← 少し上に */
+    right: 200px;  /* ← 少し左に */
+    background: #46B1E1;
+    color: #fff;
+    border: none;
+    border-radius: 9px;
+    padding:1.0em 4em; /* ← 少し大きめに */
+    cursor: pointer;
+    font-size: 1.2em; /* ← フォントサイズ大 */
+    font-family: inherit;
+    transition: background 0.22s;
+    box-shadow: 0px 4px 10px rgba(0,0,0,0.15); /* ← オプション：浮き感を追加 */
+}
+
+
+.bottom-right-button:hover {
+    background: #2d7ea3;
+}
+
+.location-row {
+	display: flex;
+	gap: 20px;          /* 都道府県と市区町村の間に余白 */
+	margin-top: 1.5em;  /* 少し上にスペース */
+	flex-wrap: wrap;    /* スマホ対応：狭い画面で縦並びに戻す */
+}
+
+.location-item {
+	flex: 1;
+	min-width: 250px;   /* 最低幅：画面が狭くても崩れにくい */
+}
+
+}
+
 </style>
 <script>
 	const PREF_CITY = {
@@ -209,6 +281,8 @@ button:hover, .btn:hover {
 			}
 		});
 	});
+	
+
 </script>
 </head>
 <body>
@@ -216,7 +290,10 @@ button:hover, .btn:hover {
 	<div class="sub-header">
 		<h2>投稿フォーム</h2>
 	</div>
-	<h1>掲示板に投稿する</h1>
+	
+	<button onclick="document.body.style.fontSize='40px'">文字を大きく</button>
+	<button onclick="document.body.style.fontSize='17px'">元に戻す</button>
+
 	<c:if test="${not empty errorMessage}">
 		<div class="error">${errorMessage}</div>
 	</c:if>
@@ -231,15 +308,23 @@ button:hover, .btn:hover {
 				日記</label>
 		</div>
 		<!-- 都道府県 -->
-		<label for="pref">都道府県を選択 <span style="color: red;">*</span></label> <select
-			id="pref" name="pref" required>
-			<option value="">都道府県を選択してください</option>
-			<!-- JSで追加 -->
-		</select>
-		<!-- 市区町村 -->
-		<label for="city">市区町村を選択 <span style="color: red;">*</span></label> <select
-			id="city" name="city" required disabled>
-			<option value="">市区町村で絞り込む</option>
+		<div class="location-row">
+  <div class="location-item">
+    <label for="pref">都道府県を選択 <span style="color: red;">*</span></label>
+    <select id="pref" name="pref" required>
+      <option value="">都道府県を選択してください</option>
+      <!-- JSで追加 -->
+    </select>
+  </div>
+
+  <div class="location-item">
+    <label for="city">市区町村を選択 <span style="color: red;">*</span></label>
+    <select id="city" name="city" required disabled>
+      <option value="">市区町村で絞り込む</option>
+    </select>
+  </div>
+</div>
+
 		</select>
 		<!-- タイトル -->
 		<label for="title">タイトル <span style="color: red;">*</span></label> <input
@@ -248,10 +333,21 @@ button:hover, .btn:hover {
 		<label for="content">投稿内容 <span style="color: red;">*</span></label>
 		<textarea id="content" name="content" rows="6" maxlength="1000"
 			required></textarea>
-		<button type="submit">投稿する</button>
+			
+		<!-- <button type="submit">投稿する</button>
 		<a href="OmoiyalinkMyPost">
-			<button type="button">マイ投稿へ移動</button>
-		</a>
+			<button type="button">マイ投稿へ移動</button> -->	
+			
+			
+		<!-- 投稿するボタン -->
+<div class="center-button">
+    <button type="submit">投稿する</button>
+</div>
+<!-- マイ投稿へ移動ボタン -->
+<a href="OmoiyalinkMyPost">
+    <button type="button" class="bottom-right-button">マイ投稿へ移動</button>
+</a>
+
 	</form>
 </body>
 </html>
