@@ -65,19 +65,29 @@ h3 {
 }
 
 .nav-buttons {
-    margin-top: 10px;
-    text-align: right;    /* 右寄せにしたい場合。中央ならcenter、左寄せならleft */
+	margin-top: 10px;
+	text-align: right; /* 右寄せにしたい場合。中央ならcenter、左寄せならleft */
 }
 
 .nav-buttons a {
-    text-decoration: none;
-    margin-left: 8px;
+	text-decoration: none;
+	margin-left: 8px;
 }
 /*画面遷移ボタンのスタイル*/
 .nav-buttons button {
-    cursor: pointer;
+	cursor: pointer;
 }
 
+.date-row {
+	margin: 0 0 20px 0;
+	display: flex;
+	align-items: center;
+}
+
+.date-row label {
+	margin-right: 8px;
+	font-weight: bold;
+}
 </style>
 </head>
 <body>
@@ -86,12 +96,12 @@ h3 {
 		<h2>服薬登録</h2>
 	</div>
 	<div class="nav-buttons">
-			<a href="OmoiyalinkMedRegist">
-				<button type="button">薬の登録</button>
-			</a> <a href="OmoiyalinkTlkMedMng">
-				<button type="button">服薬登録一覧</button>
-			</a>
-		
+		<a href="OmoiyalinkMedRegist">
+			<button type="button">薬の登録</button>
+		</a> <a href="OmoiyalinkTlkMedMng">
+			<button type="button">服薬登録一覧</button>
+		</a>
+
 	</div>
 
 
@@ -100,7 +110,13 @@ h3 {
 	</c:if>
 
 	<form method="post" action="OmoiyalinkTlkMedRegist">
-
+	
+	<!-- その日の日付表示 -->
+		<strong>
+      <%= new java.text.SimpleDateFormat("yyyy-MM-dd").format(new java.util.Date()) %>
+    </strong>
+		
+		<!-- 薬情報から、設定した時間ごとに薬を表にまとめて表示 -->
 		<c:forEach var="entry" items="${medsByTime}">
 			<h3>${entry.key}の薬</h3>
 			<table>
@@ -128,14 +144,51 @@ h3 {
 				</c:forEach>
 			</table>
 			<button type="submit">登録</button>
-				<c:if test="${not empty message}">
-		<p style="color: red;">${message}</p>
-	</c:if>
+			<c:if test="${not empty message}">
+				<p style="color: red;">${message}</p>
+			</c:if>
 			<br>
 		</c:forEach>
-
-
 	</form>
+	
+	 <!-- ▼ 自由登録フォーム -->
+    <hr>
+    <h3>追加登録</h3>
+    <form method="post" action="OmoiyalinkTlkMedRegist">
+        <input type="hidden" name="registerType" value="free">
+        <table>
+            <tr>
+                <th>薬を選択</th>
+                <th>日付</th>
+                <th>時刻</th>
+                <th>メモ</th>
+            </tr>
+            <tr>
+                <td>
+                    <select name="freeMedicationId" required>
+                        <option value="">選択</option>
+                        <c:forEach var="med" items="${allMeds}">
+                            <option value="${med.medicationId}">${med.nickname}（${med.formalName}）</option>
+                        </c:forEach>
+                    </select>
+                </td>
+                <td>
+                    <input type="date" name="freeTakenDate"
+                        value="<%= new java.text.SimpleDateFormat("yyyy-MM-dd").format(new java.util.Date()) %>" required>
+                </td>
+                <td>
+                    <input type="time" name="freeTakenTime"
+                        value="<%= new java.text.SimpleDateFormat("HH:mm").format(new java.util.Date()) %>" required>
+                </td>
+                <td>
+                    <input type="text" name="freeMemo" style="width: 120px;">
+                </td>
+            </tr>
+        </table> 
+        <button type="submit">追加登録</button>
+    </form>
+	
+	
 	<%@ include file="footer.jsp"%>
 </body>
 </html>
