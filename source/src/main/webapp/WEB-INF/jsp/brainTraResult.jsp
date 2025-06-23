@@ -27,13 +27,14 @@ h1 {
 	text-align: center;
 	background: #46B1E1;
 	margin-top: 0;
+	margin-bottom:70px;
 }
 
 .result-box {
 	background:#EFEFEF;
 	border-left: 7px solid #F4B5B2;
 	padding: 22px 30px;
-	margin-bottom: 22px;
+	margin-bottom: 30px;
 	border-radius: 9px;
 	font-size: 1.23em;
 	text-align: center;

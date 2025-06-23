@@ -17,7 +17,9 @@ html, body {
     font-family: 'メイリオ', 'Meiryo', 'sans-serif';
     font-size: 17px;
     line-height: 1.8;
-}
+    background-image: url('<%=request.getContextPath()%>/img/360_F_967425218_ZMkPYJQqHSUylEN5pCCCxWCN4D1QOhZM.jpg');
+    background-position: center;
+    }
 
 h1 {
     color: #fff;
@@ -29,9 +31,18 @@ h1 {
 }
 
 h2 {
-    color: #46B1E1;
+    color: #fff;
     margin-top: 0;
-    margin-bottom: .7em;
+    margin-bottom:30px;
+    font-weight: bold;
+    text-align: center;
+    
+}
+
+h3 {
+    color: #fff;
+    margin-top: 0;
+    margin-bottom:30px;
     font-weight: bold;
     text-align: center;
     
@@ -47,7 +58,7 @@ button, .menu-btn {
 	cursor: pointer;
 	transition: background .2s;
 	text-decoration: none;
-	margin-bottom: 8px;
+	margin-bottom: 0px;
 	
 }
 button:hover, .menu-btn:hover {
@@ -57,7 +68,7 @@ button:hover, .menu-btn:hover {
 .saveMsg {
 	color: #c24b3b;
 	font-size: 1.05em;
-	margin-bottom: 8px;
+	margin-bottom: 5px;
 }
 
 .container {
@@ -72,16 +83,26 @@ button:hover, .menu-btn:hover {
 	margin-left: 95px;
 	display: inline-block;
 	text-align: center; 
+	background-image:;
+	margin-top: 0px;
+}
+.rule ul li {
+    color: white;
+    font-weight: bold;
+    font-size:18px;
 }
 
 .buttons {
 	display: flex;
 	justify-content: center;
 	gap: 30px;
-	margin-top: 30px;
+	margin-top: 100px;
 }
 
-
+.red {
+	color:red;
+	font-weight:bold;
+}
 </style>
 </head>
 
@@ -89,13 +110,16 @@ button:hover, .menu-btn:hover {
 
 
 
-	<h1>後出しじゃんけん</h1>
+	<h1>脳トレ</h1>
 
 	<div class="rule">
-		<h2>～ルール説明～</h2>
+		<h2>後だしじゃんけん</h2>
+		<h3>―　ルール説明　―</h3>
+		
+		
 		<ul>
 			<li>制限時間は1分間</li>
-			<li>表示されている手に<strong>勝つ</strong>手を選ぼう！
+			<li>表示されている手に<strong class="red">勝つ</strong>手を選ぼう！
 			</li>
 			<li>手を選択してじゃんけんに勝利を目指そう！</li>
 		</ul>

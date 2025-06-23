@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
+ <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="ja">
@@ -81,6 +81,8 @@ h1 {
 </style>
 </head>
 <body>
+
+
 	<h1>後出しじゃんけん</h1>
 
 	<div class="timer-box">
@@ -118,7 +120,10 @@ h1 {
 	let time = 60;
 	let winCount = 0;
 
-	alert('準備はよろしいでしょうか　\n※OKを押すとゲームが始まります');
+	if (!confirm('準備はよろしいでしょうか？\n※「OK」でゲーム開始、「キャンセル」で戻ります')) {
+		// 戻る処理（前のページに戻る）
+		history.back();
+	}
 
 	// CPUの手の初期表示
 	let cpuHand = randomHand();
@@ -162,6 +167,8 @@ h1 {
 		if (isUserWin(userHand, cpuHand)) {
 			result = "勝ち！";
 			winCount++;
+			
+			
 		} else if (userHand === cpuHand) {
 			result = "あいこ";
 		} else {

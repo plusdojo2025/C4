@@ -73,16 +73,23 @@ table td {
 		</c:if>
 	</div>
 	
-	<!-- メニューに戻るボタン -->
-	<a href="<%=request.getContextPath()%>/OmoiyalinkBrainTra"
-		class="menu-btn">脳トレメニューに戻る</a>
+	<!-- メニューに戻るボタン（formでボタン化） -->
+<form action="<%=request.getContextPath()%>/OmoiyalinkBrainTra" method="get" style="text-align: left; margin-top: 20px; padding: 3px 8px;">
+	<button type="submit" class="btn">脳トレメニューに戻る</button>
+</form>
 
-	<form method="get" action="OmoiyalinkBrainTraMng"
-		style="text-align: center; margin-bottom: 16px;">
-		<input type="hidden" name="page" value="${page}" />
-		<button class="sort-btn" type="submit" name="order" value="desc">勝利回数順↓</button>
-		<button class="sort-btn" type="submit" name="order" value="asc">勝利回数順↑</button>
-	</form>
+	<form method="get" action="OmoiyalinkBrainTraMng" style="text-align: right; margin-bottom: 16px;">
+	<input type="hidden" name="page" value="${page}" />
+	<!-- 現在の並び順がascならdescに、descならascに -->
+	<c:choose>
+		<c:when test="${order == 'asc'}">
+			<button class="sort-btn" type="submit" name="order" value="desc">勝利回数順↓</button>
+		</c:when>
+		<c:otherwise>
+			<button class="sort-btn" type="submit" name="order" value="asc">勝利回数順↑</button>
+		</c:otherwise>
+	</c:choose>
+</form>
 
 	<table border="1">
 		<thead>
