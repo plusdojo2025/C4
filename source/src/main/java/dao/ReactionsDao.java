@@ -22,11 +22,12 @@ public class ReactionsDao extends CustomTemplateDao<ReactionsDto> {
 			conn = conn();
 			
 			// SQL文を準備する
-			String sql = "SELECT * FROM reactions INNER JOIN users ON reactions.user_id = users.user_id WHERE reaction_id = ?";
+			String sql = "SELECT * FROM reactions INNER JOIN users ON "
+					+ "reactions.user_id = users.user_id WHERE post_id = ?";
 			PreparedStatement pStmt = conn.prepareStatement(sql);
 
 			// SQL文を完成させる
-			pStmt.setInt(1,  dto.getReactionId() );
+			pStmt.setInt(1,  dto.getPostId() );
 			
 			
 			// SQL文を実行し、結果表を取得する
@@ -40,7 +41,7 @@ public class ReactionsDao extends CustomTemplateDao<ReactionsDto> {
 			        rs.getInt("post_id"),
 			        rs.getInt("user_id"),
 			        rs.getString("name"),
-			        ReactionType.valueOf(rs.getString("reaction_type")), 
+			        ReactionType.valueOf(rs.getString("type")), 
 			        rs.getDate("reacted_at")
 				);										
 			    reactionList.add(bc);
@@ -69,8 +70,8 @@ public class ReactionsDao extends CustomTemplateDao<ReactionsDto> {
 
 			// SQL文を準備する
 			String sql = """
-					INSERT reactions(reaction_type)
-							VALEUS ( ?)
+					INSERT INTO reactions(type)
+							VALUES  ( ?)
 					""";
 			PreparedStatement pStmt = conn.prepareStatement(sql);
 
@@ -109,7 +110,7 @@ public class ReactionsDao extends CustomTemplateDao<ReactionsDto> {
 			// SQL文を準備する
 			String sql = """
 					UPDATE reactions
-					SET reaction_type = ?
+					SET type = ?
 					""";
 			PreparedStatement pStmt = conn.prepareStatement(sql);
 
@@ -145,7 +146,7 @@ public class ReactionsDao extends CustomTemplateDao<ReactionsDto> {
 			PreparedStatement pStmt = conn.prepareStatement(sql);
 
 			// SQL文を完成させる
-			pStmt.setString(1, ((Enum<ReactionType>) dto.getType()).name());
+			pStmt.setInt(1, dto.getReactionId());
 
 			// SQL文を実行する
 			if (pStmt.executeUpdate() == 1) {
@@ -173,7 +174,8 @@ public class ReactionsDao extends CustomTemplateDao<ReactionsDto> {
 		
 		// SQL文を準備する
 	    
-	    String sql = "SELECT users.id, users.name FROM reactions INNER JOIN users ON reactions.userId = users.id WHERE reactions.postId = ?";
+	    String sql = "SELECT users.user_id, users.name FROM reactions INNER JOIN users "
+	    		+ "ON reactions.user_id = users.user_id WHERE reactions.postId = ?";
 	    
 	    // SQL文を完成させる
 	    PreparedStatement pStmt = conn.prepareStatement(sql);
@@ -187,15 +189,37 @@ public class ReactionsDao extends CustomTemplateDao<ReactionsDto> {
 	            userList.add(user);
 	        }
 		}
-	        catch (Exception e) {
-	            e.printStackTrace();
-	            userList = null;
-	        } finally {
-	            close(conn);
-	        }
+	    catch (Exception e) {
+	        e.printStackTrace();
+	    } finally {
+	       close(conn);
+	    }
 	    return userList;
 	}
 
+	//いいね数を出す
+	public int getLikeCountByPostId(int postId) throws SQLException {
+		Connection conn = null;
+		
+	    int count = 0;
+	    String sql = "SELECT COUNT(*) FROM reactions WHERE post_id = ? AND type = 'いいね'";
+	    
+	    try {
+	    	conn = conn();
+	         PreparedStatement stmt = conn.prepareStatement(sql); 
+	        
+	        stmt.setInt(1, postId);
+	        ResultSet rs = stmt.executeQuery();
+	        
+	        if (rs.next()) {
+	            count = rs.getInt(1);
+	        }
+	    }finally {
+		       close(conn);
+		    }
+	    return count;
+	}
+	
 	//いいねの登録
 	public void addReaction(int postId, int userId, String type) {
 		Connection conn = null;

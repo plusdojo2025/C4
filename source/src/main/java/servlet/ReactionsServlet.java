@@ -1,17 +1,20 @@
 package servlet;
 
 import java.io.IOException;
-import java.io.PrintWriter;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import dao.PostsDao;
 import dao.ReactionsDao;
-import dto.ReactionsDto;
+import dto.PostsDto;
 import dto.UsersDto;
 
 /**
@@ -31,45 +34,56 @@ public class ReactionsServlet extends CustomTemplateServlet {
 		if (checkNoneLogin(request, response) || checkLogout(request, response)) {
 			return;
 		}
+	    // 画面推移しないで「投稿ごとのいいね数取得」
+	    String action = request.getParameter("action");
+	    if ("count".equals(action)) {
+	        try {
+	            int postId = Integer.parseInt(request.getParameter("post_id"));
+	            ReactionsDao dao = new ReactionsDao();
+	            int count = dao.getLikeCountByPostId(postId); // このメソッドは DAO に実装する
 
-		// postIdパラメータを取得し、バリデーション
-		String postIdParam = request.getParameter("postId");
-		int postId;
-		try {
-			postId = Integer.parseInt(postIdParam);
-		} catch (NumberFormatException | NullPointerException e) {
-			// パラメータ不正時は400 Bad Request
-			response.sendError(HttpServletResponse.SC_BAD_REQUEST, "postIdが不正です");
-			return;
-		}
+	            response.setContentType("application/json");
+	            response.setCharacterEncoding("UTF-8");
+	            response.getWriter().write("{\"count\": " + count + "}");
+	        } catch (Exception e) {
+	            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+	        }
+	        return;
+	    }
+	    // ★ここから通常の画面表示処理（一覧表示など）★
+	    try {
+	        HttpSession session = request.getSession();
+	        int userId = (int) session.getAttribute("user_id");
 
-		try {
-			// DAOからリアクションユーザー一覧を取得
-			ReactionsDao reactionsDao = new ReactionsDao();
-			List<ReactionsDto> users = reactionsDao.findUsersByPostId(postId);
+	        PostsDao postDao = new PostsDao();
+	        ReactionsDao reactionDao = new ReactionsDao();
 
-			// --- JSONレスポンス生成 ---
-			response.setContentType("application/json; charset=UTF-8");
-			PrintWriter out = response.getWriter();
+	        List<PostsDto> myPosts = postDao.selectByUserId(userId);
 
-			// エスケープ処理（本来はJsonライブラリ使用推奨）
-			out.print("{\"likeCount\":" + users.size() + ",\"users\":[");
-			for (int i = 0; i < users.size(); i++) {
-				// 必要に応じて名前やIDを取得
-				// 本来はユーザー名やプロフィールを出す場合が多い
-				out.print("{\"userId\":\"" + users.get(i).getUserId() + "\"}");
-				if (i < users.size() - 1)
-					out.print(",");
-			}
-			out.print("]}");
-			out.flush();
+	        Map<Integer, Integer> likeCountMap = new HashMap<>();
+	        for (PostsDto post : myPosts) {
+	            int postId = post.getId();  // DTOのgetterに合わせて
+	            int count = reactionDao.getLikeCountByPostId(postId);
+	            likeCountMap.put(postId, count);
 
-		} catch (Exception e) {
-			e.printStackTrace();
-			// サーバーエラーの場合は500
-			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "リアクション取得に失敗しました");
-		}
+	            System.out.println("投稿ID: " + postId + " いいね数: " + count);
+	        }
+
+	        System.out.println("■ likeCountMapの中身: " + likeCountMap);
+
+	        request.setAttribute("myPosts", myPosts);
+	        request.setAttribute("likeCountMap", likeCountMap);
+
+	        RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/myPost.jsp");
+	        dispatcher.forward(request, response);
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+	    }
 	}
+
+	
+
 
 	/**
 	 * POST: 必要なら実装（リアクション追加など）
@@ -94,7 +108,8 @@ public class ReactionsServlet extends CustomTemplateServlet {
 	    ReactionsDao dao = new ReactionsDao();
 	    dao.addReaction(postId, userId, type);
 
-        // 一覧表示JSPへフォワード
-        request.getRequestDispatcher("OnboardSearch").forward(request, response);
+	    response.setStatus(HttpServletResponse.SC_OK);
+	    response.setContentType("application/json; charset=UTF-8");
+	    response.getWriter().write("{\"status\":\"success\"}");
 	}
 }

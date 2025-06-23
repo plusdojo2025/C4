@@ -21,6 +21,7 @@ public class ReactionsDto extends CustomeTemplateDto implements Serializable{
 		this.name = name;
 		this.type = type;
 		this.createdAt = createdAt;
+		this.count = 0;
 	}
 
 	public ReactionsDto() {
@@ -74,6 +75,13 @@ public class ReactionsDto extends CustomeTemplateDto implements Serializable{
 
 	public void setName(String name) {
 		this.name = name;
+	}
+	private int count;
+	public int getCount() {
+		return count;
+	}
+	public void setCount(int count) {
+		this.count = count;
 	}
 
 }

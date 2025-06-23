@@ -146,13 +146,15 @@ input:focus, select:focus, textarea:focus {
 
     <c:forEach var="post" items="${myPosts}">
         <div class="post">
-        <h3>${post.title}</h3>
-        <p><strong>投稿日:</strong> ${post.createdAt}</p>
-        <p><strong>場所:</strong> ${post.pref} / ${post.city}</p>
-        <p><strong>タグ:</strong> ${post.tag}</p>
-        <p>${post.content}</p>
-        
-        </div>
+	        <h3>${post.title}</h3>
+	        <p><strong>投稿日:</strong> ${post.createdAt}</p>
+	        <p><strong>場所:</strong> ${post.pref} / ${post.city}</p>
+	        <p><strong>タグ:</strong> ${post.tag}</p>
+	        <p>${post.content}</p>
+	        
+	        <!--いいね数カウント-->
+		     <p >いいね数：<c:out value="${likeCountMap[post.id]}" default="0" /></p>
+		</div>
     </c:forEach>
     <a href="OnboardRegist">
         <button type="button">掲示板投稿へ</button>
@@ -161,5 +163,22 @@ input:focus, select:focus, textarea:focus {
 <footer>
 	<%@ include file="/WEB-INF/jsp/footer.jsp" %>
 </footer>
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    document.querySelectorAll(".like-count").forEach(span => {
+      const postId = span.dataset.postId;
+      fetch(`ReactionsServlet?action=count&postId=${postId}`)
+        .then(res => res.json())
+        .then(data => {
+          span.textContent = data.count ?? 0;
+        })
+        .catch(err => {
+          console.error("いいね数の取得失敗", err);
+          span.textContent = "エラー";
+        });
+    });
+  });
+</script>
+
 </body>
 </html>
