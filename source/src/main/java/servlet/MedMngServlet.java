@@ -92,7 +92,8 @@ public class MedMngServlet extends CustomTemplateServlet {
 			String intakeTimeStr = request.getParameter("intake_time"); // "08:00"など
 
 
-			// 4. 日付データ変換（例外発生時はcatchで処理）
+			// 4. 日付データ変換（例外発生時はcatchで処理）		
+			// 日付データ変換
 				Date createdAt = null;
 				if (createdAtStr != null && !createdAtStr.isEmpty()) {
 				    createdAt = Date.valueOf(createdAtStr);
@@ -130,6 +131,7 @@ public class MedMngServlet extends CustomTemplateServlet {
 
 			// 7. 結果は一覧画面（GET）にリダイレクト（PRGパターン推奨）
 			response.sendRedirect(request.getContextPath() + "/OmoiyalinkMedMng");
+			
 		} catch (Exception e) { 
 			// 8. 入力エラー・DBエラー時は元の画面にエラーメッセージ付きで戻す
 			e.printStackTrace();
