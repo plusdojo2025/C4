@@ -1,36 +1,47 @@
-<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>薬の編集・削除</title>
 <style>
-/* === ページ全体ベース === */
 form {
-    max-width: 600px; margin: 0 auto;
- }
+	max-width: 600px;
+	margin: 0 auto;
+}
+
 label {
-    display: block; margin-top: 1em;
+	display: block;
+	margin-top: 1em;
 }
-        
+
 input[type="text"], textarea {
-    width: 100%; padding: 0.5em;
+	width: 100%;
+	padding: 0.5em;
 }
+
 .checkbox-group {
-margin-top: 0.5em;
+	margin-top: 0.5em;
 }
+
 .checkbox-group label {
-    display: inline-block; margin-right: 1em;
+	display: inline-block;
+	margin-right: 1em;
 }
+
 .readonly-info {
-    background: #f4f4f4; padding: 0.5em;
+	background: #f4f4f4;
+	padding: 0.5em;
 }
+
 .error {
-    color: red; margin-top: 1em;
+	color: red;
+	margin-top: 1em;
 }
+
 button {
-    margin-top: 1em;
+	margin-top: 1em;
 }
 
 html, body {
@@ -38,8 +49,8 @@ html, body {
 	margin: 0;
 	padding: 0;
 	box-sizing: border-box;
-	background: #FFFEEF; /* 背景色指定 */
-	color: #22292F; /* 薄めの黒（ややグレー系：#22292F） */
+	background: #FFFEEF;
+	color: #22292F;
 	font-family: 'メイリオ', 'Meiryo', 'sans-serif';
 	font-size: 17px;
 	line-height: 1.8;
@@ -67,8 +78,7 @@ label, .label {
 	color: #22292F;
 	font-weight: bold;
 }
-
-/* === レスポンシブ設計 === */
+/* レスポンシブ設計 */
 @media ( max-width : 600px) {
 	html, body {
 		font-size: 15px;
@@ -137,8 +147,9 @@ input:focus, select:focus, textarea:focus {
 	font-size: 1.5rem;
 	color: #FF6368;
 }
-input[name="delete"], input[name="submit"]{
-    background: #46B1E1;
+
+input[name="delete"], input[name="submit"] {
+	background: #46B1E1;
 	color: #fff;
 	border: none;
 	border-radius: 9px;
@@ -148,92 +159,118 @@ input[name="delete"], input[name="submit"]{
 	font-size: 1em;
 	font-family: inherit;
 	transition: background 0.22s;
-
 }
+
 .button-group {
-  display: flex;
-  gap: 10px; /* ボタンの間隔 */
-}
-.button-group form {
-  margin: 0;
-}
-<!-- サブタイトルのCSS -->
-.sub-header {
-  background-color: #46B1E1; /* 青色 */
-  color: #FFFEEF;
-  padding: 15px 30px;
-  margin-top: 100px !important; /* ヘッダーがfixedなので被らないようにする */
-}
-.sub-header h2 {
-  margin: 0;
-  font-size: 2rem;
-  text-align: center; 
-  color: #FFFEEF;
-  background-color: #46B1E1;
+	display: flex;
+	gap: 10px;
 }
 
+.button-group form {
+	margin: 0;
+}
+/* ナビゲーションボタン */
+.button-nav {
+	display: flex;
+	justify-content: center;
+	gap: 18px;
+	margin: 24px 0 8px 0;
+}
+
+.button-nav a {
+	background: #46B1E1;
+	color: #fff;
+	border-radius: 9px;
+	padding: 0.65em 1.6em;
+	font-size: 1em;
+	text-decoration: none;
+	transition: background 0.22s;
+	display: inline-block;
+}
+
+.button-nav a:hover {
+	background: #2d7ea3;
+}
+
+.sub-header {
+	background-color: #46B1E1;
+	color: #FFFEEF;
+	padding: 15px 30px;
+	margin-top: 100px !important;
+}
+
+.sub-header h2 {
+	margin: 0;
+	font-size: 2rem;
+	text-align: center;
+	color: #FFFEEF;
+	background-color: #46B1E1;
+}
 </style>
 </head>
 <body>
-<header>
-    <!-- 共通ヘッダー -->
-<%@ include file="/WEB-INF/jsp/header.jsp"%>
+	<header>
+		<%@ include file="/WEB-INF/jsp/header.jsp"%>
+	</header>
 
-</header>
-<main>
-	<div class="sub-header">
-	  <h2>薬の編集・削除</h2>
+	<!-- ナビゲーションボタン -->
+	<div class="button-nav">
+		<a href="${pageContext.request.contextPath}/OmoiyalinkMedRegist">薬の登録</a>
+		<a href="${pageContext.request.contextPath}/OmoiyalinkTlkMedMng">服薬一覧</a>
+		<a href="${pageContext.request.contextPath}/OmoiyalinkTlkMedRegist">服薬登録</a>
 	</div>
 
-    <h3>登録されているお薬の一覧</h3>
-    <c:forEach var="e" items="${cardList}" >
-        <form method="POST" action="${pageContext.request.contextPath}/OmoiyalinkMedMng" id="regist_form">
-            <label>
-                薬の正式名称
-                <input type="text" name="formalName" value="${e.formalName}"><br>
-            </label>
-            <label>
-                薬の愛称
-                <input type="text" name="nickName" value="${e.nickName}"><br>
-            </label>
-            <label>
-                服薬時間
-                <input type="time" name="intake_time" value="${e.intake_time}"><br>
-            </label>
-            <label>
-                用量
-                <input type="text" name="formalName" value="${e.nickName}"><br>
-            </label>
-            <label>
-                メモ
-                <input type="text" name="memo" value="${e.memo}"><br>
-            </label>
-            <label class="button-group">
-                <input type="submit" name="submit" value="更新">
-                <input type="submit" name="delete" value="削除">
-            </label>        
-        </form>
-        <p id="regist"></p>
-    </c:forEach>
-    <c:if test="${empty cardList}">
-	<p>指定された条件に一致するデータはありません。</p>
-	</c:if>
-</main>
+	<main>
+		<div class="sub-header">
+			<h2>薬の編集・削除</h2>
+		</div>
 
-<footer>
-    <%@ include file="/WEB-INF/jsp/footer.jsp"%>
-</footer>
-<!-- Javascriptの設定 -->
-<script>
+		<h3>登録されているお薬の一覧</h3>
+		<c:forEach var="e" items="${cardList}">
+			<form method="POST"
+				action="${pageContext.request.contextPath}/OmoiyalinkMedMng"
+				class="form-box">
+				<input type="hidden" name="medicationId" value="${e.medicationId}">
+				<label> 薬の正式名称 <input type="text" name="formalName"
+					value="${e.formalName}"><br>
+				</label> <label> 薬の愛称 <input type="text" name="nickName"
+					value="${e.nickName}"><br>
+				</label> <label> 服薬時間 <input type="time" name="intake_time"
+					value="${e.intake_time}"><br>
+				</label> <label> 用量 <input type="text" name="dosage"
+					value="${e.dosage}"><br>
+				</label> <label> メモ <input type="text" name="memo" value="${e.memo}"><br>
+				</label>
+				<div class="button-group">
+					<input type="submit" name="submit" value="更新"> <input
+						type="submit" name="delete" value="削除">
+				</div>
+			</form>
+			<p id="regist"></p>
+		</c:forEach>
+		<c:if test="${empty cardList}">
+			<p>指定された条件に一致するデータはありません。</p>
+		</c:if>
+	</main>
+
+	<footer>
+		<%@ include file="/WEB-INF/jsp/footer.jsp"%>
+	</footer>
+
+	<!-- JS: バリデーション -->
+	<script>
 'use strict';
-    document.getElementById('regist_form').onsubmit= function(){
-    	const formalName = document.getElementById('regist_form').formalName.value;
-    	const intake_time = document.getElementById('regist_form').intake_time.value;
+// 各フォームごとにバリデーションを設定
+document.querySelectorAll('form.form-box').forEach(function(form) {
+    form.onsubmit = function(event){
+        const formalName = form.formalName.value;
+        const intake_time = form.intake_time.value;
         if (formalName ==='' || intake_time ===''){
-            document.getElementById('regist').textContent ='体温と睡眠休養感を入力してください';
+            alert('薬の正式名称と服薬時間を入力してください');
             event.preventDefault();
         }
     }
+});
 </script>
 </body>
 </html>
