@@ -519,7 +519,7 @@ function formatTime(date) {
 											<c:otherwise>―</c:otherwise>
 										</c:choose></td>
 									<td><c:out value="${rec.sleep}" /></td>
-									<!-- <td><c:out value="${rec.memo}" /></td>-->
+									<td><c:out value="${rec.memo}" /></td>
 								</tr>
 							</c:forEach>
 						</c:when>

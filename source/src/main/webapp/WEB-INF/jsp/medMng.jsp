@@ -1,5 +1,6 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -213,7 +214,6 @@ input[name="delete"], input[name="submit"] {
 		<%@ include file="/WEB-INF/jsp/header.jsp"%>
 	</header>
 
-	<!-- ナビゲーションボタン -->
 	<div class="button-nav">
 		<a href="${pageContext.request.contextPath}/OmoiyalinkMedRegist">薬の登録</a>
 		<a href="${pageContext.request.contextPath}/OmoiyalinkTlkMedMng">服薬一覧</a>
@@ -229,24 +229,26 @@ input[name="delete"], input[name="submit"] {
 		<c:forEach var="e" items="${cardList}">
 			<form method="POST"
 				action="${pageContext.request.contextPath}/OmoiyalinkMedMng"
-				class="form-box">
+				class="form-box" accept-charset="UTF-8">
 				<input type="hidden" name="medicationId" value="${e.medicationId}">
+
 				<label> 薬の正式名称 <input type="text" name="formalName"
-					value="${e.formalName}"><br>
+					value="${e.formalName}" required>
 				</label> <label> 薬の愛称 <input type="text" name="nickName"
-					value="${e.nickName}"><br>
+					value="${e.nickName}">
 				</label> <label> 服薬時間 <input type="time" name="intake_time"
-					value="${e.intake_time}"><br>
+					value="<c:out value='${fn:substring(e.intakeTime,0,5)}'/>">
 				</label> <label> 用量 <input type="text" name="dosage"
-					value="${e.dosage}"><br>
-				</label> <label> メモ <input type="text" name="memo" value="${e.memo}"><br>
+					value="${e.dosage}">
+				</label> <label> メモ <input type="text" name="memo" value="${e.memo}">
 				</label>
+
 				<div class="button-group">
 					<input type="submit" name="submit" value="更新"> <input
-						type="submit" name="delete" value="削除">
+						type="submit" name="submit" value="削除"
+						style="background: #f4645f;">
 				</div>
 			</form>
-			<p id="regist"></p>
 		</c:forEach>
 		<c:if test="${empty cardList}">
 			<p>指定された条件に一致するデータはありません。</p>
@@ -257,20 +259,20 @@ input[name="delete"], input[name="submit"] {
 		<%@ include file="/WEB-INF/jsp/footer.jsp"%>
 	</footer>
 
-	<!-- JS: バリデーション -->
+	<script
+		src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 	<script>
-'use strict';
-// 各フォームごとにバリデーションを設定
-document.querySelectorAll('form.form-box').forEach(function(form) {
-    form.onsubmit = function(event){
-        const formalName = form.formalName.value;
-        const intake_time = form.intake_time.value;
-        if (formalName ==='' || intake_time ===''){
-            alert('薬の正式名称と服薬時間を入力してください');
-            event.preventDefault();
-        }
-    }
-});
-</script>
+	// バリデーション
+	document.querySelectorAll('form.form-box').forEach(function(form) {
+		form.onsubmit = function(event){
+			const formalName = form.formalName.value;
+			const intake_time = form.intake_time.value;
+			if (formalName ==='' || intake_time ===''){
+				alert('薬の正式名称と服薬時間を入力してください');
+				event.preventDefault();
+			}
+		}
+	});
+	</script>
 </body>
 </html>
