@@ -2,6 +2,7 @@ package servlet;
 
 import java.io.IOException;
 import java.sql.Date;
+import java.sql.Time;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -90,9 +91,9 @@ public class MedMngServlet extends CustomTemplateServlet {
 
 			// 4. 日付データ変換（例外発生時はcatchで処理）
 			Date createdAt = Date.valueOf(createdAtStr);
-			Date intakeTime = null;
+			Time intakeTime = null;
 			if (intakeTimeStr != null && !intakeTimeStr.isEmpty()) {
-				intakeTime = Date.valueOf(intakeTimeStr); // ※型やデータ形式はDB仕様に合わせて調整！
+				intakeTime = Time.valueOf(intakeTimeStr); // ※型やデータ形式はDB仕様に合わせて調整！
 			}
 
 			// 5. 入力内容からDTO生成

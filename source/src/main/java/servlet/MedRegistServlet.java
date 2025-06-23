@@ -2,6 +2,7 @@ package servlet;
 
 import java.io.IOException;
 import java.sql.Date;
+import java.sql.Time;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -67,9 +68,9 @@ public class MedRegistServlet extends CustomTemplateServlet {
 			// --- データ型変換 ---
 			// createdAtはyyyy-MM-dd形式が必要。intakeTimeはアプリ設計による（多くはTime型かString）
 			Date createdAt = Date.valueOf(createdAtStr);
-			Date intakeTime = null;
+			Time intakeTime = null;
 			if (intakeTimeStr != null && !intakeTimeStr.isEmpty()) {
-				intakeTime = Date.valueOf(intakeTimeStr);
+				intakeTime = Time.valueOf(intakeTimeStr);
 			}
 
 			// --- セッションからログインユーザー情報取得 ---
