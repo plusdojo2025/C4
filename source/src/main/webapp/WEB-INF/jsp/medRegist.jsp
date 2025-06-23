@@ -1,44 +1,56 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+	pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>薬の新規登録</title>
 <style>
-/* === ページ全体ベース === */
 form {
-    max-width: 600px; margin: 0 auto;
- }
+	max-width: 600px;
+	margin: 0 auto;
+}
+
 label {
-    display: block; margin-top: 1em;
+	display: block;
+	margin-top: 1em;
 }
-        
+
 input[type="text"], textarea {
-    width: 100%; padding: 0.5em;
+	width: 100%;
+	padding: 0.5em;
 }
+
 .checkbox-group {
-margin-top: 0.5em;
+	margin-top: 0.5em;
 }
+
 .checkbox-group label {
-    display: inline-block; margin-right: 1em;
+	display: inline-block;
+	margin-right: 1em;
 }
+
 .readonly-info {
-    background: #f4f4f4; padding: 0.5em;
+	background: #f4f4f4;
+	padding: 0.5em;
 }
+
 .error {
-    color: red; margin-top: 1em;
+	color: red;
+	margin-top: 1em;
 }
+
 button {
-    margin-top: 1em;
+	margin-top: 1em;
 }
+
 html, body {
 	height: 100%;
 	margin: 0;
 	padding: 0;
 	box-sizing: border-box;
-	background: #FFFEEF; /* 背景色指定 */
-	color: #22292F; /* 薄めの黒（ややグレー系：#22292F） */
+	background: #FFFEEF;
+	color: #22292F;
 	font-family: 'メイリオ', 'Meiryo', 'sans-serif';
 	font-size: 17px;
 	line-height: 1.8;
@@ -66,7 +78,6 @@ label, .label {
 	color: #22292F;
 	font-weight: bold;
 }
-
 /* === レスポンシブ設計 === */
 @media ( max-width : 600px) {
 	html, body {
@@ -130,69 +141,81 @@ input:focus, select:focus, textarea:focus {
 	border-color: #46B1E1;
 	background: #fcf8f0;
 }
+
 #regist {
-    text-align: center;
-    font-size: 1.5rem;
-    color: #FF6368;
+	text-align: center;
+	font-size: 1.5rem;
+	color: #FF6368;
+}
+/* ナビゲーションボタン */
+.button-nav {
+	display: flex;
+	justify-content: center;
+	gap: 18px;
+	margin: 22px 0 10px 0;
 }
 
+.button-nav a {
+	background: #46B1E1;
+	color: #fff;
+	border: none;
+	border-radius: 9px;
+	padding: 0.65em 1.6em;
+	font-size: 1em;
+	font-family: inherit;
+	text-decoration: none;
+	transition: background 0.22s;
+	display: inline-block;
+}
+
+.button-nav a:hover {
+	background: #2d7ea3;
+}
 </style>
 </head>
 <body>
-<header>
-<!-- 共通ヘッダー -->
-    <%@ include file="/WEB-INF/jsp/header.jsp" %>
-    <h1>薬の新規登録</h1>
-</header>
+	<header>
+		<%@ include file="/WEB-INF/jsp/header.jsp"%>
+		<h1>薬の新規登録</h1>
+	</header>
 
-<!-- メイン -->
-<main>
-    <form method="POST" action="${pageContext.request.contextPath}/OmoiyalinkMedRegist" autocomplete="off" 
-    id="regist_form" class="form-box">
-        <label>
-            薬の正式名称（必須項目）
-            <input type="text" name="formalName"><br>
-        </label>
-        <label>
-            薬の愛称
-            <input type="text" name="nickName"><br>
-        </label>
-        <label>
-            服薬時間(必須項目)
-            <input type="time" name="intake_time"><br>
-        </label>
-        <label>
-            用量
-            <input type="text" name="dosage"><br>
-        </label>
-        <label>
-            メモ
-            <input type="text" name="memo"><br>
-        </label>
-    	<p id="regist"></p>
-        <button type="submit">登録する</button>
-    </form>
+	<!-- ナビゲーションボタン -->
+	<div class="button-nav">
+		<a href="${pageContext.request.contextPath}/OmoiyalinkMedMng">登録した薬の一覧</a>
+		<a href="${pageContext.request.contextPath}/OmoiyalinkTlkMedMng">服薬一覧</a>
+		<a href="${pageContext.request.contextPath}/OmoiyalinkTlkMedRegist">服薬登録</a>
+	</div>
 
-</main>
-    <!-- メインここまで -->
+	<main>
+		<form method="POST"
+			action="${pageContext.request.contextPath}/OmoiyalinkTlkMedRegist"
+			autocomplete="off" id="regist_form" class="form-box"
+			accept-charset="UTF-8">
+			<label> 薬の正式名称（必須項目） <input type="text" name="formalName"><br>
+			</label> <label> 薬の愛称 <input type="text" name="nickName"><br>
+			</label> <label> 服薬時間(必須項目) <input type="time" name="intake_time"><br>
+			</label> <label> 用量 <input type="text" name="dosage"><br>
+			</label> <label> メモ <input type="text" name="memo"><br>
+			</label>
+			<p id="regist"></p>
+			<button type="submit">登録する</button>
+		</form>
+	</main>
 
-<footer>
-<!-- 共通フッター -->
-    <%@ include file="/WEB-INF/jsp/footer.jsp" %>
-</footer>
+	<footer>
+		<%@ include file="/WEB-INF/jsp/footer.jsp"%>
+	</footer>
 
-<!-- Javascriptの設定 -->
-<script>
+	<script>
 'use strict';
-    document.getElementById('regist_form').onsubmit= function(){
-    	const formalName = document.getElementById('regist_form').formalName.value;
-    	const intake_time = document.getElementById('regist_form').intake_time.value;
+    document.getElementById('regist_form').onsubmit = function(event){
+        const formalName = document.getElementById('regist_form').formalName.value;
+        const intake_time = document.getElementById('regist_form').intake_time.value;
         if (formalName ==='' || intake_time ===''){
             document.getElementById('regist').textContent ='薬の正式名称と服薬時間を入力してください';
             event.preventDefault();
         }
     }
-</script>	
-
+</script>
 </body>
 </html>

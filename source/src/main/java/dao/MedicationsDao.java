@@ -4,8 +4,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Time;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import dto.MedicationsDto;
@@ -21,7 +21,7 @@ public class MedicationsDao extends CustomTemplateDao<MedicationsDto> {
 			conn = conn();
 
 			// SQL文を準備する
-			String sql = "SELECT * FROM Medications WHERE Medication_id = ?";
+			String sql = "SELECT * FROM medications WHERE medication_id = ?";
 			PreparedStatement pStmt = conn.prepareStatement(sql);
 
 			// SQL文を完成させる
@@ -35,12 +35,12 @@ public class MedicationsDao extends CustomTemplateDao<MedicationsDto> {
 			while (rs.next()) {
 				MedicationsDto Medications = new MedicationsDto(rs.getInt("medication_id"), rs.getInt("user_id"),
 						rs.getString("nickname"), rs.getString("formal_name"), rs.getString("dosage"),
-						rs.getDate("created_at"), rs.getString("memo"), rs.getDate("intake_time"));
+						rs.getDate("created_at"), rs.getString("memo"), rs.getTime("intake_time"));
 				medicationList.add(Medications);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
-			medicationList = null;
+			return new ArrayList<>(); 
 		} finally {
 			// データベースを切断
 			close(conn);
@@ -99,10 +99,11 @@ public class MedicationsDao extends CustomTemplateDao<MedicationsDto> {
 
 			// SQL文を準備する
 			String sql = """
-					INSERT Medications(userId , nickname , formalName , dosage , createdAt , memo , intakeTime)
-										VALEUS(       ?,                ?,                   ?,            ?,             ? ,          ?,                ?)
+					INSERT INTO medications(user_id , nickname , formal_name , dosage , created_at , memo , intake_time)
+										VALUES(       ?,                ?,                   ?,            ?,             ? ,          ?,                ?)
 					""";
-			PreparedStatement pStmt = conn.prepareStatement(sql);
+			PreparedStatement pStmt = conn.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
+
 
 			pStmt.setInt(1, dto.getUserId());
 			pStmt.setString(2, dto.getNickname());
@@ -110,8 +111,8 @@ public class MedicationsDao extends CustomTemplateDao<MedicationsDto> {
 			pStmt.setString(4, dto.getDosage());
 			pStmt.setDate(5, new java.sql.Date(dto.getCreatedAt().getTime()));
 			pStmt.setString(6, dto.getMemo());
-			pStmt.setDate(7, new java.sql.Date(dto.getIntakeTime().getTime()));
-			pStmt.setInt(8, dto.getMedicationId());
+			pStmt.setTime(7, new java.sql.Time(dto.getIntakeTime().getTime()));
+
 
 			// SQL文を実行する
 			if (pStmt.executeUpdate() == 1) {
@@ -143,7 +144,7 @@ public class MedicationsDao extends CustomTemplateDao<MedicationsDto> {
 
 			// SQL文を準備する
 			String sql = """
-										UPDATE Medications
+										UPDATE medications
 										SET
 					  user_id = ?
 					,  nickname =?
@@ -151,7 +152,6 @@ public class MedicationsDao extends CustomTemplateDao<MedicationsDto> {
 					,  dosage =?
 					,  created_at =?
 					,  memo =?
-					,  created_at =?
 					,  intake_time =?
 										WHERE medication_id = ?
 										""";
@@ -164,7 +164,7 @@ public class MedicationsDao extends CustomTemplateDao<MedicationsDto> {
 			pStmt.setString(4, dto.getDosage());
 			pStmt.setDate(5, new java.sql.Date(dto.getCreatedAt().getTime()));
 			pStmt.setString(6, dto.getMemo());
-			pStmt.setDate(7, new java.sql.Date(dto.getIntakeTime().getTime()));
+			pStmt.setTime(7, new java.sql.Time(dto.getIntakeTime().getTime()));
 			pStmt.setInt(8, dto.getMedicationId());
 
 			// SQL文を実行する
@@ -193,7 +193,7 @@ public class MedicationsDao extends CustomTemplateDao<MedicationsDto> {
 			conn = conn();
 
 			// SQL文を準備する
-			String sql = "DELETE FROM users WHERE medication_id=?";
+			String sql = "DELETE FROM medications WHERE medication_id=?";
 			PreparedStatement pStmt = conn.prepareStatement(sql);
 
 			// SQL文を完成させる
@@ -223,18 +223,18 @@ public class MedicationsDao extends CustomTemplateDao<MedicationsDto> {
 		dto.setDosage(rs.getString("dosage"));
 		dto.setCreatedAt(rs.getTimestamp("created_at"));
 		dto.setMemo(rs.getString("memo"));
-		dto.setIntakeTime(rs.getTimestamp("intake_time"));
+		dto.setIntakeTime(rs.getTime("intake_time"));
 		return dto;
 	}
 
 	// MedicationsDao.java内
-	public List<MedicationsDto> findByIntakeTime(Date intakeTime) {
+	public List<MedicationsDto> findByIntakeTime(Time intakeTime) {
 		List<MedicationsDto> result = new ArrayList<>();
 		try (Connection conn = conn()) {
 			// intake_timeが「±数分以内」も許可したい場合はBETWEENで幅をもたせる
 			String sql = "SELECT * FROM medications WHERE intake_time = ?";
 			PreparedStatement stmt = conn.prepareStatement(sql);
-			stmt.setTimestamp(1, new java.sql.Timestamp(intakeTime.getTime()));
+			stmt.setTime(1, new java.sql.Time(intakeTime.getTime()));
 			ResultSet rs = stmt.executeQuery();
 			while (rs.next()) {
 				result.add(mapRowToMedicationsDto(rs));

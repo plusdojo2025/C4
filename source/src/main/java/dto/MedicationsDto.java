@@ -1,6 +1,7 @@
 package dto;
 
 import java.io.Serializable;
+import java.sql.Time;
 import java.util.Date;
 
 
@@ -13,11 +14,11 @@ public class MedicationsDto extends CustomeTemplateDto  implements Serializable{
 	private String dosage;
 	private Date createdAt;
 	private String memo;
-	private Date intakeTime;
+	private Time intakeTime;
 
 
 	public MedicationsDto(int medicationId, int userId, String nickname, String formalName, String dosage,
-			Date createdAt, String memo, Date intakeTime) {
+			Date createdAt, String memo, Time intakeTime) {
 		super();
 		this.medicationId = medicationId;
 		this.userId = userId;
@@ -105,12 +106,12 @@ public class MedicationsDto extends CustomeTemplateDto  implements Serializable{
 	}
 
 
-	public Date getIntakeTime() {
+	public Time getIntakeTime() {
 		return intakeTime;
 	}
 
 
-	public void setIntakeTime(Date intakeTime) {
+	public void setIntakeTime(Time intakeTime) {
 		this.intakeTime = intakeTime;
 	}
 
