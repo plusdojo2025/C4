@@ -18,6 +18,7 @@ public abstract class CustomTemplateServlet extends HttpServlet {
      */
     public boolean checkLogout(HttpServletRequest request, HttpServletResponse response)
             throws IOException {
+		request.setCharacterEncoding("UTF-8");
         String logout = request.getParameter("logout");
         boolean result = (logout != null);
         if (result) {
