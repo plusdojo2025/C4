@@ -96,7 +96,7 @@ button:hover, .menu-btn:hover {
 	display: flex;
 	justify-content: center;
 	gap: 30px;
-	margin-top: 100px;
+	margin-top: 80px;
 }
 
 .red {
