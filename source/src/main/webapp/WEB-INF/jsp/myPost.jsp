@@ -117,7 +117,7 @@ input:focus, select:focus, textarea:focus {
   background-color: #46B1E1; /* 青色 */
   color: #FFFEEF;
   padding: 15px 30px;
-  margin-top: 100px !important; /* ヘッダーがfixedなので被らないようにする */
+  margin-top: 0px;
 }
 
 .sub-header h2 {

@@ -115,7 +115,7 @@ button:hover, .btn:hover {
 	background-color: #46B1E1;
 	color: #FFFEEF;
 	padding: 15px 30px;
-	margin-top: 100px;
+	margin-top: 0px;
 }
 
 .sub-header h2 {
