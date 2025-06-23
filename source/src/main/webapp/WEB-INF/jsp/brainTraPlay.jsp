@@ -31,6 +31,7 @@ h1 {
 	margin: 12px 0 18px 0;
 	color: #1993d1;
 	font-weight: bold;
+	text-align: center;
 	
 }
 
@@ -60,6 +61,7 @@ h1 {
 	margin: 18px 0;
 	font-size: 1.15em;
 	color: #196;
+	text-align: center;
 }
 
 .result-msg {
@@ -68,6 +70,7 @@ h1 {
 	font-weight: bold;
 	margin: 13px 0 5px 0;
 	height: 2em;
+	text-align: center;
 	
 }
 
@@ -81,8 +84,6 @@ h1 {
 </style>
 </head>
 <body>
-
-
 	<h1>後出しじゃんけん</h1>
 
 	<div class="timer-box">
@@ -133,7 +134,7 @@ h1 {
 	const timer = setInterval(() => {
 		time--;
 		document.getElementById("timer").textContent = time;
-		if (time === 0) {  // >= を === に直す
+		if (time >= 0) {  // >= を === に直す
 			clearInterval(timer);
 			endGame();
 		}

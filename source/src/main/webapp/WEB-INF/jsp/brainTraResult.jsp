@@ -73,6 +73,7 @@ button:hover, .menu-btn:hover {
 	color: #c24b3b;
 	font-size: 1.05em;
 	margin-bottom: 8px;
+	text-align: center;
 }
 
 html, body {
