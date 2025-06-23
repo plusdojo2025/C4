@@ -481,9 +481,9 @@ function formatTime(date) {
 						<th>体温（℃）</th>
 						<th>最高血圧</th>
 						<th>最低血圧</th>
-						<th>脈拍</th>
-						<th>血中酸素</th>
-						<th>睡眠休養感</th>
+						<th>脈拍(bpm)</th>
+						<th>血中酸素濃度(%)</th>
+						<th>睡眠休養感(不眠 １ 2 3 4 ５ 快眠)</th>
 						<!--<th>メモ</th>-->
 					</tr>
 				</thead>

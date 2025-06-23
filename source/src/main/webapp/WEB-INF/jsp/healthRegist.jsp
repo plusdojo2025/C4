@@ -151,15 +151,15 @@ input:focus, select:focus, textarea:focus {
 			accept-charset="UTF-8">
 			<label> 日付 <input type="date" name="createdAt" required
 				value="<%= new java.text.SimpleDateFormat("yyyy-MM-dd").format(new java.util.Date()) %>">
-			</label> <label> 体温 <input type="text" name="temperature" required
+			</label> <label> 体温(℃) <input type="text" name="temperature" required
 				pattern="\d+(\.\d+)?" placeholder="例：36.6">
 			</label> <label> 最大血圧 <input type="text" name="highBp" pattern="\d*"
 				placeholder="例：120">
 			</label> <label> 最小血圧 <input type="text" name="lowBp" pattern="\d*"
 				placeholder="例：80">
-			</label> <label> 脈拍 <input type="text" name="pulseRate" pattern="\d*"
-				placeholder="例：70">
-			</label> <label> 血中酸素濃度 <input type="text" name="pulseOx"
+			</label> <label> 脈拍(bpm) <input type="text" name="pulseRate"
+				pattern="\d*" placeholder="例：70">
+			</label> <label> 血中酸素濃度(%) <input type="text" name="pulseOx"
 				pattern="\d+(\.\d+)?" placeholder="例：98.2">
 			</label> <label> 睡眠休養感（必須項目） <select name="sleep" required>
 					<option value="">選択してください</option>
@@ -169,8 +169,8 @@ input:focus, select:focus, textarea:focus {
 					<option value="2">あまり眠れなかった</option>
 					<option value="1">全然眠れなかった</option>
 			</select>
-			</label><!--  <label> メモ <input type="text" name="memo"
-				placeholder="例：薬を飲んだ。頭痛あり。良く眠れた。"></label>-->
+			</label> <label> メモ <input type="text" name="memo"
+				placeholder="例：薬を飲んだ。頭痛あり。良く眠れた。"></label>
 			<p id="regist"></p>
 			<button type="submit">登録する</button>
 		</form>
