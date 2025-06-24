@@ -345,11 +345,16 @@ h1 {
 					<strong>投稿日:</strong> ${post.createdAt}
 				</p>
 				<div>
-					<button>${post.likedByCurrentUser ? "いいね解除" : "いいね"}</button><br>
-					<span>${post.likeCount}件</span>
-					<c:forEach var="name" items="${post.likedUsers}">
-						<span>${name}</span>
-					</c:forEach>
+					<!-- いいねボタンと件数・ユーザーリストをclass付きで配置！ -->
+					<button class="likeBtn"
+						data-liked="${post.likedByCurrentUser ? 'true' : 'false'}">
+						${post.likedByCurrentUser ? "いいね解除" : "いいね"}</button>
+					<span class="likeCount">${post.likeCount}件</span> <span
+						class="likeUsers"> <c:forEach var="name"
+							items="${post.likedUsers}" varStatus="status">
+            				${name}<c:if test="${!status.last}">, </c:if>
+						</c:forEach>
+					</span>
 				</div>
 			</div>
 		</c:forEach>
