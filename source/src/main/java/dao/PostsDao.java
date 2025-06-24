@@ -16,7 +16,11 @@ public class PostsDao {
     // ユーザーIDで自分の投稿だけ取得
     public List<PostsDto> selectByUserId(int userId) {
         List<PostsDto> list = new ArrayList<>();
-        String sql = "SELECT * FROM posts WHERE user_id = ? ORDER BY created_at DESC";
+        String sql = "SELECT p.*, u.name AS user_name "
+                + "FROM posts p "
+                + "JOIN users u ON p.user_id = u.user_id "
+                + "WHERE p.user_id = ? "
+                + "ORDER BY p.created_at DESC";
         try (Connection conn = DBUtil.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, userId);
@@ -103,13 +107,13 @@ public class PostsDao {
         PostsDto dto = new PostsDto();
         dto.setPostId(rs.getInt("post_id")); // ←ここを「id」→「post_id」に修正
         dto.setUserId(rs.getInt("user_id"));
+        dto.setUserName(rs.getString("user_name"));
         dto.setTag(rs.getString("tag"));
         dto.setTitle(rs.getString("title"));
         dto.setContent(rs.getString("content"));
         dto.setCreatedAt(rs.getTimestamp("created_at"));
         dto.setPref(rs.getString("pref"));
         dto.setCity(rs.getString("city"));
-        dto.setUserName(rs.getString("user_name"));
         
         return dto;
     }
