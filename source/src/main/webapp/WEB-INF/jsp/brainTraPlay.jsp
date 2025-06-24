@@ -17,7 +17,7 @@ html, body {
     font-size: 17px;
     line-height: 1.8;
     background-image: url('<%=request.getContextPath()%>/img/R (1).jpg');
-    background-position: center;
+    background-position: center 850px;
 }
 
 h1 {
