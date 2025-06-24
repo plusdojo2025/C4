@@ -8,6 +8,10 @@
 <link rel="stylesheet"
 	href="${pageContext.request.contextPath}/css/common.css">
 <style>
+.page {
+	margin: 2rem;
+}
+
 table {
 	border-collapse: collapse;
 	width: 100%;
@@ -23,14 +27,20 @@ th {
 	background-color: #f2f2f2;
 }
 
-input[type="text"] {
-	width: 95%;
+input[type="date"], input[type="time"], input[type="text"] {
+  font-size: 1.1rem;
+  min-width: 90px;
+  max-width: 170px;
+  width: 100%;
+  box-sizing: border-box;
+ margin-bottom: 0;
 }
 
 table {
 	width: 100%;
 	border-collapse: collapse;
 	margin-bottom: 20px;
+	table-layout: fixed;
 }
 
 th, td {
@@ -38,6 +48,14 @@ th, td {
 	padding: 8px;
 	text-align: center;
 }
+
+th:nth-child(1), td:nth-child(1) { width: 15%; }  /* 日付 */
+th:nth-child(2), td:nth-child(2) { width: 10%; }  /* 飲んだ時間 */
+th:nth-child(3), td:nth-child(3) { width: 15%; }  /* 愛称 */
+th:nth-child(4), td:nth-child(4) { width: 20%; }  /* 正式名称*/
+th:nth-child(5), td:nth-child(5) { width: 10%; }  /* 用量 */
+th:nth-child(5), td:nth-child(5) { width: 20%; }  /* メモ */
+th:nth-child(5), td:nth-child(5) { width: 10%; }  /*ボタン*/
 
 h2 {
 	margin-top: 120px;
@@ -63,6 +81,41 @@ h3 {
 	font-size: 2rem;
 	text-align: center;
 }
+
+/*更新、削除ボタン*/
+.buttonE, .buttonD {
+  font-size: 1rem;
+  padding: 7px 20px;
+  border-radius: 6px;
+  margin: 0 5px 5px 0;
+  border: none;
+  cursor: pointer;
+}
+
+.buttonE {
+  background: #82bdf7;
+  color: white;
+  font-weight: bold;
+}
+
+.buttonD {
+  background: #ff9e86;
+  color: white;
+  font-weight: bold;
+}
+
+.edit-plain {
+  width: 100%;
+  font-size: 1.5rem;
+  border: none;
+  background: transparent;
+  color: inherit;
+  padding: 0 3px;
+}
+.edit-plain:focus {
+  outline: 1.5px solid #74b6ea;
+  background: #f3f8fd;
+}
 </style>
 </head>
 <body>
@@ -70,40 +123,47 @@ h3 {
 	<div class="sub-header">
 		<h2>服薬登録一覧</h2>
 	</div>
-	<!-- メッセージ表示 -->
-	<c:if test="${not empty message}">
-		<div style="color: red;">${message}</div>
-	</c:if>
+	
+	<div class = "page">
+
 
 	<table class="table-meds">
 		<thead>
 			<tr>
+				<th>日付</th>
+				<th>飲んだ時間</th>
 				<th>薬の愛称</th>
 				<th>薬の正式名称</th>
 				<th>用量</th>
-				<th>日付</th>
-				<th>飲んだ時間</th>
 				<th>メモ</th>
-				<th>操作</th>
+				<th>ボタン</th>
 			</tr>
 		</thead>
 		<tbody>
 			<c:forEach var="log" items="${mlogList}">
 				<tr>
 					<form action="OmoiyalinkTlkMedMng" method="post">
-						<td>${log.nickname}</td>
-						<td>${log.formalName}</td>
-						<td>${log.dosage}</td>
-						<td><input type="date" name="takenTime"
-							value="${log.takenTimeString}" required style="width: 110px;">
+						<td><input type="date" name="takenTime" value="${log.takenTimeString}" required 
+						class="edit-plain">
 						</td>
-						<td><input type="time" name="takenTimeHourMin"
-							value="${log.takenTimeHourMin}" required style="width: 80px;">
+						<td><input type="time" name="takenTimeHourMin" value="${log.takenTimeHourMin}" required 
+						class="edit-plain" >
+						</td>
+						<td>
+						  <input type="text" name="nickname" value="${log.nickname}" class="edit-plain">
+						</td>
+						<td>
+						  <input type="text" name="formalName" value="${log.formalName}" class="edit-plain">
+						</td>
+						<td>
+						  <input type="text" name="dosage" value="${log.dosage}" class="edit-plain">
 						</td>
 						<td><input type="text" name="memo" value="${log.memo}"
-							style="width: 120px;"></td>
+						class="edit-plain"></td>
 						<td>
-							<!-- 必要なhidden値を全部送る --> <input type="hidden" name="logId"
+						
+							<!-- 必要なhidden値を全部送る -->
+							 <input type="hidden" name="logId"
 							value="${log.logId}"> <input type="hidden"
 							name="nickname" value="${log.nickname}"> <input
 							type="hidden" name="formalName" value="${log.formalName}">
@@ -111,8 +171,8 @@ h3 {
 							<input type="hidden" name="medicationId"
 							value="${log.medicationId}"> <input type="hidden"
 							name="takenMed" value="${log.takenMed}"> <!-- 更新ボタンと削除ボタン -->
-							<input type="submit" name="submit" value="編集" class="button">
-							<input type="submit" name="submit" value="削除" class="button"
+							<input type="submit" name="submit" value="更新" class="buttonE">
+							<input type="submit" name="submit" value="削除" class="buttonD"
 							onclick="return confirm('本当に削除しますか？');">
 						</td>
 					</form>
@@ -120,10 +180,15 @@ h3 {
 			</c:forEach>
 		</tbody>
 	</table>
+	<!-- メッセージ表示 -->
+	<c:if test="${not empty message}">
+		<div style="color: red;">${message}</div>
+	</c:if>
 
 	<br>
 	<a href="OmoiyalinkHome"><button>トップに戻る</button></a>
 	<a href="OmoiyalinkTlkMedRegist"><button>服薬記録を追加</button></a>
+	</div>
 <%@ include file="footer.jsp"%>
 </body>
 </html>

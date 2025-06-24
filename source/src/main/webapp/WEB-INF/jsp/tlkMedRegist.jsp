@@ -28,7 +28,9 @@ th {
 input[type="text"] {
 	width: 95%;
 }
-
+input {
+margin-bottom: 0;
+}
 table {
 	width: 100%;
 	border-collapse: collapse;
