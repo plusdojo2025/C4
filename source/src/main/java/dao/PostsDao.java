@@ -53,7 +53,10 @@ public class PostsDao {
     // 検索条件で取得（タグ・都道府県・市区町村などを使って）
     public List<PostsDto> select(PostsDto condition) {
         List<PostsDto> list = new ArrayList<>();
-        StringBuilder sql = new StringBuilder("SELECT * FROM posts  WHERE 1=1");
+        StringBuilder sql = new StringBuilder("SELECT p.*, u.name AS user_name " +
+                "FROM posts p " +
+                "JOIN users u ON p.user_id = u.user_id " +
+                "WHERE 1=1");
         List<Object> params = new ArrayList<>();
 
         if (condition.getTag() != null && !condition.getTag().isEmpty()) {
@@ -106,6 +109,8 @@ public class PostsDao {
         dto.setCreatedAt(rs.getTimestamp("created_at"));
         dto.setPref(rs.getString("pref"));
         dto.setCity(rs.getString("city"));
+        dto.setUserName(rs.getString("user_name"));
+        
         return dto;
     }
 }

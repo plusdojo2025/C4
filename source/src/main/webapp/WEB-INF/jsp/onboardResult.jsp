@@ -334,12 +334,17 @@ h1 {
 		<c:forEach var="post" items="${postsList}">
 			<div class="post" data-post-id="${post.id}">
 				<h3>${post.title}</h3>
-				<p>${post.content}</p>
+				<p>
+					<strong>投稿者:</strong> ${post.userName}
+				</p>				
 				<p>
 					<strong>場所:</strong> ${post.pref} / ${post.city}
 				</p>
 				<p>
 					<strong>タグ:</strong> ${post.tag}
+				</p>
+				<p>
+					${post.content}
 				</p>
 				<p>
 					<strong>投稿日:</strong> ${post.createdAt}

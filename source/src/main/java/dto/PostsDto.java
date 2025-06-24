@@ -7,6 +7,7 @@ import java.util.List;
 public class PostsDto implements Serializable {
     private int postId;        // posts.post_id
     private int userId;        // posts.user_id
+    private String userName;   // users.name
     private String tag;        // posts.tag
     private String title;      // posts.title
     private String content;    // posts.content
@@ -43,6 +44,12 @@ public class PostsDto implements Serializable {
     }
     public void setUserId(int userId) {
         this.userId = userId;
+    }
+    public String getUserName() {
+        return userName;
+    }
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
     public String getTag() {
