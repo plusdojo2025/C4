@@ -279,6 +279,46 @@ h1 {
 	text-align: center;
 	font-size: 1.3rem;
 }
+ .sub-header {
+  background-color: #46B1E1;
+  color: #FFFEEF;
+  padding: 15px 30px;
+  margin-top: 100px; /* ← ここを追加！ */
+  text-align: center;
+}
+
+
+  .sub-header h2 {
+    margin: 0;
+    font-size: 2.4rem;
+  }
+
+.search-controls {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  margin-bottom: 2em;
+}
+
+.search-controls .font-size-buttons button,
+.search-controls .nav-buttons-inline button {
+  font-size: 1.6em;
+  padding: 1.0em 1.5em;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  background-color: #46B1E1;
+  color: white;
+  transition: background 0.2s;
+}
+
+.search-controls .font-size-buttons button:hover,
+.search-controls .nav-buttons-inline button:hover {
+  background-color: #2d7ea3;
+}
+
 </style>
 </head>
 <body>
@@ -314,18 +354,24 @@ h1 {
 	<!-- ヘッダここまで -->
 	<!-- メイン -->
 	<main>
-		<div class="fixed-font-buttons">
-			<button onclick="document.body.style.fontSize='20px'">標準</button>
-			<button onclick="document.body.style.fontSize='28px'">大きめ</button>
-			<button onclick="document.body.style.fontSize='36px'">特大</button>
-		</div>
+	<div class="sub-header">
+	<h2>検索結果一覧</h2>
+	</div>
 
-		<div class="nav-buttons">
-			<button onclick="location.href='OnboardSearch'">検索に戻る</button>
-			<button onclick="location.href='OmoiyalinkHome'">ホームへ戻る</button>
-		</div>
+<div class="search-controls">
+  <div class="font-size-buttons">
+    <button onclick="document.body.style.fontSize='20px'">標準</button>
+    <button onclick="document.body.style.fontSize='28px'">大</button>
+    <button onclick="document.body.style.fontSize='36px'">特大</button>
+  </div>
+  <div class="nav-buttons-inline">
+    <button onclick="location.href='OnboardSearch'">検索に戻る</button>
+    <button onclick="location.href='OmoiyalinkHome'">ホームへ戻る</button>
+  </div>
+</div>
 
-		<h1>検索結果一覧</h1>
+
+		
 
 		<c:if test="${empty postsList}">
 			<p class="empty-message">該当する投稿が見つかりませんでした。</p>

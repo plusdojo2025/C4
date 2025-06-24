@@ -105,6 +105,31 @@ button:hover, .btn:hover {
   background: #d82d3a;
 }
 
+.control-bar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 30px; /* ボタン間のスペース */
+  margin: 20px auto;
+  flex-wrap: wrap;
+}
+
+.font-size-buttons-inline button,
+.post-button-inline .btn {
+  background: #46B1E1;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 1.3em 1.8em;
+  font-size: 1.8em;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.font-size-buttons-inline button:hover,
+.post-button-inline .btn:hover {
+  background-color: #2d7ea3;
+}
 
   </style>
 </head>
@@ -116,11 +141,18 @@ button:hover, .btn:hover {
   <div class="sub-header">
     <h2>マイ投稿</h2>
   </div>
-
-<div class="font-size-buttons vertical-right">
-  <button onclick="changeFontSize(20)">標準</button>
-  <button onclick="changeFontSize(28)">大きめ</button>
-  <button onclick="changeFontSize(36)">特大</button>
+<!-- サブヘッダーのすぐ下 -->
+<div class="control-bar">
+  <div class="font-size-buttons-inline">
+    <button onclick="changeFontSize(20)">標準</button>
+    <button onclick="changeFontSize(28)">大</button>
+    <button onclick="changeFontSize(36)">特大</button>
+  </div>
+  <div class="post-button-inline">
+    <a href="OnboardRegist">
+      <button type="button" class="btn">投稿へ</button>
+    </a>
+  </div>
 </div>
 
 
@@ -156,13 +188,6 @@ button:hover, .btn:hover {
     </div>
   </c:forEach>
 </main>
-
-<!-- 右下に固定された投稿ボタン -->
-<div class="nav-buttons">
-  <a href="OnboardRegist">
-    <button type="button" class="btn">投稿へ</button>
-  </a>
-</div>
 
 <footer>
 	<%@ include file="/WEB-INF/jsp/footer.jsp" %>

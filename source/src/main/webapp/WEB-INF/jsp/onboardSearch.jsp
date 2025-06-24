@@ -9,7 +9,7 @@
 body {
 	margin: 0;
 	padding: 0;
-	padding-top: 100px; /* ヘッダー分の余白 */
+	padding-top: 100px;
 	color: #041117;
 	font-family: 'Noto Sans JP', sans-serif;
 	background: #FFFEEF;
@@ -35,14 +35,27 @@ header {
 	height: 100px;
 	object-fit: contain;
 }
+.header-button-row {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	gap: 2em;
+	margin-top: 1em;
+	flex-wrap: wrap;
+}
+
+
+.header-button-row .font-resize-buttons button,
+.header-button-row .post-buttons button {
+	font-size: 1.6rem;
+	padding: 1.0em 1.5em;
+}
 
 ul#nav {
 	list-style: none;
 	display: flex;
 	margin: 0;
 	padding: 0;
-	/* ↓通常時はflexで横並び */
-	/* ↓狭いときは下の@mediaで上書き */
 }
 
 ul#nav li {
@@ -55,7 +68,7 @@ ul#nav li a {
 	color: #46B1E1;
 	text-decoration: none;
 	font-weight: bold;
-	white-space: nowrap; /* 折り返し防止 */
+	white-space: nowrap;
 	display: flex;
 	align-items: center;
 	transition: background 0.16s;
@@ -66,21 +79,16 @@ ul#nav li a:hover {
 	background: #ecf6fc;
 }
 
-/* 横幅が狭いときはulに横スクロールを付ける！ */
-@media ( max-width : 700px) {
+@media (max-width: 700px) {
 	ul#nav {
 		overflow-x: auto;
 		white-space: nowrap;
 		-webkit-overflow-scrolling: touch;
 		width: 100vw;
-		margin-right: -30px; /* ヘッダー右padding分で右端も見える */
-		margin-left: -30px; /* 左も同様 */
+		margin-right: -30px;
+		margin-left: -30px;
 		padding-left: 30px;
 		padding-right: 30px;
-	}
-	ul#nav li {
-		display: inline-block;
-		margin-right: 0;
 	}
 	ul#nav li a {
 		font-size: 1.05rem;
@@ -88,7 +96,6 @@ ul#nav li a:hover {
 	}
 }
 
-/* スクロールバー消す（スマホではもともと目立たない）*/
 ul#nav::-webkit-scrollbar { display: none; }
 ul#nav { scrollbar-width: none; -ms-overflow-style: none; }
 
@@ -104,7 +111,6 @@ html, body {
 	line-height: 1.8;
 }
 
-/* 高コントラストモード */
 body.high-contrast {
 	background: #000 !important;
 	color: #FFF !important;
@@ -204,98 +210,68 @@ button:hover, .btn:hover {
 	justify-content: center;
 }
 
-.font-resize-buttons,
-.contrast-toggle {
+/* 新しいコントロール行のスタイル */
+.post-controls {
 	display: flex;
-	justify-content: center;
-	gap: 1em;
-	margin: 1.2em 0;
-}
-
-.font-resize-buttons button,
-.contrast-toggle button {
-	font-size: 1.3em;
-	padding: 0.8em 1.6em;
-	background: #46B1E1;
-	color: #fff;
-	border: none;
-	border-radius: 6px;
-	cursor: pointer;
-	transition: background 0.2s;
-}
-
-.font-resize-buttons button:hover,
-.contrast-toggle button:hover {
-	background: #2d7ea3;
-}
-
-.location-row {
-	display: flex;
-	gap: 20px;
-	margin-top: 1.5em;
+	justify-content: space-between;
+	align-items: center;
+	margin: 2em auto;
+	max-width: 880px;
 	flex-wrap: wrap;
+	gap: 1.5em;
 }
 
-.location-item {
-	flex: 1;
-	min-width: 250px;
+.post-controls .font-resize-buttons {
+	display: flex;
+	gap: 10px;
 }
 
-.right-bottom-buttons {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  justify-content: flex-start;
-  align-items: flex-end;
-  margin-left: auto;
-  margin-top: 2em;
+.post-controls .post-buttons {
+	display: flex;
+	gap: 15px;
 }
+
+header .btn {
+	font-size: 4em;
+	padding: 1.2em 3em;
+}
+
 </style>
 </head>
 <body>
 
 <%@ include file="/WEB-INF/jsp/header.jsp"%>
-<!-- ヘッダー -->
-	<header>
-		<h1 id="logo">
-			<a href="${pageContext.request.contextPath}/OmoiyalinkHome"> <img
-				src="${pageContext.request.contextPath}/img/logo.png" alt="おもいやリンク">
-			</a>
-		</h1>
-		<ul id="nav">
-			<li><a href="${pageContext.request.contextPath}/OmoiyalinkHome">
-					<i class="fa-solid fa-house"></i>&nbsp;ホーム
-			</a></li>
-			<li><a
-				href="${pageContext.request.contextPath}/OmoiyalinkHealthRegist">
-					<i class="fa-solid fa-heart-pulse"></i>&nbsp;体調管理
-			</a></li>
-			<li><a
-				href="${pageContext.request.contextPath}/OmoiyalinkTlkMedRegist">
-					<i class="fa-solid fa-capsules"></i>&nbsp;服薬管理
-			</a></li>
-			<li><a href="${pageContext.request.contextPath}/OnboardSearch">
-					<i class="fa-solid fa-comments"></i>&nbsp;掲示板
-			</a></li>
-			<%-- <li><a href="${pageContext.request.contextPath}/OmoiyalinkBrainTra">
-				<i class="fa-solid fa-brain"></i>&nbsp;脳トレ</a></li> --%>
-			<li><a href="?logout=1"> <i
-					class="fa-solid fa-right-from-bracket"></i>&nbsp;ログアウト
-			</a></li>
-		</ul>
-	</header>
+<header>
+	<h1 id="logo">
+		<a href="${pageContext.request.contextPath}/OmoiyalinkHome"> 
+			<img src="${pageContext.request.contextPath}/img/logo.png" alt="おもいやリンク">
+		</a>
+	</h1>
+	<ul id="nav">
+		<li><a href="${pageContext.request.contextPath}/OmoiyalinkHome"><i class="fa-solid fa-house"></i>&nbsp;ホーム</a></li>
+		<li><a href="${pageContext.request.contextPath}/OmoiyalinkHealthRegist"><i class="fa-solid fa-heart-pulse"></i>&nbsp;体調管理</a></li>
+		<li><a href="${pageContext.request.contextPath}/OmoiyalinkTlkMedRegist"><i class="fa-solid fa-capsules"></i>&nbsp;服薬管理</a></li>
+		<li><a href="${pageContext.request.contextPath}/OnboardSearch"><i class="fa-solid fa-comments"></i>&nbsp;掲示板</a></li>
+		<li><a href="?logout=1"><i class="fa-solid fa-right-from-bracket"></i>&nbsp;ログアウト</a></li>
+	</ul>
+</header>
+
 
 <div class="sub-header">
-	<h2>検索フォーム</h2>
-</div>
-
-<!-- フォントサイズ変更 + 高コントラスト -->
-<div class="font-resize-buttons">
-	<button onclick="resizeText(20)">標準</button>
-	<button onclick="resizeText(28)">大</button>
-	<button onclick="resizeText(36)">特大</button>
-</div>
-
+	<h2>検索フォーム</h2></div>
+	<div class="header-button-row">
+		<div class="font-resize-buttons">
+			<button onclick="resizeText(20)">標準</button>
+			<button onclick="resizeText(28)">大</button>
+			<button onclick="resizeText(36)">特大</button>
+		</div>
+		<div class="post-buttons">
+			<a href="OnboardRegist"><button type="button" class="btn">投稿へ移動</button></a>
+			<a href="OmoiyalinkMyPost"><button type="button" class="btn">マイ投稿へ移動</button></a>
+		</div>
+		</div>
+		</div>
+	
 
 
 <form action="OnboardSearch" method="post">
@@ -331,11 +307,6 @@ button:hover, .btn:hover {
 	</div>
 </form>
 
-<!-- 右下固定ボタン -->
-<div class="right-bottom-buttons">
-  <a href="OnboardRegist"><button type="button" class="btn">投稿へ移動</button></a>
-  <a href="OmoiyalinkMyPost"><button type="button" class="btn">マイ投稿へ移動</button></a>
-</div>
 
 <%@ include file="/WEB-INF/jsp/footer.jsp"%>
 
@@ -344,7 +315,6 @@ const PREF_CITY = {
 	"北海道": ["札幌市", "函館市", "旭川市"],
 	"東京都": ["千代田区", "中央区", "港区", "新宿区", "世田谷区", "八王子市", "町田市"],
 	"大阪府": ["大阪市", "堺市", "東大阪市"]
-	// 必要に応じて他県も追加可能
 };
 
 window.addEventListener('DOMContentLoaded', function () {
@@ -375,12 +345,9 @@ window.addEventListener('DOMContentLoaded', function () {
 	});
 });
 
-// フォントサイズ変更
 function resizeText(size) {
 	document.body.style.fontSize = size + 'px';
 }
-
-
 </script>
 </body>
 </html>

@@ -6,6 +6,21 @@
 <meta charset="UTF-8">
 <title>新規投稿</title>
 <style>
+.post-controls {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  margin: 1.5em 0 2em 0;
+  flex-wrap: wrap;
+}
+
+.post-controls .font-size-buttons button,
+.post-controls .my-post-button button {
+  font-size: 1.6em;
+  padding: 1.0em 1.5em;
+}
+
   body {
     font-family: 'メイリオ', 'Meiryo', sans-serif;
     padding: 2em;
@@ -240,15 +255,23 @@
 <body>
   <%@ include file="/WEB-INF/jsp/header.jsp" %>
 
-  <div class="sub-header">
-    <h2>投稿フォーム</h2>
-  </div>
+<div class="sub-header">
+  <h2>投稿フォーム</h2>
+</div>
 
+
+<div class="post-controls">
   <div class="font-size-buttons">
     <button onclick="changeFontSize(20)">標準</button>
-    <button onclick="changeFontSize(28)">大きめ</button>
+    <button onclick="changeFontSize(28)">大</button>
     <button onclick="changeFontSize(36)">特大</button>
   </div>
+  <div class="my-post-button">
+    <a href="OmoiyalinkMyPost">
+      <button type="button" class="btn">マイ投稿へ移動</button>
+    </a>
+  </div>
+</div>
 
 
   <c:if test="${not empty errorMessage}">
@@ -290,9 +313,7 @@
     </div>
   </form>
 
-  <a href="OmoiyalinkMyPost">
-    <button type="button" class="bottom-right-button">マイ投稿へ移動</button>
-  </a>
+  
   <!-- フッター -->
 	<footer>
 	<div class="gotop">
