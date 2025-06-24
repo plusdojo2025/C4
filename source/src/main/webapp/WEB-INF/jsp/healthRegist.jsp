@@ -26,7 +26,6 @@ a {
 }
 
 a:hover {
-	text-decoration: underline;
 	color: #286e93;
 }
 
@@ -62,7 +61,7 @@ label, .label {
 	}
 }
 /* ボタン共通 */
-button, .btn {
+button {
 	background: #46B1E1;
 	color: #fff;
 	border: none;
@@ -75,10 +74,30 @@ button, .btn {
 	transition: background 0.22s;
 }
 
-button:hover, .btn:hover {
+button:hover {
 	background: #2d7ea3;
 	color: #fff;
 }
+
+.btn {
+	display: inline-block;
+	background: #A9C9E1;
+	color: #22292F;
+	text-decoration: none;
+	border-radius: 9px;
+	padding: 0.6em 1.7em;
+	margin-bottom: 22px;
+	margin-top: 8px;
+	font-size: 1em;
+	font-weight: bold;
+	transition: background 0.2s;
+}
+
+.btn:hover {
+	background: #7ba9c9;
+	color: #fff;
+}
+
 /* コンテナ */
 .container, .login-container, .form-box {
 	max-width: 450px;
@@ -141,8 +160,7 @@ input:focus, select:focus, textarea:focus {
 		</div>
 		<h2>本日の体調を入力してください！</h2>
 		<div style="text-align: center; margin-top: 18px;">
-			<a href="OmoiyalinkHealthMng" class="btn"
-				style="background: #A9C9E1;"> 一覧を見る </a>
+			<a href="OmoiyalinkHealthMng" class="btn"> 一覧を見る </a>
 		</div>
 
 		<form method="POST"

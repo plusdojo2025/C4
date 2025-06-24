@@ -6,282 +6,43 @@
 <meta charset="UTF-8">
 <title>体調記録一覧</title>
 <style>
-/* === ページ全体ベース === */
-html, body {
-	height: 100%;
+body {
 	margin: 0;
 	padding: 0;
-	box-sizing: border-box;
-	background: #FFFEEF; /* 背景色指定 */
-	color: #22292F; /* 薄めの黒（ややグレー系：#22292F） */
-	font-family: 'メイリオ', 'Meiryo', 'sans-serif';
+	background: #FFFEEF;
+	color: #22292F;
+	font-family: 'メイリオ', 'Meiryo', sans-serif;
 	font-size: 17px;
-	line-height: 1.8;
+	min-height: 100vh;
 }
 
-a {
-	color: #46B1E1;
-	text-decoration: none;
-}
-
-a:hover {
-	text-decoration: underline;
-	color: #286e93;
-}
-
-h1, h2, h3, h4, h5 {
-	color: #46B1E1;
-	margin-top: 1em;
-	margin-bottom: .7em;
-	font-weight: bold;
-}
-
-label, .label {
-	color: #22292F;
-	font-weight: bold;
-}
-
-/* === レスポンシブ設計 === */
-@media ( max-width : 600px) {
-	html, body {
-		font-size: 15px;
-		padding: 0;
-	}
-	.container, .login-container, .form-box {
-		max-width: 99vw;
-		padding: 6vw 2vw;
-		box-sizing: border-box;
-	}
-	input, select, button, textarea {
-		font-size: 1em !important;
-	}
-	h1, h2 {
-		font-size: 1.25em !important;
-	}
-}
-
-/* === 共通UI部品 === */
-
-/* ローディングUI */
-#global-loading {
-	display: none;
-	position: fixed;
-	z-index: 10000;
-	left: 0;
-	top: 0;
-	width: 100vw;
-	height: 100vh;
-	background: rgba(255, 254, 239, 0.96);
-	align-items: center;
-	justify-content: center;
-	flex-direction: column;
-}
-
-.loader-bg {
-	position: absolute;
-	left: 0;
-	top: 0;
-	width: 100%;
-	height: 100%;
-	background: rgba(70, 177, 225, 0.07);
-}
-
-.loader-inner {
-	position: relative;
-	z-index: 1;
+.button-center {
 	text-align: center;
+	margin-top: 18px;
+	margin-bottom: 5px;
 }
 
-.loader-spinner {
-	width: 52px;
-	height: 52px;
-	border: 7px solid #f3f3f3;
-	border-top: 7px solid #46B1E1;
-	border-radius: 50%;
-	animation: spin 0.8s linear infinite;
-	margin: 0 auto 18px;
-}
-
-@
-keyframes spin { 100% {
-	transform: rotate(360deg);
-}
-
-}
-.loader-msg {
-	color: #46B1E1;
-	font-size: 1.1em;
-}
-
-/* 画面フェードイン・アウト */
-body.fadein {
-	animation: fadeIn 0.7s both;
-}
-
-body.fadeout {
-	animation: fadeOut 0.5s both;
-}
-
-@
-keyframes fadeIn {from { opacity:0;
-	
-}
-
-to {
-	opacity: 1;
-}
-
-}
-@
-keyframes fadeOut {from { opacity:1;
-	
-}
-
-to {
-	opacity: 0;
-}
-
-}
-
-/* モーダル */
-#global-modal {
-	display: none;
-	position: fixed;
-	z-index: 9999;
-	left: 0;
-	top: 0;
-	width: 100vw;
-	height: 100vh;
-	align-items: center;
-	justify-content: center;
-}
-
-#global-modal .modal-overlay {
-	position: absolute;
-	left: 0;
-	top: 0;
-	width: 100vw;
-	height: 100vh;
-	background: rgba(70, 177, 225, 0.14);
-}
-
-#global-modal .modal-content {
-	position: relative;
-	background: #fff;
-	color: #46B1E1;
-	border-radius: 12px;
-	padding: 36px 28px 24px;
-	min-width: 260px;
-	box-shadow: 0 4px 24px #e6f6fd;
-}
-
-#global-modal .modal-message {
-	font-size: 1.15em;
-	margin-bottom: 24px;
-}
-
-#global-modal .modal-close-btn {
-	background: #46B1E1;
-	color: #fff;
-	border: none;
-	border-radius: 8px;
-	padding: 0.6em 1.7em;
-	cursor: pointer;
-}
-
-/* 共通アラート */
-#global-alert {
-	position: fixed;
-	top: 30px;
-	left: 50%;
-	transform: translateX(-50%);
-	min-width: 170px;
-	max-width: 90vw;
-	z-index: 1999;
-	background: #46B1E1;
-	color: #fff;
-	padding: 10px 22px;
-	border-radius: 10px;
-	box-shadow: 0 2px 16px #d3ebf7;
-	opacity: 0;
-	pointer-events: none;
-	transition: opacity 0.3s;
-	font-size: 1em;
-}
-
-#global-alert.show {
-	opacity: 1;
-	pointer-events: auto;
-}
-
-#global-alert.error {
-	background: #ec8888;
-	color: #fff;
-}
-
-#global-alert.info {
-	background: #46B1E1;
-	color: #fff;
-}
-
-#global-alert.success {
-	background: #78c677;
-	color: #fff;
-}
-
-/* フォームエラー */
-.form-error {
-	color: #ec8888;
-	font-size: 0.95em;
-	margin-left: 7px;
-}
-
-/* ボタン共通 */
-button, .btn {
-	background: #46B1E1;
-	color: #fff;
-	border: none;
-	border-radius: 9px;
-	padding: 0.65em 1.6em;
-	margin: 6px 0;
-	cursor: pointer;
-	font-size: 1em;
-	font-family: inherit;
-	transition: background 0.22s;
-}
-
-button:hover, .btn:hover {
-	background: #2d7ea3;
-	color: #fff;
-}
-
-/* コンテナ */
-.container, .login-container, .form-box {
-	max-width: 450px;
-	margin: 50px auto;
-	background: #fff;
-	border-radius: 18px;
-	box-shadow: 0 2px 18px #eef1f4;
-	padding: 34px 18px 44px 18px;
-}
-
-/* 入力フォーム */
-input, select, textarea {
-	width: 98%;
-	padding: 0.48em;
-	font-size: 1.05em;
-	margin-bottom: 1.2em;
-	border: 1px solid #a3cde2;
-	border-radius: 8px;
-	background: #FFFEF9;
+.button-link {
+	display: inline-block;
+	background: #A9C9E1;
 	color: #22292F;
-	box-sizing: border-box;
+	text-decoration: none;
+	border-radius: 9px;
+	padding: 0.6em 1.7em;
+	margin-bottom: 22px;
+	margin-top: 8px;
+	font-size: 1em;
+	font-weight: bold;
+	transition: background 0.2s;
 }
 
-input:focus, select:focus, textarea:focus {
-	outline: none;
-	border-color: #46B1E1;
-	background: #fcf8f0;
+.button-link, .button-link:hover {
+	text-decoration: none !important; /* 下線を絶対に消す */
+}
+
+.button-link:hover {
+	background: #7ba9c9;
+	color: #fff;
 }
 
 .table-scroll-x {
@@ -291,8 +52,12 @@ input:focus, select:focus, textarea:focus {
 
 table {
 	width: 100%;
-	min-width: 800px; /* 必要に応じて調整 */
+	min-width: 800px;
 	border-collapse: collapse;
+	margin: 24px 0;
+	background: #fff;
+	border-radius: 12px;
+	box-shadow: 0 2px 12px #eef1f4;
 }
 
 th, td {
@@ -302,8 +67,9 @@ th, td {
 	white-space: nowrap;
 }
 
-thead {
+th {
 	background: #eaf6fc;
+	color: #2d7ea3;
 }
 
 .no-data {
@@ -312,11 +78,64 @@ thead {
 	font-style: italic;
 }
 
+.paging {
+	text-align: center;
+	margin: 18px 0 10px 0;
+	font-size: 1em;
+	user-select: none;
+}
+
+.paging a, .paging span {
+	display: inline-block;
+	margin: 0 6px;
+	padding: 0.45em 1.2em;
+	border-radius: 7px;
+	text-decoration: none;
+	font-weight: bold;
+	transition: background 0.18s, color 0.18s, box-shadow 0.14s;
+}
+
+.paging a {
+	background: #e0eef8;
+	color: #2980b9;
+	border: 1.3px solid #aed1eb;
+	box-shadow: 0 1px 4px #e5edf1;
+	cursor: pointer;
+}
+
+.paging a:hover {
+	background: #46B1E1;
+	color: #fff;
+	border-color: #46B1E1;
+}
+
+.paging span {
+	background: #46B1E1;
+	color: #fff;
+	border: 1.3px solid #46B1E1;
+	box-shadow: 0 1px 6px #bee8ff;
+	cursor: default;
+}
+
+@media ( max-width : 800px) {
+	table {
+		min-width: 600px;
+		font-size: 0.98em;
+	}
+}
+
+@media ( max-width : 480px) {
+	.paging a, .paging span {
+		padding: 0.45em 0.8em;
+		font-size: 0.95em;
+	}
+}
+
 .sub-header {
 	background-color: #46B1E1; /* 青色 */
 	color: #FFFEEF;
 	padding: 15px 30px;
-	margin-top: 0px !important; /* ヘッダーがfixedなので被らないようにする */
+	margin-top: 0px !important;
 }
 
 .sub-header h2 {
@@ -327,143 +146,21 @@ thead {
 	background-color: #46B1E1;
 }
 </style>
-<script>
-//common.js - 全ページ共通JS
-
-/** ----------- ローディング表示制御 ----------- **/
-function showLoading(message = '読み込み中…') {
-    let loader = document.getElementById('global-loading');
-    if (!loader) {
-        loader = document.createElement('div');
-        loader.id = 'global-loading';
-        loader.innerHTML = `
-            <div class="loader-bg"></div>
-            <div class="loader-inner">
-                <div class="loader-spinner"></div>
-                <div class="loader-msg">${message}</div>
-            </div>`;
-        document.body.appendChild(loader);
-    }
-    loader.style.display = 'flex';
-}
-function hideLoading() {
-    const loader = document.getElementById('global-loading');
-    if (loader) loader.style.display = 'none';
-}
-
-/** ----------- 画面遷移アニメーション ----------- **/
-window.addEventListener('DOMContentLoaded', () => {
-    document.body.classList.add('fadein');
-});
-window.addEventListener('beforeunload', () => {
-    document.body.classList.remove('fadein');
-    document.body.classList.add('fadeout');
-});
-
-/** ----------- モーダル表示 ----------- **/
-function showModal(message, onClose) {
-    let modal = document.getElementById('global-modal');
-    if (!modal) {
-        modal = document.createElement('div');
-        modal.id = 'global-modal';
-        modal.innerHTML = `
-            <div class="modal-overlay"></div>
-            <div class="modal-content">
-                <div class="modal-message"></div>
-                <button class="modal-close-btn">閉じる</button>
-            </div>`;
-        document.body.appendChild(modal);
-        modal.querySelector('.modal-close-btn').onclick = function() {
-            modal.style.display = 'none';
-            if (onClose) onClose();
-        };
-        modal.querySelector('.modal-overlay').onclick = function() {
-            modal.style.display = 'none';
-            if (onClose) onClose();
-        };
-    }
-    modal.querySelector('.modal-message').innerText = message;
-    modal.style.display = 'flex';
-}
-
-/** ----------- 共通アラート（fadeIn/out） ----------- **/
-function showAlert(message, type = 'error', duration = 2200) {
-    let alertBar = document.getElementById('global-alert');
-    if (!alertBar) {
-        alertBar = document.createElement('div');
-        alertBar.id = 'global-alert';
-        document.body.appendChild(alertBar);
-    }
-    alertBar.textContent = message;
-    alertBar.className = 'show ' + type;
-    setTimeout(() => { alertBar.classList.remove('show'); }, duration);
-}
-
-/** ----------- エラーメッセージ統一 ----------- **/
-function showFormError(targetId, message) {
-    let errSpan = document.getElementById(targetId + '-err');
-    if (!errSpan) {
-        const input = document.getElementById(targetId);
-        errSpan = document.createElement('span');
-        errSpan.className = 'form-error';
-        errSpan.id = targetId + '-err';
-        input.parentNode.insertBefore(errSpan, input.nextSibling);
-    }
-    errSpan.textContent = message;
-    errSpan.style.display = 'inline';
-    setTimeout(() => { errSpan.style.display = 'none'; }, 3200);
-}
-
-/** ----------- 全角→半角自動変換 ----------- **/
-function toHalfWidth(str) {
-    return str.replace(/[！-～]/g, ch =>
-        String.fromCharCode(ch.charCodeAt(0) - 0xFEE0)
-    ).replace(/　/g, " ");
-}
-function autoHalfWidthInput(selector) {
-    document.querySelectorAll(selector).forEach(input => {
-        input.addEventListener('blur', function () {
-            this.value = toHalfWidth(this.value);
-        });
-    });
-}
-// 例: autoHalfWidthInput('input[data-halfwidth]');
-
-/** ----------- 日付・時間フォーマット ----------- **/
-function formatDate(date, delimiter = '-') {
-    const d = new Date(date);
-    const y = d.getFullYear();
-    const m = ('0' + (d.getMonth() + 1)).slice(-2);
-    const day = ('0' + d.getDate()).slice(-2);
-    return `${y}${delimiter}${m}${delimiter}${day}`;
-}
-function formatTime(date) {
-    const d = new Date(date);
-    const h = ('0' + d.getHours()).slice(-2);
-    const mi = ('0' + d.getMinutes()).slice(-2);
-    return `${h}:${mi}`;
-}
-
-/* 追加で必要なものは随時このcommon.jsに追記してください */
-
-</script>
 </head>
-<header>
-	<%@ include file="/WEB-INF/jsp/header.jsp"%>
-</header>
 <body>
+	<%@ include file="/WEB-INF/jsp/header.jsp"%>
 
-		<div class="sub-header">
-			<h2>体調管理</h2>
-		</div>
-		<h2>登録した体調の一覧</h2>
 	<main>
-		<div style="text-align: center; margin-top: 18px;">
-			<a href="${pageContext.request.contextPath}/OmoiyalinkHealthRegist"
-				class="btn" style="background: #A9C9E1;"> 体調登録に戻る </a>
+		<div class="sub-header">
+			<h2>登録した体調の一覧</h2>
 		</div>
 
+		<div class="button-center">
+			<a href="${pageContext.request.contextPath}/OmoiyalinkHealthRegist"
+				class="button-link">体調登録に戻る</a>
+		</div>
 
+		<!-- ページング上部 -->
 		<div class="paging">
 			<c:if test="${hasPrev}">
 				<a href="OmoiyalinkHealthMng?page=${page - 1}">&laquo; 前の10件</a>
@@ -473,6 +170,7 @@ function formatTime(date) {
 				<a href="OmoiyalinkHealthMng?page=${page + 1}">次の10件 &raquo;</a>
 			</c:if>
 		</div>
+
 		<div class="table-scroll-x">
 			<table>
 				<thead>
@@ -483,8 +181,8 @@ function formatTime(date) {
 						<th>最低血圧</th>
 						<th>脈拍(bpm)</th>
 						<th>血中酸素濃度(%)</th>
-						<th>睡眠休養感(不眠 １ 2 3 4 ５ 快眠)</th>
-						<!--<th>メモ</th>-->
+						<th>睡眠休養感(不眠 1 2 3 4 5 快眠)</th>
+						<th>メモ</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -533,6 +231,7 @@ function formatTime(date) {
 			</table>
 		</div>
 
+		<!-- ページング下部 -->
 		<div class="paging">
 			<c:if test="${hasPrev}">
 				<a href="OmoiyalinkHealthMng?page=${page - 1}">&laquo; 前の10件</a>
@@ -542,7 +241,8 @@ function formatTime(date) {
 				<a href="OmoiyalinkHealthMng?page=${page + 1}">次の10件 &raquo;</a>
 			</c:if>
 		</div>
-		<%@ include file="/WEB-INF/jsp/footer.jsp"%>
 	</main>
+
+	<%@ include file="/WEB-INF/jsp/footer.jsp"%>
 </body>
 </html>
