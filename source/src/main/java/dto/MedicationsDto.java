@@ -61,7 +61,7 @@ public class MedicationsDto extends CustomeTemplateDto  implements Serializable{
 	}
 
 
-	public void setNickName(String nickname) {
+	public void setNickname(String nickname) {
 		this.nickname = nickname;
 	}
 

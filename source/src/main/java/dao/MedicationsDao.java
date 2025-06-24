@@ -19,168 +19,148 @@ public class MedicationsDao extends CustomTemplateDao<MedicationsDto> {
 
 		try {
 			conn = conn();
-
-			// SQL文を準備する
-			String sql = "SELECT * FROM medications WHERE medication_id = ?";
+			String sql = "SELECT * FROM medications WHERE user_id = ?";
 			PreparedStatement pStmt = conn.prepareStatement(sql);
-
-			// SQL文を完成させる
-			pStmt.setInt(1, dto.getMedicationId());
-
-			// SQL文を実行し、結果表を取得する
-			// ResultSetはJDBC特有のなにか
+			pStmt.setInt(1, dto.getUserId());
 			ResultSet rs = pStmt.executeQuery();
-
-			// 結果表をコレクションにコピーする
 			while (rs.next()) {
-				MedicationsDto Medications = new MedicationsDto(rs.getInt("medication_id"), rs.getInt("user_id"),
-						rs.getString("nickname"), rs.getString("formal_name"), rs.getString("dosage"),
-						rs.getDate("created_at"), rs.getString("memo"), rs.getTime("intake_time"));
-				medicationList.add(Medications);
+				medicationList.add(mapRowToMedicationsDto(rs));
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
-			return new ArrayList<>(); 
+			return new ArrayList<>();
 		} finally {
-			// データベースを切断
 			close(conn);
 		}
-
-		// 結果を返す
 		return medicationList;
 	}
-	
-	
-	//薬情報をユーザーIDで取得するメソッド
-		public List<MedicationsDto> selectByUser(int userId) {
-		    Connection conn = null;
-		    List<MedicationsDto> list = new ArrayList<>();
 
-		    try {
-		        conn = conn();
-
-		        String sql = "SELECT * FROM medications WHERE user_id = ? ORDER BY intake_time";
-		        PreparedStatement ps = conn.prepareStatement(sql);
-		        ps.setInt(1, userId);
-
-		        ResultSet rs = ps.executeQuery();
-
-		        while (rs.next()) {
-		            MedicationsDto dto = new MedicationsDto();
-		            dto.setMedicationId(rs.getInt("medication_id"));
-		            dto.setUserId(rs.getInt("user_id"));
-		            dto.setNickName(rs.getString("nickname"));
-		            dto.setFormalName(rs.getString("formal_name"));
-		            dto.setDosage(rs.getString("dosage"));
-		            dto.setIntakeTime(rs.getTime("intake_time")); // intake_time が TIME型 の場合
-		            list.add(dto);
-		        }
-
-		    } catch (Exception e) {
-		        e.printStackTrace();
-		        return new ArrayList<>(); 
-		    } finally {
-		        close(conn);
-		    }
-
-		    return list;
-		}
-		
-		
-	@Override
-	public boolean insert(MedicationsDto dto) {
+	// 薬情報をユーザーIDで取得するメソッド
+	public List<MedicationsDto> selectByUser(int userId) {
 		Connection conn = null;
-		boolean result = false;
+		List<MedicationsDto> list = new ArrayList<>();
 
 		try {
-			// JDBCドライバを読み込む
-			// データベースに接続する
 			conn = conn();
 
-			// SQL文を準備する
-			String sql = """
-					INSERT INTO medications(user_id , nickname , formal_name , dosage , created_at , memo , intake_time)
-										VALUES(       ?,                ?,                   ?,            ?,             ? ,          ?,                ?)
-					""";
-			PreparedStatement pStmt = conn.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
+			String sql = "SELECT * FROM medications WHERE user_id = ? ORDER BY intake_time";
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setInt(1, userId);
 
+			ResultSet rs = ps.executeQuery();
 
-			pStmt.setInt(1, dto.getUserId());
-			pStmt.setString(2, dto.getNickname());
-			pStmt.setString(3, dto.getFormalName());
-			pStmt.setString(4, dto.getDosage());
-			pStmt.setDate(5, new java.sql.Date(dto.getCreatedAt().getTime()));
-			pStmt.setString(6, dto.getMemo());
-			pStmt.setTime(7, new java.sql.Time(dto.getIntakeTime().getTime()));
-
-
-			// SQL文を実行する
-			if (pStmt.executeUpdate() == 1) {
-				ResultSet res = pStmt.getGeneratedKeys();
-				res.next();
-				dto.setMedicationId(res.getInt(1));
-				result = true;
+			while (rs.next()) {
+				MedicationsDto dto = new MedicationsDto();
+				dto.setMedicationId(rs.getInt("medication_id"));
+				dto.setUserId(rs.getInt("user_id"));
+				dto.setNickname(rs.getString("nickname"));
+				dto.setFormalName(rs.getString("formal_name"));
+				dto.setDosage(rs.getString("dosage"));
+				dto.setIntakeTime(rs.getTime("intake_time")); // intake_time が TIME型 の場合
+				list.add(dto);
 			}
-		} catch (SQLException e) {
+
+		} catch (Exception e) {
 			e.printStackTrace();
+			return new ArrayList<>();
 		} finally {
-			// データベースを切断
 			close(conn);
 		}
 
-		// 結果を返す
-		return result;
+		return list;
+	}
+
+	@Override
+	public boolean insert(MedicationsDto dto) {
+	    Connection conn = null;
+	    boolean result = false;
+
+	    try {
+	        conn = conn();
+
+	        String sql = """
+	            INSERT INTO medications(user_id , nickname , formal_name , dosage , created_at , memo , intake_time)
+	                            VALUES(?, ?, ?, ?, ?, ?, ?)
+	        """;
+	        PreparedStatement pStmt = conn.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
+
+	        pStmt.setInt(1, dto.getUserId());
+	        pStmt.setString(2, dto.getNickname());
+	        pStmt.setString(3, dto.getFormalName());
+	        pStmt.setString(4, dto.getDosage());
+	        // ここをsetTimestampに修正
+	        pStmt.setTimestamp(5, dto.getCreatedAt() != null ? new java.sql.Timestamp(dto.getCreatedAt().getTime()) : null);
+	        pStmt.setString(6, dto.getMemo());
+	        if (dto.getIntakeTime() != null) {
+	            pStmt.setTime(7, dto.getIntakeTime());
+	        } else {
+	            pStmt.setNull(7, java.sql.Types.TIME);
+	        }
+
+	        if (pStmt.executeUpdate() == 1) {
+	            ResultSet res = pStmt.getGeneratedKeys();
+	            if (res.next()) {
+	                dto.setMedicationId(res.getInt(1));
+	            }
+	            result = true;
+	        }
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    } finally {
+	        close(conn);
+	    }
+
+	    return result;
 	}
 
 	@Override
 	public boolean update(MedicationsDto dto) {
-		Connection conn = null;
-		boolean result = false;
+	    Connection conn = null;
+	    boolean result = false;
 
-		try {
-			// JDBCドライバを読み込む
-			// データベースに接続する
-			conn = conn();
+	    try {
+	        conn = conn();
 
-			// SQL文を準備する
-			String sql = """
-										UPDATE medications
-										SET
-					  user_id = ?
-					,  nickname =?
-					, formal_name =?
-					,  dosage =?
-					,  created_at =?
-					,  memo =?
-					,  intake_time =?
-										WHERE medication_id = ?
-										""";
-			PreparedStatement pStmt = conn.prepareStatement(sql);
+	        String sql = """
+	            UPDATE medications
+	            SET
+	                user_id = ?,
+	                nickname = ?,
+	                formal_name = ?,
+	                dosage = ?,
+	                created_at = ?,
+	                memo = ?,
+	                intake_time = ?
+	            WHERE medication_id = ?
+	        """;
+	        PreparedStatement pStmt = conn.prepareStatement(sql);
 
-			// SQL文を完成させる
-			pStmt.setInt(1, dto.getUserId());
-			pStmt.setString(2, dto.getNickname());
-			pStmt.setString(3, dto.getFormalName());
-			pStmt.setString(4, dto.getDosage());
-			pStmt.setDate(5, new java.sql.Date(dto.getCreatedAt().getTime()));
-			pStmt.setString(6, dto.getMemo());
-			pStmt.setTime(7, new java.sql.Time(dto.getIntakeTime().getTime()));
-			pStmt.setInt(8, dto.getMedicationId());
+	        pStmt.setInt(1, dto.getUserId());
+	        pStmt.setString(2, dto.getNickname());
+	        pStmt.setString(3, dto.getFormalName());
+	        pStmt.setString(4, dto.getDosage());
+	        // ここをsetTimestampに修正
+	        pStmt.setTimestamp(5, dto.getCreatedAt() != null ? new java.sql.Timestamp(dto.getCreatedAt().getTime()) : null);
+	        pStmt.setString(6, dto.getMemo());
+	        if (dto.getIntakeTime() != null) {
+	            pStmt.setTime(7, dto.getIntakeTime());
+	        } else {
+	            pStmt.setNull(7, java.sql.Types.TIME);
+	        }
+	        pStmt.setInt(8, dto.getMedicationId());
 
-			// SQL文を実行する
-			if (pStmt.executeUpdate() == 1) {
-				result = true;
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			// データベースを切断
-			close(conn);
-		}
+	        if (pStmt.executeUpdate() == 1) {
+	            result = true;
+	        }
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    } finally {
+	        close(conn);
+	    }
 
-		// 結果を返す
-		return result;
+	    return result;
 	}
+
 
 	@Override
 	public boolean delete(MedicationsDto dto) {
@@ -218,7 +198,7 @@ public class MedicationsDao extends CustomTemplateDao<MedicationsDto> {
 		MedicationsDto dto = new MedicationsDto();
 		dto.setMedicationId(rs.getInt("medication_id"));
 		dto.setUserId(rs.getInt("user_id"));
-		dto.setNickName(rs.getString("nickname"));
+		dto.setNickname(rs.getString("nickname"));
 		dto.setFormalName(rs.getString("formal_name"));
 		dto.setDosage(rs.getString("dosage"));
 		dto.setCreatedAt(rs.getTimestamp("created_at"));
