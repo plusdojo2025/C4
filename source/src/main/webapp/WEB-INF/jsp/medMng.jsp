@@ -197,7 +197,7 @@ input[name="delete"], input[name="submit"] {
 	background-color: #46B1E1;
 	color: #FFFEEF;
 	padding: 15px 30px;
-	margin-top: 100px !important;
+	margin-top: 0px !important;
 }
 
 .sub-header h2 {
@@ -214,18 +214,20 @@ input[name="delete"], input[name="submit"] {
 		<%@ include file="/WEB-INF/jsp/header.jsp"%>
 	</header>
 
-	<div class="button-nav">
-		<a href="${pageContext.request.contextPath}/OmoiyalinkMedRegist">薬の登録</a>
-		<a href="${pageContext.request.contextPath}/OmoiyalinkTlkMedMng">服薬一覧</a>
-		<a href="${pageContext.request.contextPath}/OmoiyalinkTlkMedRegist">服薬登録</a>
-	</div>
 
+	<div class="sub-header">
+		<h2>薬の編集・削除</h2>
+	</div>
 	<main>
-		<div class="sub-header">
-			<h2>薬の編集・削除</h2>
+
+
+		<div class="button-nav">
+			<a href="${pageContext.request.contextPath}/OmoiyalinkMedRegist">薬を登録する</a>
+			<a href="${pageContext.request.contextPath}/OmoiyalinkTlkMedMng">飲んだ薬</a>
+			<a href="${pageContext.request.contextPath}/OmoiyalinkTlkMedRegist">薬を飲む</a>
 		</div>
 
-		<h3>登録されているお薬の一覧</h3>
+		<h2>登録されているお薬の一覧</h2>
 		<c:forEach var="e" items="${cardList}">
 			<form method="POST"
 				action="${pageContext.request.contextPath}/OmoiyalinkMedMng"
@@ -262,17 +264,32 @@ input[name="delete"], input[name="submit"] {
 	<script
 		src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 	<script>
-	// バリデーション
-	document.querySelectorAll('form.form-box').forEach(function(form) {
-		form.onsubmit = function(event){
-			const formalName = form.formalName.value;
-			const intake_time = form.intake_time.value;
-			if (formalName ==='' || intake_time ===''){
-				alert('薬の正式名称と服薬時間を入力してください');
-				event.preventDefault();
-			}
-		}
-	});
-	</script>
+document.querySelectorAll('form.form-box').forEach(function(form) {
+    form.onsubmit = function(event) {
+        const formalName = form.formalName.value;
+        const intake_time = form.intake_time.value;
+        // 必須バリデーション
+        if (formalName === '' || intake_time === '') {
+            alert('薬の正式名称と服薬時間を入力してください');
+            event.preventDefault();
+            return;
+        }
+
+        // どのボタンで送信されたかを判定
+        // "submitter"はイベント発火元（モダンブラウザで利用可）
+        const btn = event.submitter;
+        if (btn && btn.value === '削除') {
+            if (!confirm('本当に削除しますか？')) {
+                event.preventDefault();
+            }
+        } else if (btn && btn.value === '更新') {
+            if (!confirm('本当に更新しますか？')) {
+                event.preventDefault();
+            }
+        }
+    }
+});
+</script>
+
 </body>
 </html>

@@ -171,22 +171,40 @@ input:focus, select:focus, textarea:focus {
 .button-nav a:hover {
 	background: #2d7ea3;
 }
+.sub-header {
+	background-color: #46B1E1;
+	color: #FFFEEF;
+	padding: 15px 30px;
+	margin-top: 0px !important;
+}
+
+.sub-header h2 {
+	margin: 0;
+	font-size: 2rem;
+	text-align: center;
+	color: #FFFEEF;
+	background-color: #46B1E1;
+}
 </style>
 </head>
 <body>
 	<header>
 		<%@ include file="/WEB-INF/jsp/header.jsp"%>
-		<h1>薬の新規登録</h1>
 	</header>
-
+	<div class="sub-header">
+		<h2>薬を登録する</h2>
+	</div>
 	<!-- ナビゲーションボタン -->
 	<div class="button-nav">
-		<a href="${pageContext.request.contextPath}/OmoiyalinkMedMng">登録した薬の一覧</a>
-		<a href="${pageContext.request.contextPath}/OmoiyalinkTlkMedMng">服薬一覧</a>
-		<a href="${pageContext.request.contextPath}/OmoiyalinkTlkMedRegist">服薬登録</a>
+		<a href="${pageContext.request.contextPath}/OmoiyalinkMedMng">登録した薬に戻る</a>
+		<a href="${pageContext.request.contextPath}/OmoiyalinkTlkMedRegist">薬を飲む</a>	
+		<a href="${pageContext.request.contextPath}/OmoiyalinkTlkMedMng">飲んだ薬</a>
+
 	</div>
 
 	<main>
+	
+	
 		<form method="POST"
 			action="${pageContext.request.contextPath}/OmoiyalinkMedRegist"
 			autocomplete="off" id="regist_form" class="form-box"
