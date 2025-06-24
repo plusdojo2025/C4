@@ -103,5 +103,18 @@ public class MedicationLogsDto extends CustomeTemplateDto implements Serializabl
 	public void setDosage(String dosage) {
 		this.dosage = dosage;
 	}
+	
+	 // 日付（yyyy-MM-dd）を返す
+    public String getTakenTimeString() {
+        if (takenTime == null) return "";
+        java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd");
+        return sdf.format(takenTime);
+    }
 
+    // 時刻（HH:mm）を返す
+    public String getTakenTimeHourMin() {
+        if (takenTime == null) return "";
+        java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("HH:mm");
+        return sdf.format(takenTime);
+    }
 }

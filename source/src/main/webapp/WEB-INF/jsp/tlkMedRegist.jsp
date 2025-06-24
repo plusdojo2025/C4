@@ -1,5 +1,14 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ page import="java.text.SimpleDateFormat, java.util.Date" %>
+<%
+  Date today = new Date();
+  SimpleDateFormat y = new SimpleDateFormat("yyyy");
+  SimpleDateFormat m = new SimpleDateFormat("M");
+  SimpleDateFormat d = new SimpleDateFormat("d");
+  java.text.SimpleDateFormat e = new java.text.SimpleDateFormat("E");
+%>
+
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -8,15 +17,8 @@
 <link rel="stylesheet"
 	href="${pageContext.request.contextPath}/css/common.css">
 <style>
-table {
-	border-collapse: collapse;
-	width: 100%;
-}
-
-th, td {
-	border: 1px solid #aaa;
-	padding: 8px;
-	text-align: left;
+form {
+margin: 2rem
 }
 
 th {
@@ -31,6 +33,7 @@ table {
 	width: 100%;
 	border-collapse: collapse;
 	margin-bottom: 20px;
+	table-layout: fixed;
 }
 
 th, td {
@@ -38,6 +41,13 @@ th, td {
 	padding: 8px;
 	text-align: center;
 }
+
+th:nth-child(1), td:nth-child(1) { width: 25%; }  /* 愛称 */
+th:nth-child(2), td:nth-child(2) { width: 35%; }  /* 正式名 */
+th:nth-child(3), td:nth-child(3) { width: 10%; }  /* 用量 */
+th:nth-child(4), td:nth-child(4) { width: 5%; }  /* チェック */
+th:nth-child(5), td:nth-child(5) { width: 25%; }  /* メモ */
+
 
 h2 {
 	margin-top: 120px;
@@ -48,6 +58,12 @@ h3 {
 	margin-top: 20px;
 	font-size: 1.4rem;
 	color: #007BFF;
+	margin: 1rem 0
+}
+
+.submit-area   {
+   	text-align: right;
+   	margin-top: 10px;
 }
 
 .sub-header {
@@ -65,6 +81,7 @@ h3 {
 }
 
 .nav-buttons {
+    margin: 1rem 2rem;
 	margin-top: 10px;
 	text-align: right; /* 右寄せにしたい場合。中央ならcenter、左寄せならleft */
 }
@@ -88,6 +105,17 @@ h3 {
 	margin-right: 8px;
 	font-weight: bold;
 }
+
+.add  {
+	margin: 2rem;
+}
+
+.date { 
+	font-weight: bold; font-size: 1.2rem; 
+}
+.big-num { 
+	font-size: 2rem; color: #2679d7;
+ }
 </style>
 </head>
 <body>
@@ -112,12 +140,15 @@ h3 {
 	<form method="post" action="OmoiyalinkTlkMedRegist">
 	
 	<!-- その日の日付表示 -->
-		<strong>
-      <%= new java.text.SimpleDateFormat("yyyy-MM-dd").format(new java.util.Date()) %>
-    </strong>
+		<strong class="date">
+	  <span class="big-num"><%= y.format(today) %></span>年
+	  <span class="big-num"><%= m.format(today) %></span>月
+	  <span class="big-num"><%= d.format(today) %></span>日
+	  (<%= e.format(today) %>)
+		</strong>
 		
 		<!-- 薬情報から、設定した時間ごとに薬を表にまとめて表示 -->
-		<c:forEach var="entry" items="${medsByTime}">
+		<c:forEach var="entry" items="${medsByTime}"  >
 			<h3>${entry.key}の薬</h3>
 			<table>
 				<tr>
@@ -127,8 +158,8 @@ h3 {
 					<th>✔</th>
 					<th>メモ（服薬時に記録）</th>
 				</tr>
-				<c:forEach var="med" items="${entry.value}">
-					<tr>
+				<c:forEach var="med" items="${entry.value}" varStatus="status">
+					<tr  class="selectable-row">
 						<td>${med.nickname}</td>
 						<td>${med.formalName}</td>
 						<td>${med.dosage}</td>
@@ -143,7 +174,11 @@ h3 {
 
 				</c:forEach>
 			</table>
+			
+			<div class="submit-area">
 			<button type="submit">登録</button>
+			</div>
+			
 			<c:if test="${not empty message}">
 				<p style="color: red;">${message}</p>
 			</c:if>
@@ -151,9 +186,9 @@ h3 {
 		</c:forEach>
 	</form>
 	
-	 <!-- ▼ 自由登録フォーム -->
+	 <!-- ▼ 追加登録フォーム -->
     <hr>
-    <h3>追加登録</h3>
+    <h3 class = "add" >追加登録</h3>
     <form method="post" action="OmoiyalinkTlkMedRegist">
         <input type="hidden" name="registerType" value="free">
         <table>
@@ -185,10 +220,28 @@ h3 {
                 </td>
             </tr>
         </table> 
+        
+        <div class="submit-area">
         <button type="submit">追加登録</button>
+        </div>
+        
     </form>
 	
 	
 	<%@ include file="footer.jsp"%>
+	
+	<script>
+	document.addEventListener("DOMContentLoaded", function() {
+	  document.querySelectorAll('tr.selectable-row').forEach(function(row) {
+	    row.addEventListener('click', function(e) {
+	      if (e.target.tagName === 'INPUT') return;
+	      var checkbox = row.querySelector('input[type="checkbox"]');
+	      if (checkbox && !checkbox.disabled) {
+	        checkbox.checked = !checkbox.checked;
+	      }
+	    });
+	  });
+	});
+	</script>
 </body>
 </html>

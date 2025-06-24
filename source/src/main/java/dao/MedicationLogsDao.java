@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
@@ -169,10 +170,10 @@ public class MedicationLogsDao extends CustomTemplateDao<MedicationLogsDto> {
 
 			// SQL文を準備する
 			String sql = """
-					INSERT medication_logs(user_id , medication_id , taken_time , takenMed , memo)
-//							VALEUS( ?,  ? ,? )
+					INSERT INTO medication_logs(user_id , medication_id , taken_time , taken_med , memo)
+						VALUES( ?,  ? , ?,  ?,  ? )
 					""";
-			PreparedStatement pStmt = conn.prepareStatement(sql);
+			PreparedStatement pStmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 
 			// SQL文を完成させる
 			pStmt.setInt(1, dto.getUserId());
