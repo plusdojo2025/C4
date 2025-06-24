@@ -1,20 +1,18 @@
 package servlet;
 
 import java.io.IOException;
-import java.util.Date;
 import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import dao.PostsDao;
+import dao.ReactionsDao;
 import dto.PostsDto;
 
-/**
- * 投稿検索・結果表示サーブレット
- */
 @WebServlet("/OnboardResult")
 public class OnboardResultServlet extends CustomTemplateServlet {
 	private static final long serialVersionUID = 1L;
@@ -22,56 +20,78 @@ public class OnboardResultServlet extends CustomTemplateServlet {
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		// 未ログインチェック
 		if (checkNoneLogin(request, response) || checkLogout(request, response)) {
 			return;
 		}
 
-		// 全件検索
-		PostsDao dao = new PostsDao();
-		PostsDto searchDto = new PostsDto(); // 空条件で全件
-		List<PostsDto> postsList = dao.select(searchDto);
+		// ログインユーザーID取得
+		HttpSession session = request.getSession(false);
+		Integer userId = (session != null) ? (Integer) session.getAttribute("id") : null;
 
-		// 取得結果をJSPに渡す
+		// 全件検索
+		PostsDao postsDao = new PostsDao();
+		PostsDto searchDto = new PostsDto(); // 空条件で全件
+		List<PostsDto> postsList = postsDao.select(searchDto);
+
+		// 各投稿に「いいね」情報をセット
+		if (userId != null) {
+			ReactionsDao reactionsDao = new ReactionsDao();
+			for (PostsDto post : postsList) {
+				post.setLikedByCurrentUser(reactionsDao.isUserLiked(post.getPostId(), userId));
+				post.setLikeCount(reactionsDao.getLikeCountByPostId(post.getPostId()));
+				post.setLikedUsers(reactionsDao.getLikedUserNames(post.getPostId()));
+			}
+		}
+
 		request.setAttribute("postsList", postsList);
-		// 初回アクセスや未入力の場合は全件リストでフォームを表示
-		request.getRequestDispatcher("/WEB-INF/jsp/searchForm.jsp").forward(request, response);
+		request.getRequestDispatcher("/WEB-INF/jsp/onboardResult.jsp").forward(request, response);
 	}
 
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		// 未ログインチェック
 		if (checkNoneLogin(request, response) || checkLogout(request, response)) {
 			return;
 		}
 
 		try {
 			request.setCharacterEncoding("UTF-8");
+			HttpSession session = request.getSession(false);
+			Integer userId = (session != null) ? (Integer) session.getAttribute("id") : null;
 
 			// 検索条件取得
-			String prefecture = request.getParameter("prefecture");
 			String tag = request.getParameter("tag");
 			String title = request.getParameter("title");
 			String content = request.getParameter("content");
+			String pref = request.getParameter("prefecture");
 			String city = request.getParameter("city");
 
-			// DTOに検索条件を詰める（必要な項目のみでOK）
-			PostsDto searchDto = new PostsDto(0, tag, title, content, new Date(), prefecture, city);
+			// DTOに検索条件をセット
+			PostsDto searchDto = new PostsDto();
+			searchDto.setTag(tag);
+			searchDto.setTitle(title);
+			searchDto.setContent(content);
+			searchDto.setPref(pref);
+			searchDto.setCity(city);
 
-			// 検索実行
-			PostsDao dao = new PostsDao();
-			List<PostsDto> postsList = dao.select(searchDto);
+			PostsDao postsDao = new PostsDao();
+			List<PostsDto> postsList = postsDao.select(searchDto);
 
-			// 結果をセット
+			// 各投稿に「いいね」情報をセット
+			if (userId != null) {
+				ReactionsDao reactionsDao = new ReactionsDao();
+				for (PostsDto post : postsList) {
+					post.setLikedByCurrentUser(reactionsDao.isUserLiked(post.getPostId(), userId));
+					post.setLikeCount(reactionsDao.getLikeCountByPostId(post.getPostId()));
+					post.setLikedUsers(reactionsDao.getLikedUserNames(post.getPostId()));
+				}
+			}
+
 			request.setAttribute("postsList", postsList);
-
-			// 検索画面（または結果画面）へ
 			request.getRequestDispatcher("/WEB-INF/jsp/onboardResult.jsp").forward(request, response);
 
 		} catch (Exception e) {
 			e.printStackTrace();
-			// 必要ならエラー画面やエラーメッセージを追加
 			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "検索処理でエラーが発生しました");
 		}
 	}

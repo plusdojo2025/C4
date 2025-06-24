@@ -2,40 +2,40 @@ package dto;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
-public class PostsDto extends CustomeTemplateDto implements Serializable {
-    private int id;           // ← postId→id
-    private int userId;
-    private String tag;
-    private String title;
-    private String content;
-    private Date createdAt;   // ← createdAT→createdAt
-    private String pref;
-    private String city;
+public class PostsDto implements Serializable {
+    private int postId;        // posts.post_id
+    private int userId;        // posts.user_id
+    private String tag;        // posts.tag
+    private String title;      // posts.title
+    private String content;    // posts.content
+    private Date createdAt;    // posts.created_at
+    private String pref;       // posts.pref
+    private String city;       // posts.city
 
-    // コンストラクタ
-    public PostsDto(int userId, String tag, String title,
-            String content, Date createdAt, String pref, String city) {
-        super();
-        this.userId = userId;
-        this.tag = tag;
-        this.title = title;
-        this.content = content;
-        this.createdAt = createdAt;
-        this.pref = pref;
-        this.city = city;
+    // 追加: いいね関連
+    private boolean likedByCurrentUser;
+    private List<String> likedUsers;
+    private int likeCount;
+
+    public PostsDto() {}
+
+    // --- getter/setter ---
+
+    public int getPostId() {
+        return postId;
+    }
+    public void setPostId(int postId) {
+        this.postId = postId;
     }
 
-    public PostsDto() {
-        this(0, "", "", "", new Date(), "", "");
+    // ↓ id名でもアクセスしたい場合はこれを追加（任意）
+    public int getId() {
+        return postId;
     }
-
-    // Getter/Setter
-    public int getId() {            // ← postId→id
-        return id;
-    }
-    public void setPostId(int id) {
-        this.id = id;
+    public void setId(int id) {
+        this.postId = id;
     }
 
     public int getUserId() {
@@ -66,7 +66,7 @@ public class PostsDto extends CustomeTemplateDto implements Serializable {
         this.content = content;
     }
 
-    public Date getCreatedAt() {      // ← createdAT→createdAt
+    public Date getCreatedAt() {
         return createdAt;
     }
     public void setCreatedAt(Date createdAt) {
@@ -85,5 +85,27 @@ public class PostsDto extends CustomeTemplateDto implements Serializable {
     }
     public void setCity(String city) {
         this.city = city;
+    }
+
+    // --- いいね関連 ---
+    public boolean isLikedByCurrentUser() {
+        return likedByCurrentUser;
+    }
+    public void setLikedByCurrentUser(boolean likedByCurrentUser) {
+        this.likedByCurrentUser = likedByCurrentUser;
+    }
+
+    public List<String> getLikedUsers() {
+        return likedUsers;
+    }
+    public void setLikedUsers(List<String> likedUsers) {
+        this.likedUsers = likedUsers;
+    }
+
+    public int getLikeCount() {
+        return likeCount;
+    }
+    public void setLikeCount(int likeCount) {
+        this.likeCount = likeCount;
     }
 }
