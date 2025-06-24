@@ -34,6 +34,20 @@ public class PostsDao {
         }
         return list;
     }
+    
+    // 投稿をpost_id + user_idで削除
+    public boolean deleteById(int postId, int userId) {
+        String sql = "DELETE FROM posts WHERE post_id = ? AND user_id = ?";
+        try (Connection conn = DBUtil.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, postId);
+            ps.setInt(2, userId);
+            return ps.executeUpdate() == 1;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
 
     // 新規投稿（insert）
     public boolean insert(PostsDto dto) {

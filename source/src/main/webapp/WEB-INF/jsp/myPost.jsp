@@ -86,6 +86,25 @@ button:hover, .btn:hover {
   gap: 10px;              /* ボタン同士の間隔 */
   z-index: 1000;
 }
+/* 削除ボタンの設定 */
+.delete-area {
+  float: right;         /* 右端に寄せる */
+  margin-left: 24px;
+}
+
+.deleteBtn {
+  background: #FF6368;
+  color: #fff;
+  padding: 0.2em 0.65em;
+  border-radius: 7px;
+  border: none;
+  cursor: pointer;
+  transition: background 0.18s;
+}
+.deleteBtn:hover {
+  background: #d82d3a;
+}
+
 
   </style>
 </head>
@@ -112,10 +131,10 @@ button:hover, .btn:hover {
   <c:forEach var="post" items="${myPosts}">
     <div class="post" data-post-id="${post.id}">
       <h3>${post.title}</h3>
-      <p><strong>投稿日:</strong> ${post.createdAt}</p>
       <p><strong>場所:</strong> ${post.pref} / ${post.city}</p>
       <p><strong>タグ:</strong> ${post.tag}</p>
       <p>${post.content}</p>
+      <p><strong>投稿日:</strong> ${post.createdAt}</p>
       <div>
         <button class="likeBtn"
           data-liked="${post.likedByCurrentUser ? 'true' : 'false'}">
@@ -127,6 +146,12 @@ button:hover, .btn:hover {
             ${name}<c:if test="${!status.last}">, </c:if>
           </c:forEach>
         </span>
+	    <span class="delete-area">
+	      <form method="post" style="display:inline;">
+	        <input type="hidden" name="deletePostId" value="${post.id}" />
+	        <button type="submit" class="deleteBtn">削除</button>
+	      </form>
+	    </span>
       </div>
     </div>
   </c:forEach>
