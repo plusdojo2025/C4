@@ -235,7 +235,7 @@ input[name="delete"], input[name="submit"] {
 				<label> 薬の正式名称 <input type="text" name="formalName"
 					value="${e.formalName}" required>
 				</label> <label> 薬の愛称 <input type="text" name="nickName"
-					value="${e.nickName}">
+					value="${e.nickname}">
 				</label> <label> 服薬時間 <input type="time" name="intake_time"
 					value="<c:out value='${fn:substring(e.intakeTime,0,5)}'/>">
 				</label> <label> 用量 <input type="text" name="dosage"

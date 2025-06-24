@@ -188,7 +188,7 @@ input:focus, select:focus, textarea:focus {
 
 	<main>
 		<form method="POST"
-			action="${pageContext.request.contextPath}/OmoiyalinkTlkMedRegist"
+			action="${pageContext.request.contextPath}/OmoiyalinkMedRegist"
 			autocomplete="off" id="regist_form" class="form-box"
 			accept-charset="UTF-8">
 			<label> 薬の正式名称（必須項目） <input type="text" name="formalName"><br>

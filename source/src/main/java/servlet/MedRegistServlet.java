@@ -84,7 +84,7 @@ public class MedRegistServlet extends CustomTemplateServlet {
 			// DTOにセット
 			MedicationsDto dto = new MedicationsDto();
 			dto.setUserId(userId);
-			dto.setNickName(nickName);
+			dto.setNickname(nickName);
 			dto.setFormalName(formalName);
 			dto.setDosage(dosage);
 			dto.setCreatedAt(createdAt);
