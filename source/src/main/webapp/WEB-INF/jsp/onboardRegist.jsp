@@ -178,6 +178,19 @@
   .contrast-toggle button:hover {
     background: #444;
   }
+   .gotop{
+    text-align :center;
+    }
+.copyright{
+    margin-top: 20px;
+    margin-bottom: 0;
+    padding-top: 75px;
+    padding-bottom: 75px;
+    background-color: #46B1E1;
+    color: #FFFEEF;
+    text-align: center;
+    font-size: 1.3rem;
+    }
 </style>
 <script>
   const PREF_CITY = {
@@ -280,5 +293,13 @@
   <a href="OmoiyalinkMyPost">
     <button type="button" class="bottom-right-button">マイ投稿へ移動</button>
   </a>
+  <!-- フッター -->
+	<footer>
+	<div class="gotop">
+        <a href="#top"><img src="img/gotop.svg" alt="ページトップへ戻る"></a>
+    </div>	
+		<p class="copyright">&copy; Collect Force Inc.</p>
+	</footer>
+	<!-- フッターここまで -->
 </body>
 </html>
