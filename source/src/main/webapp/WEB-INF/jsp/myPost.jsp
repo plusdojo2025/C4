@@ -6,13 +6,25 @@
 <meta charset="UTF-8">
 <title>マイ投稿</title>
   <style>
-/* --- スタイルはご提示どおり（省略可） --- */
+
+.sub-header {
+	background-color: #46B1E1;
+	color: #FFFEEF;
+	padding: 15px 30px;
+	margin-top: 0;
+}
+
+.sub-header h2 {
+	margin: 0;
+	font-size: 2.4rem;
+	text-align: center;
+}
 body {
 	margin: 0; padding: 0; padding-top: 100px;
 	color: #041117; font-family: 'Noto Sans JP', sans-serif;
 	background: #FFFEEF;
 }
-/* ... 中略（先ほどのCSSを貼付 or 省略でもOK） ... */
+
 .post {
 	background-color: #fff;
 	border: 2px solid #ccc;
@@ -38,6 +50,43 @@ body {
 .likeBtn:hover { background-color: #2d7ea3; }
 .likeCount { margin-left: 10px; margin-right: 10px; font-weight: bold; }
 .likeUsers { color: #646060; font-size: 0.95em; margin-left: 8px; }
+
+.nav-buttons {
+  position: fixed;
+  bottom: 150px; /* ← ここがフッターとかぶらないための余白 */
+  right: 20px;
+  z-index: 1000;
+}
+
+/* ボタン共通 */
+/* ボタン共通（大きめバージョン） */
+button, .btn {
+    background: #46B1E1;
+    color: #fff;
+    border: none;
+    border-radius: 9px;
+    padding: 1.0em 3.0em;       /* ← 少し大きめに */
+    margin: 6px 0;
+    cursor: pointer;
+    font-size: 2.0em;         /* ← フォントサイズもUP */
+    font-family: inherit;
+    transition: background 0.22s;
+}
+button:hover, .btn:hover {
+    background: #2d7ea3;
+    color: #fff;
+}
+
+.vertical-right {
+  position: fixed;
+  top: 200px; /* 必要に応じて調整。ヘッダーにかぶらない位置 */
+  left: 20px;
+  display: flex;
+  flex-direction: column; /* ← 縦並びにする */
+  gap: 10px;              /* ボタン同士の間隔 */
+  z-index: 1000;
+}
+
   </style>
 </head>
 <body>
@@ -49,11 +98,12 @@ body {
     <h2>マイ投稿</h2>
   </div>
 
-  <div class="font-size-buttons">
-    <button onclick="changeFontSize(20)">標準</button>
-    <button onclick="changeFontSize(28)">大きめ</button>
-    <button onclick="changeFontSize(36)">特大</button>
-  </div>
+<div class="font-size-buttons vertical-right">
+  <button onclick="changeFontSize(20)">標準</button>
+  <button onclick="changeFontSize(28)">大きめ</button>
+  <button onclick="changeFontSize(36)">特大</button>
+</div>
+
 
   <c:if test="${empty myPosts}">
     <p class="empty-message">該当する投稿が見つかりませんでした。</p>
@@ -85,7 +135,7 @@ body {
 <!-- 右下に固定された投稿ボタン -->
 <div class="nav-buttons">
   <a href="OnboardRegist">
-    <button type="button">掲示板投稿へ</button>
+    <button type="button" class="btn">投稿へ</button>
   </a>
 </div>
 
