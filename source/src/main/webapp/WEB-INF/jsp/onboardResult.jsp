@@ -234,13 +234,14 @@ ul#nav { scrollbar-width: none; -ms-overflow-style: none; }
     
 .fixed-font-buttons {
   position: fixed;
-  bottom: 200px;  /* ← 好きな高さに調整、例えば検索戻るボタンより上 */
+  bottom: 120px; /* ← かぶらないように下からの距離を長くする */
   right: 20px;
   z-index: 1000;
   display: flex;
   flex-direction: column;
   gap: 12px;
 }
+
 
 
 .fixed-font-buttons button {
