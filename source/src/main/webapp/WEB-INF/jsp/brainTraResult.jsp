@@ -14,11 +14,14 @@ html, body {
     padding: 0;
     box-sizing: border-box;
     background: #FFFEEF;  /* 背景色指定 */
-    color: #22292F;       /* 薄めの黒（ややグレー系：#22292F） */
+    color: #22292F;       /* 薄めの黒（ややグレー系：#22292F*/
     font-family: 'メイリオ', 'Meiryo', 'sans-serif';
     font-size: 17px;
     line-height: 1.8;
+   	 background-image: url('<%=request.getContextPath()%>/img/IMG_5589.jpeg');
+    background-position: center 21px ;
 }
+
 
 h1 {
 	font-size: 2em;
@@ -34,12 +37,11 @@ h1 {
 	background:#EFEFEF;
 	border-left: 7px solid #F4B5B2;
 	padding: 22px 30px;
-	margin-bottom: 30px;
+	margin-bottom: 10px;
 	border-radius: 9px;
 	font-size: 1.23em;
 	text-align: center;
 }
-
 .button-row {
 	margin-top: 36px;
 	margin-left: 120px;
@@ -70,23 +72,13 @@ button:hover, .menu-btn:hover {
 }
 
 .saveMsg {
-	color: #c24b3b;
+	color: #FFF;
 	font-size: 1.05em;
 	margin-bottom: 8px;
 	text-align: center;
 }
 
-html, body {
-    height: 100%;
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    background: #FFFEEF;  /* 背景色指定 */
-    color: #22292F;       /* 薄めの黒（ややグレー系：#22292F） */
-    font-family: 'メイリオ', 'Meiryo', 'sans-serif';
-    font-size: 17px;
-    line-height: 1.8;
-}
+
 
 
 </style>

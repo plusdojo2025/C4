@@ -12,10 +12,12 @@ html, body {
     padding: 0;
     box-sizing: border-box;
     background: #FFFEEF;  /* 背景色指定 */
-    color: #22292F;       /* 薄めの黒（ややグレー系：#22292F） */
+    color: #22292F;       /* 薄めの黒（ややグレー系：#22292F）*/
     font-family: 'メイリオ', 'Meiryo', 'sans-serif';
     font-size: 17px;
     line-height: 1.8;
+    background-image: url('<%=request.getContextPath()%>/img/R (1).jpg');
+    background-position: center;
 }
 
 h1 {
@@ -29,7 +31,7 @@ h1 {
 
 .timer-box {
 	margin: 12px 0 18px 0;
-	color: #1993d1;
+	color: #fff;
 	font-weight: bold;
 	text-align: center;
 	
@@ -60,18 +62,17 @@ h1 {
 .score-box {
 	margin: 18px 0;
 	font-size: 1.15em;
-	color: #196;
+	color: #fff;
 	text-align: center;
 }
 
 .result-msg {
 	font-size: 1.13em;
-	color: #c24b3b;
+	color: #fff;
 	font-weight: bold;
 	margin: 13px 0 5px 0;
 	height: 2em;
 	text-align: center;
-	
 }
 
 @media ( max-width :600px) {
@@ -134,7 +135,7 @@ h1 {
 	const timer = setInterval(() => {
 		time--;
 		document.getElementById("timer").textContent = time;
-		if (time === 0) {  // >= を === に直す
+		if (time >= 0) {  // >= を === に直す
 			clearInterval(timer);
 			endGame();
 		}

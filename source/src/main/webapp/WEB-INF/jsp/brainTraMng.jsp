@@ -16,6 +16,8 @@ html, body {
     font-family: 'メイリオ', 'Meiryo', 'sans-serif';
     font-size: 17px;
     line-height: 1.8;
+    background-image: url('<%=request.getContextPath()%>/img/R.jpg');
+    background-position: center;
 }
 
 h2 {
@@ -57,6 +59,21 @@ table th {
 table td {
   text-align: center;
 }
+
+.paging a {
+	color: #fff;
+	text-decoration: none;
+	font-weight: bold;
+}
+
+.paging a:hover {
+	color: #FFB74D;
+	text-decoration: underline;
+}
+
+span {
+	color:#fff;
+}
 </style>
 </head>
 <body>
@@ -74,11 +91,11 @@ table td {
 	</div>
 	
 	<!-- メニューに戻るボタン（formでボタン化） -->
-<form action="<%=request.getContextPath()%>/OmoiyalinkBrainTra" method="get" style="text-align: left; margin-top: 20px; padding: 3px 8px;">
+<form action="<%=request.getContextPath()%>/OmoiyalinkBrainTra" method="get" style="text-align: right; margin-top: 5px; ">
 	<button type="submit" class="btn">脳トレメニューに戻る</button>
 </form>
 
-	<form method="get" action="OmoiyalinkBrainTraMng" style="text-align: right; margin-bottom: 16px;">
+	<form method="get" action="OmoiyalinkBrainTraMng" style="text-align: right; margin-bottom: 0px;">
 	<input type="hidden" name="page" value="${page}" />
 	<!-- 現在の並び順がascならdescに、descならascに -->
 	<c:choose>
