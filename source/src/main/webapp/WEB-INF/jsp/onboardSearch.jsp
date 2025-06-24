@@ -18,6 +18,23 @@ html, body {
 	line-height: 1.8;
 }
 
+/* 高コントラストモード */
+body.high-contrast {
+	background: #000 !important;
+	color: #FFF !important;
+}
+body.high-contrast input,
+body.high-contrast select,
+body.high-contrast textarea {
+	background: #000 !important;
+	color: #FFF !important;
+	border-color: #FFF !important;
+}
+body.high-contrast a,
+body.high-contrast label {
+	color: #0FF !important;
+}
+
 form {
 	max-width: 880px;
 	margin: 0 auto;
@@ -33,7 +50,7 @@ form {
 
 .sub-header h2 {
 	margin: 0;
-	font-size: 2rem;
+	font-size: 2.4rem;
 	text-align: center;
 }
 
@@ -42,13 +59,13 @@ label {
 	margin-top: 1em;
 	color: #22292F;
 	font-weight: bold;
-	font-size: 28px;
+	font-size: 1.6em;
 }
 
 input[type="text"], textarea, select {
-	width: 98%;
+	width: 100%;
 	padding: 1em;
-	font-size: 1.2em;
+	font-size: 1.3em;
 	margin-bottom: 1.2em;
 	border: 1px solid #a3cde2;
 	border-radius: 8px;
@@ -71,7 +88,7 @@ input:focus, select:focus, textarea:focus {
 }
 
 .checkbox-group label {
-	font-size: 30px;
+	font-size: 1.5em;
 	display: inline-flex;
 	align-items: center;
 }
@@ -81,12 +98,12 @@ button, .btn {
 	color: #fff;
 	border: none;
 	border-radius: 9px;
-	padding: 0.65em 1.6em;
-	margin: 6px 0;
+	padding: 0.8em 2em;
 	cursor: pointer;
-	font-size: 1.4em;
+	font-size: 1.5em;
 	font-family: inherit;
 	transition: background 0.22s;
+	box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
 }
 
 button:hover, .btn:hover {
@@ -101,32 +118,30 @@ button:hover, .btn:hover {
 	justify-content: center;
 }
 
-.font-resize-buttons {
+.font-resize-buttons,
+.contrast-toggle {
 	display: flex;
-	justify-content: flex-start;
-	gap: 0.5em;
-	margin-top: 1em;      /* ← 上にスペース追加 */
-	margin-bottom: 1em;
+	justify-content: center;
+	gap: 1em;
+	margin: 1.2em 0;
 }
 
-
-
-.font-resize-buttons button {
+.font-resize-buttons button,
+.contrast-toggle button {
 	font-size: 1.3em;
-	padding: 1.0em 1.6em;
-	background: #46B1E1;      
-	color: #fff;              
+	padding: 0.8em 1.6em;
+	background: #46B1E1;
+	color: #fff;
 	border: none;
 	border-radius: 6px;
 	cursor: pointer;
-	margin: 0 0.5em;
 	transition: background 0.2s;
 }
 
-.font-resize-buttons button:hover {
-	background: #2d7ea3;     
+.font-resize-buttons button:hover,
+.contrast-toggle button:hover {
+	background: #2d7ea3;
 }
-
 
 .location-row {
 	display: flex;
@@ -145,23 +160,28 @@ button:hover, .btn:hover {
   flex-direction: column;
   gap: 10px;
   justify-content: flex-start;
-  align-items: flex-end;  /* 右寄せ */
-  margin-left: auto;      
-   margin-top: -100px;
+  align-items: flex-end;
+  margin-left: auto;
+  margin-top: 2em;
 }
 </style>
 </head>
 <body>
+
 <%@ include file="/WEB-INF/jsp/header.jsp"%>
 
 <div class="sub-header">
 	<h2>検索フォーム</h2>
 </div>
 
+<!-- フォントサイズ変更 + 高コントラスト -->
 <div class="font-resize-buttons">
-	<button onclick="resizeText(50)">文字を大きく</button>
-	<button onclick="resizeText(17)">元に戻す</button>
+	<button onclick="resizeText(20)">標準</button>
+	<button onclick="resizeText(28)">大</button>
+	<button onclick="resizeText(36)">特大</button>
 </div>
+
+
 
 <form action="OnboardSearch" method="post">
 	<!-- タグ -->
@@ -190,38 +210,26 @@ button:hover, .btn:hover {
 		</div>
 	</div>
 
-	<!-- ボタン -->
+	<!-- 検索ボタン -->
 	<div class="button-row">
 		<button type="submit">検索</button>
 	</div>
 </form>
 
-
+<!-- 右下固定ボタン -->
 <div class="right-bottom-buttons">
-  <a href="OnboardRegist"><button type="button" class="side-button">投稿へ移動</button></a>
-  <a href="OmoiyalinkMyPost"><button type="button" class="side-button">マイ投稿へ移動</button></a>
+  <a href="OnboardRegist"><button type="button" class="btn">投稿へ移動</button></a>
+  <a href="OmoiyalinkMyPost"><button type="button" class="btn">マイ投稿へ移動</button></a>
 </div>
-
-
-
-
-
-
-
-
-
-
-
-
 
 <%@ include file="/WEB-INF/jsp/footer.jsp"%>
 
 <script>
 const PREF_CITY = {
 	"北海道": ["札幌市", "函館市", "旭川市"],
-	"東京都": ["千代田区", "中央区", "港区"],
+	"東京都": ["千代田区", "中央区", "港区", "新宿区", "世田谷区", "八王子市", "町田市"],
 	"大阪府": ["大阪市", "堺市", "東大阪市"]
-	// 必要に応じて残りも追加
+	// 必要に応じて他県も追加可能
 };
 
 window.addEventListener('DOMContentLoaded', function () {
@@ -252,9 +260,12 @@ window.addEventListener('DOMContentLoaded', function () {
 	});
 });
 
+// フォントサイズ変更
 function resizeText(size) {
 	document.body.style.fontSize = size + 'px';
 }
+
+
 </script>
 </body>
 </html>
