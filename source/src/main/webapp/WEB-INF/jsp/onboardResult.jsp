@@ -364,9 +364,9 @@ h1 {
     <button onclick="document.body.style.fontSize='28px'">大</button>
     <button onclick="document.body.style.fontSize='36px'">特大</button>
   </div>
-  <div class="nav-buttons-inline">
-    <button onclick="location.href='OnboardSearch'">検索に戻る</button>
-    <button onclick="location.href='OmoiyalinkHome'">ホームへ戻る</button>
+  <div class="button-center">
+    <button class="seni" onclick="location.href='OnboardSearch'">検索に戻る</button>
+    <button class="seni" onclick="location.href='OmoiyalinkHome'">ホームへ戻る</button>
   </div>
 </div>
 

@@ -7,6 +7,26 @@
 <title>脳トレ選択画面</title>
 
 <style>
+/*画面遷移ボタン*/
+.seni {
+	display: inline-block;
+	background: #A9C9E1;
+	color: #22292F;
+	text-decoration: none;
+	border-radius: 9px;
+	padding: 0.6em 1.7em;
+	margin-bottom: 22px;
+	margin-top: 8px;
+	font-size: 1em;
+	font-weight: bold;
+	transition: background 0.2s;
+	text-decoration: none !important;
+}
+.seni:hover {
+	background: #7BA9C9;
+	color: #fff;
+	text-decoration: none !important;
+}
 html, body {
     height: 100%;
     margin: 0;
@@ -20,6 +40,7 @@ html, body {
     background-image: url('<%=request.getContextPath()%>/img/360_F_967425218_ZMkPYJQqHSUylEN5pCCCxWCN4D1QOhZM.jpg');
     background-position: center;
     }
+
 
 h1 {
     color: #fff;
@@ -134,7 +155,7 @@ button:hover, .menu-btn:hover {
 		<!-- POSTでaction="history" を送る -->
 		<form action="<%=request.getContextPath()%>/OmoiyalinkBrainTra"
 			method="post">
-			<button type="submit" name="action" value="history">履歴閲覧</button>
+			<button class="seni" type="submit" name="action" value="history">履歴閲覧</button>
 		</form>
 	</div>
 </body>

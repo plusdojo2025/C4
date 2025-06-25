@@ -85,24 +85,30 @@ h3 {
 	text-align: center;
 }
 
-.button-nav {
-	display: flex;
-	justify-content: center;
-	gap: 18px;
-	margin: 22px 0 10px 0;
+/*画面遷移ボタン*/
+.button-center {
+	text-align: center;
+	margin-top: 18px;
+	margin-bottom: 5px;
 }
-
-.button-nav a {
-	background: #46B1E1;
-	color: #fff;
-	border: none;
-	border-radius: 9px;
-	padding: 0.65em 1.6em;
-	font-size: 1em;
-	font-family: inherit;
-	text-decoration: none;
-	transition: background 0.22s;
+.seni {
 	display: inline-block;
+	background: #A9C9E1;
+	color: #22292F;
+	text-decoration: none;
+	border-radius: 9px;
+	padding: 0.6em 1.7em;
+	margin-bottom: 22px;
+	margin-top: 8px;
+	font-size: 1em;
+	font-weight: bold;
+	transition: background 0.2s;
+	text-decoration: none !important;
+}
+.seni:hover {
+	background: #7BA9C9;
+	color: #fff;
+	text-decoration: none !important;
 }
 
 .button-nav a:hover {
@@ -174,9 +180,9 @@ h3 {
 	<div class="sub-header">
 		<h2>服薬登録</h2>
 	</div>
-	<div class="button-nav">
-    <a href="${pageContext.request.contextPath}/OmoiyalinkMedMng" class="btn-nav">登録した薬</a>
-    <a href="${pageContext.request.contextPath}/OmoiyalinkTlkMedMng" class="btn-nav">飲んだ薬</a>
+	<div class="button-center">
+    <a class="seni" href="${pageContext.request.contextPath}/OmoiyalinkMedMng" class="btn-nav">登録した薬</a>
+    <a class="seni" href="${pageContext.request.contextPath}/OmoiyalinkTlkMedMng" class="btn-nav">飲んだ薬</a>
 </div>
 
 	<c:if test="${not empty message}">

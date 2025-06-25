@@ -34,15 +34,13 @@ body {
 	font-size: 1em;
 	font-weight: bold;
 	transition: background 0.2s;
-}
-
-.button-link, .button-link:hover {
-	text-decoration: none !important; /* 下線を絶対に消す */
+	text-decoration: none !important;
 }
 
 .button-link:hover {
 	background: #7ba9c9;
 	color: #fff;
+	text-decoration: none !important;
 }
 
 .table-scroll-x {

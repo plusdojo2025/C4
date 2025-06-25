@@ -210,6 +210,32 @@ button:hover, .btn:hover {
 	justify-content: center;
 }
 
+/*画面遷移ボタン*/
+.button-center {
+	text-align: center;
+	margin-top: 18px;
+	margin-bottom: 5px;
+}
+.seni {
+	display: inline-block;
+	background: #A9C9E1;
+	color: #22292F;
+	text-decoration: none;
+	border-radius: 9px;
+	padding: 0.6em 1.7em;
+	margin-bottom: 22px;
+	margin-top: 8px;
+	font-size: 1em;
+	font-weight: bold;
+	transition: background 0.2s;
+	text-decoration: none !important;
+}
+.seni:hover {
+	background: #7BA9C9;
+	color: #fff;
+	text-decoration: none !important;
+}
+
 /* 新しいコントロール行のスタイル */
 .post-controls {
 	display: flex;
@@ -265,13 +291,11 @@ header .btn {
 			<button onclick="resizeText(28)">大</button>
 			<button onclick="resizeText(36)">特大</button>
 		</div>
-		<div class="post-buttons">
-			<a href="OnboardRegist"><button type="button" class="btn">投稿へ移動</button></a>
-			<a href="OmoiyalinkMyPost"><button type="button" class="btn">マイ投稿へ移動</button></a>
+		<div class="button-center">
+			<a class="seni" href="OnboardRegist"><button type="button" class="btn">投稿へ移動</button></a>
+			<a class="seni" href="OmoiyalinkMyPost"><button type="button" class="btn">マイ投稿へ移動</button></a>
 		</div>
 		</div>
-		</div>
-	
 
 
 <form action="OnboardSearch" method="post">

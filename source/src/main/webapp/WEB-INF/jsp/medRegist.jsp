@@ -171,6 +171,33 @@ input:focus, select:focus, textarea:focus {
 .button-nav a:hover {
 	background: #2d7ea3;
 }
+
+/*画面遷移ボタン*/
+.button-center {
+	text-align: center;
+	margin-top: 18px;
+	margin-bottom: 5px;
+}
+.seni {
+	display: inline-block;
+	background: #A9C9E1;
+	color: #22292F;
+	text-decoration: none;
+	border-radius: 9px;
+	padding: 0.6em 1.7em;
+	margin-bottom: 22px;
+	margin-top: 8px;
+	font-size: 1em;
+	font-weight: bold;
+	transition: background 0.2s;
+	text-decoration: none !important;
+}
+.seni:hover {
+	background: #7BA9C9;
+	color: #fff;
+	text-decoration: none !important;
+}
+
 .sub-header {
 	background-color: #46B1E1;
 	color: #FFFEEF;
@@ -195,10 +222,10 @@ input:focus, select:focus, textarea:focus {
 		<h2>薬を登録する</h2>
 	</div>
 	<!-- ナビゲーションボタン -->
-	<div class="button-nav">
-		<a href="${pageContext.request.contextPath}/OmoiyalinkMedMng">登録した薬に戻る</a>
-		<a href="${pageContext.request.contextPath}/OmoiyalinkTlkMedRegist">薬を飲む</a>	
-		<a href="${pageContext.request.contextPath}/OmoiyalinkTlkMedMng">飲んだ薬</a>
+	<div class="button-center">
+		<a class="seni" href="${pageContext.request.contextPath}/OmoiyalinkMedMng">登録した薬に戻る</a>
+		<a class="seni" href="${pageContext.request.contextPath}/OmoiyalinkTlkMedRegist">薬を飲む</a>	
+		<a class="seni" href="${pageContext.request.contextPath}/OmoiyalinkTlkMedMng">飲んだ薬</a>
 
 	</div>
 

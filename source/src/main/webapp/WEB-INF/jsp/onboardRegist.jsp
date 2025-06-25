@@ -7,205 +7,238 @@
 <title>新規投稿</title>
 <style>
 .post-controls {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 20px;
-  margin: 1.5em 0 2em 0;
-  flex-wrap: wrap;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	gap: 20px;
+	margin: 1.5em 0 2em 0;
+	flex-wrap: wrap;
 }
 
-.post-controls .font-size-buttons button,
-.post-controls .my-post-button button {
-  font-size: 1.6em;
-  padding: 1.0em 1.5em;
+.post-controls .font-size-buttons button, .post-controls .my-post-button button
+	{
+	font-size: 1.6em;
+	padding: 1.0em 1.5em;
 }
 
-  body {
-    font-family: 'メイリオ', 'Meiryo', sans-serif;
-    padding: 2em;
-    font-size: 20px;
-    line-height: 1.8;
-    background: #FFFEEF;
-    color: #22292F;
-    margin: 0;
-    box-sizing: border-box;
-    min-height: 100vh;
-  }
+body {
+	font-family: 'メイリオ', 'Meiryo', sans-serif;
+	padding: 2em;
+	font-size: 20px;
+	line-height: 1.8;
+	background: #FFFEEF;
+	color: #22292F;
+	margin: 0;
+	box-sizing: border-box;
+	min-height: 100vh;
+}
 
-  body.high-contrast {
-    background: #000 !important;
-    color: #FFF !important;
-  }
-  body.high-contrast input,
-  body.high-contrast textarea,
-  body.high-contrast select {
-    background: #000 !important;
-    color: #FFF !important;
-    border-color: #FFF !important;
-  }
-  body.high-contrast a {
-    color: #0ff !important;
-  }
+body.high-contrast {
+	background: #000 !important;
+	color: #FFF !important;
+}
 
-  form {
-    max-width: 100%;
-    width: 90%;
-    margin: 0 auto;
-  }
+body.high-contrast input, body.high-contrast textarea, body.high-contrast select
+	{
+	background: #000 !important;
+	color: #FFF !important;
+	border-color: #FFF !important;
+}
 
-  label, .label {
-    display: block;
-    font-weight: bold;
-    font-size: 1.6em;
-    color: #22292F;
-    margin-top: 1em;
-  }
+body.high-contrast a {
+	color: #0ff !important;
+}
 
-  input[type="text"],
-  textarea,
-  select {
-    width: 100%;
-    padding: 1em;
-    font-size: 1.4em;
-    margin-bottom: 1.2em;
-    border: 1px solid #a3cde2;
-    border-radius: 8px;
-    background: #FFFEF9;
-    color: #22292F;
-    box-sizing: border-box;
-  }
+form {
+	max-width: 100%;
+	width: 90%;
+	margin: 0 auto;
+}
 
-  input:focus, select:focus, textarea:focus {
-    outline: none;
-    border-color: #46B1E1;
-    background: #fcf8f0;
-  }
+label, .label {
+	display: block;
+	font-weight: bold;
+	font-size: 1.6em;
+	color: #22292F;
+	margin-top: 1em;
+}
 
-  .checkbox-group label {
-    font-size: 1.5em;
-    margin-right: 1.5em;
-    margin-bottom: 0.8em;
-    display: inline-flex;
-    align-items: center;
-    cursor: pointer;
-  }
+input[type="text"], textarea, select {
+	width: 100%;
+	padding: 1em;
+	font-size: 1.4em;
+	margin-bottom: 1.2em;
+	border: 1px solid #a3cde2;
+	border-radius: 8px;
+	background: #FFFEF9;
+	color: #22292F;
+	box-sizing: border-box;
+}
 
-  .error {
-    color: red;
-    margin-top: 1em;
-    font-size: 1.4em;
-  }
+input:focus, select:focus, textarea:focus {
+	outline: none;
+	border-color: #46B1E1;
+	background: #fcf8f0;
+}
 
-  button, .btn {
-    background: #46B1E1;
-    color: #fff;
-    border: none;
-    border-radius: 9px;
-    padding: 1em 2em;
-    margin: 0.5em 0;
-    cursor: pointer;
-    font-size: 1.6em;
-    font-family: inherit;
-    transition: background 0.22s;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.15);
-  }
+.checkbox-group label {
+	font-size: 1.5em;
+	margin-right: 1.5em;
+	margin-bottom: 0.8em;
+	display: inline-flex;
+	align-items: center;
+	cursor: pointer;
+}
 
-  button:hover, .btn:hover {
-    background: #2d7ea3;
-  }
+.error {
+	color: red;
+	margin-top: 1em;
+	font-size: 1.4em;
+}
 
-  .sub-header {
-    background-color: #46B1E1;
-    color: #FFFEEF;
-    padding: 15px 30px;
-    margin-top: 0;
-    text-align: center;
-  }
+button, .btn {
+	background: #46B1E1;
+	color: #fff;
+	border: none;
+	border-radius: 9px;
+	padding: 1em 2em;
+	margin: 0.5em 0;
+	cursor: pointer;
+	font-size: 1.6em;
+	font-family: inherit;
+	transition: background 0.22s;
+	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+}
 
-  .sub-header h2 {
-    margin: 0;
-    font-size: 2.4rem;
-  }
+button:hover, .btn:hover {
+	background: #2d7ea3;
+}
 
-  .center-button {
-    display: flex;
-    justify-content: center;
-    margin-top: 2em;
-  }
+.sub-header {
+	background-color: #46B1E1;
+	color: #FFFEEF;
+	padding: 15px 30px;
+	margin-top: 0;
+	text-align: center;
+}
 
-  .bottom-right-button {
-    position: fixed;
-    bottom: 100px;
-    right: 30px;
-    background: #46B1E1;
-    color: #fff;
-    border: none;
-    border-radius: 9px;
-    padding: 1em 2em;
-    cursor: pointer;
-    font-size: 1.6em;
-    font-family: inherit;
-    transition: background 0.22s;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
-    z-index: 1000;
-  }
+.sub-header h2 {
+	margin: 0;
+	font-size: 2.4rem;
+}
 
-  .bottom-right-button:hover {
-    background: #2d7ea3;
-  }
+.center-button {
+	display: flex;
+	justify-content: center;
+	margin-top: 2em;
+}
 
-  .location-row {
-    display: flex;
-    gap: 20px;
-    margin-top: 1.5em;
-    flex-wrap: wrap;
-  }
+.bottom-right-button {
+	position: fixed;
+	bottom: 100px;
+	right: 30px;
+	background: #46B1E1;
+	color: #fff;
+	border: none;
+	border-radius: 9px;
+	padding: 1em 2em;
+	cursor: pointer;
+	font-size: 1.6em;
+	font-family: inherit;
+	transition: background 0.22s;
+	box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+	z-index: 1000;
+}
 
-  .location-item {
-    flex: 1;
-    min-width: 250px;
-  }
+.bottom-right-button:hover {
+	background: #2d7ea3;
+}
 
-  .font-size-buttons {
-    margin: 1em 0;
-    display: flex;
-    gap: 10px;
-    justify-content: center;
-  }
-  .font-size-buttons button {
-    padding: 0.6em 1em;
-    font-size: 1.4em;
-  }
-  .contrast-toggle {
-    margin: 1em 0;
-    text-align: center;
-  }
-  .contrast-toggle button {
-    padding: 0.6em 1em;
-    font-size: 1.4em;
-    background: #222;
-    color: #fff;
-    border-radius: 6px;
-    border: none;
-    cursor: pointer;
-  }
-  .contrast-toggle button:hover {
-    background: #444;
-  }
-   .gotop{
-    text-align :center;
-    }
-.copyright{
-    margin-top: 20px;
-    margin-bottom: 0;
-    padding-top: 75px;
-    padding-bottom: 75px;
-    background-color: #46B1E1;
-    color: #FFFEEF;
-    text-align: center;
-    font-size: 1.3rem;
-    }
+.location-row {
+	display: flex;
+	gap: 20px;
+	margin-top: 1.5em;
+	flex-wrap: wrap;
+}
+
+.location-item {
+	flex: 1;
+	min-width: 250px;
+}
+
+.font-size-buttons {
+	margin: 1em 0;
+	display: flex;
+	gap: 10px;
+	justify-content: center;
+}
+
+.font-size-buttons button {
+	padding: 0.6em 1em;
+	font-size: 1.4em;
+}
+
+.contrast-toggle {
+	margin: 1em 0;
+	text-align: center;
+}
+
+.contrast-toggle button {
+	padding: 0.6em 1em;
+	font-size: 1.4em;
+	background: #222;
+	color: #fff;
+	border-radius: 6px;
+	border: none;
+	cursor: pointer;
+}
+
+.contrast-toggle button:hover {
+	background: #444;
+}
+
+.gotop {
+	text-align: center;
+}
+
+.copyright {
+	margin-top: 20px;
+	margin-bottom: 0;
+	padding-top: 75px;
+	padding-bottom: 75px;
+	background-color: #46B1E1;
+	color: #FFFEEF;
+	text-align: center;
+	font-size: 1.3rem;
+}
+
+/*画面遷移ボタン*/
+.button-center {
+	text-align: center;
+	margin-top: 18px;
+	margin-bottom: 5px;
+}
+
+.seni {
+	display: inline-block;
+	background: #A9C9E1;
+	color: #22292F;
+	text-decoration: none;
+	border-radius: 9px;
+	padding: 0.6em 1.7em;
+	margin-bottom: 22px;
+	margin-top: 8px;
+	font-size: 1em;
+	font-weight: bold;
+	transition: background 0.2s;
+	text-decoration: none !important;
+}
+
+.seni:hover {
+	background: #7BA9C9;
+	color: #fff;
+	text-decoration: none !important;
+}
 </style>
 <script>
   const PREF_CITY = {
@@ -253,72 +286,74 @@
 </script>
 </head>
 <body>
-  <%@ include file="/WEB-INF/jsp/header.jsp" %>
+	<%@ include file="/WEB-INF/jsp/header.jsp"%>
 
-<div class="sub-header">
-  <h2>投稿フォーム</h2>
-</div>
-
-
-<div class="post-controls">
-  <div class="font-size-buttons">
-    <button onclick="changeFontSize(20)">標準</button>
-    <button onclick="changeFontSize(28)">大</button>
-    <button onclick="changeFontSize(36)">特大</button>
-  </div>
-  <div class="my-post-button">
-    <a href="OmoiyalinkMyPost">
-      <button type="button" class="btn">マイ投稿へ移動</button>
-    </a>
-  </div>
-</div>
+	<div class="sub-header">
+		<h2>投稿フォーム</h2>
+	</div>
 
 
-  <c:if test="${not empty errorMessage}">
-    <div class="error">${errorMessage}</div>
-  </c:if>
+	<div class="post-controls">
+		<div class="font-size-buttons">
+			<button onclick="changeFontSize(20)">標準</button>
+			<button onclick="changeFontSize(28)">大</button>
+			<button onclick="changeFontSize(36)">特大</button>
+		</div>
+		<div class="button-center">
+			<a class="seni" href="OmoiyalinkMyPost">
+				<button type="button" class="btn">マイ投稿へ移動</button>
+			</a>
+		</div>
+	</div>
 
-  <form action="OnboardRegist" method="post" id="postForm">
-    <label>タグ（複数選択可） <span style="color: red;">*</span></label>
-    <div class="checkbox-group">
-      <label><input type="checkbox" name="tags" value="運動"> 運動</label>
-      <label><input type="checkbox" name="tags" value="集会"> 集会</label>
-      <label><input type="checkbox" name="tags" value="お裾分け"> お裾分け</label>
-      <label><input type="checkbox" name="tags" value="日記"> 日記</label>
-    </div>
 
-    <div class="location-row">
-      <div class="location-item">
-        <label for="pref">都道府県を選択 <span style="color: red;">*</span></label>
-        <select id="pref" name="pref" required>
-          <option value="">都道府県を選択してください</option>
-        </select>
-      </div>
-      <div class="location-item">
-        <label for="city">市区町村を選択 <span style="color: red;">*</span></label>
-        <select id="city" name="city" required disabled>
-          <option value="">市区町村で絞り込む</option>
-        </select>
-      </div>
-    </div>
+	<c:if test="${not empty errorMessage}">
+		<div class="error">${errorMessage}</div>
+	</c:if>
 
-    <label for="title">タイトル <span style="color: red;">*</span></label>
-    <input type="text" id="title" name="title" required maxlength="100">
+	<form action="OnboardRegist" method="post" id="postForm">
+		<label>タグ（複数選択可） <span style="color: red;">*</span></label>
+		<div class="checkbox-group">
+			<label><input type="checkbox" name="tags" value="運動">
+				運動</label> <label><input type="checkbox" name="tags" value="集会">
+				集会</label> <label><input type="checkbox" name="tags" value="お裾分け">
+				お裾分け</label> <label><input type="checkbox" name="tags" value="日記">
+				日記</label>
+		</div>
 
-    <label for="content">投稿内容 <span style="color: red;">*</span></label>
-    <textarea id="content" name="content" rows="6" maxlength="1000" required></textarea>
+		<div class="location-row">
+			<div class="location-item">
+				<label for="pref">都道府県を選択 <span style="color: red;">*</span></label>
+				<select id="pref" name="pref" required>
+					<option value="">都道府県を選択してください</option>
+				</select>
+			</div>
+			<div class="location-item">
+				<label for="city">市区町村を選択 <span style="color: red;">*</span></label>
+				<select id="city" name="city" required disabled>
+					<option value="">市区町村で絞り込む</option>
+				</select>
+			</div>
+		</div>
 
-    <div class="center-button">
-      <button type="submit">投稿する</button>
-    </div>
-  </form>
+		<label for="title">タイトル <span style="color: red;">*</span></label> <input
+			type="text" id="title" name="title" required maxlength="100">
 
-  
-  <!-- フッター -->
+		<label for="content">投稿内容 <span style="color: red;">*</span></label>
+		<textarea id="content" name="content" rows="6" maxlength="1000"
+			required></textarea>
+
+		<div class="center-button">
+			<button type="submit">投稿する</button>
+		</div>
+	</form>
+
+
+	<!-- フッター -->
 	<footer>
-	<div class="gotop">
-        <a href="#top"><img src="img/gotop.svg" alt="ページトップへ戻る"></a>
-    </div>	
+		<div class="gotop">
+			<a href="#top"><img src="img/gotop.svg" alt="ページトップへ戻る"></a>
+		</div>
 		<p class="copyright">&copy; Collect Force Inc.</p>
 	</footer>
 	<!-- フッターここまで -->

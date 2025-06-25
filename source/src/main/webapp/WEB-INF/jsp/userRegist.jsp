@@ -114,6 +114,25 @@ button:hover {
 		font-size: 1.25em !important;
 	}
 }
+/*画面遷移ボタン*/
+.seni {
+	display: inline-block;
+	background: #A9C9E1;
+	color: #22292F;
+	text-decoration: none;
+	border-radius: 9px;
+	padding: 0.6em 1.7em;
+	margin-bottom: 22px;
+	margin-top: 8px;
+	font-size: 1em;
+	transition: background 0.2s;
+	text-decoration: none !important;
+}
+.seni:hover {
+	background: #7BA9C9;
+	color: #fff;
+	text-decoration: none !important;
+}
 </style>
 <script>
 	const PREF_CITY = {
@@ -243,7 +262,7 @@ button:hover {
 				type="email" name="email" id="email" placeholder="example@email.com"
 				required>
 			<button type="submit">登録（メールを送信します）</button>
-			<button type="button" onclick="history.back();">登録をやめる</button>
+			<button type="button" class="seni" onclick="history.back();">登録をやめる</button>
 		</form>
 	</div>
 	<%@ include file="/WEB-INF/jsp/footer.jsp"%>
