@@ -16,7 +16,7 @@ public class MedicationLogsDto extends CustomeTemplateDto implements Serializabl
 	private String dosage;
 	
 	
-	public MedicationLogsDto(int logId , int medicationId , int userId , Date takenTime , String memo , String takenMed , String nickname, String formalName, String dosage) {
+	public MedicationLogsDto(int logId , int medicationId , int userId , Date takenTime ,  String takenMed ,String memo , String nickname, String formalName, String dosage) {
 		this.logId = logId;
 		this.medicationId = medicationId;
 		this.userId = userId;
@@ -64,20 +64,21 @@ public class MedicationLogsDto extends CustomeTemplateDto implements Serializabl
 		this.takenTime = takenTime;
 	}
 
-	public String getMemo() {
-		return memo;
-	}
-
-	public void setMemo(String memo) {
-		this.memo = memo;
-	}
-
+	
 	public String getTakenMed() {
 		return takenMed;
 	}
 
 	public void setTakenMed(String takenMed) {
 		this.takenMed = takenMed;
+	}
+	
+	public String getMemo() {
+		return memo;
+	}
+
+	public void setMemo(String memo) {
+		this.memo = memo;
 	}
 
 	public String getNickname() {

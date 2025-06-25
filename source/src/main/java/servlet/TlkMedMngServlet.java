@@ -1,7 +1,6 @@
 package servlet;
 
 import java.io.IOException;
-import java.sql.Date;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -101,22 +100,29 @@ public class TlkMedMngServlet extends CustomTemplateServlet {
 			}
 			int userId = user.getUserId();
 
+			
+			// 1. JSPで <input type="date" name="takenTime"> と <input type="time" name="takenTimeHourMin"> の2つを受けること
+	        String takenTimeStr = request.getParameter("takenTime");           // 例 "2025-06-25"
+	        String takenTimeHourMin = request.getParameter("takenTimeHourMin"); // 例 "14:55"
+	        // ↓ 合成
+	        String takenTimeFull = takenTimeStr + " " + (takenTimeHourMin != null ? takenTimeHourMin : "00:00") + ":00"; // "2025-06-25 14:55:00"
+	        java.sql.Timestamp takenTime = java.sql.Timestamp.valueOf(takenTimeFull);
+	        
 			// 編集対象の服薬記録IDなどパラメータ取得
-			int logId = Integer.parseInt(request.getParameter("logId"));
-			String takenTimeStr = request.getParameter("takenTime");
-			String takenMed = request.getParameter("takenMed");
-			String memo = request.getParameter("memo");
-			String nickName = request.getParameter("nickname");
-			String formalName = request.getParameter("formalName");
-			String dosage = request.getParameter("dosage");
-			int medicationId = Integer.parseInt(request.getParameter("medicationId"));
+	        String takenMed = request.getParameter("takenMed");
+	        String memo = request.getParameter("memo");
+	        String nickname = request.getParameter("nickname");
+	        String formalName = request.getParameter("formalName");
+	        String dosage = request.getParameter("dosage");
+	        int medicationId = Integer.parseInt(request.getParameter("medicationId"));
+	        int logId = Integer.parseInt(request.getParameter("logId"));
 
 			// 日付変換（yyyy-MM-dd想定）
-			Date takenTime = Date.valueOf(takenTimeStr);
+			//Date takenTime = Date.valueOf(takenTimeStr);
 
 			// DTO組み立て
-			MedicationLogsDto dto = new MedicationLogsDto(logId, medicationId, userId, takenTime, takenMed, memo,
-					nickName, formalName, dosage);
+			MedicationLogsDto dto = new MedicationLogsDto(
+				logId, medicationId, userId, takenTime, takenMed, memo, nickname, formalName, dosage);
 
 			MedicationLogsDao mDao = new MedicationLogsDao();
 			String submit = request.getParameter("submit");

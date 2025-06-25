@@ -221,13 +221,9 @@ public class MedicationLogsDao extends CustomTemplateDao<MedicationLogsDto> {
 			PreparedStatement pStmt = conn.prepareStatement(sql);
 
 			// SQL文を完成させる
-
-			
-
-			pStmt.setString(1, dto.getTakenMed());
-			pStmt.setString(2, dto.getMemo());
-			pStmt.setTimestamp(3, new Timestamp(dto.getTakenTime().getTime()));
-			//setTimestamp(3, dto.getTakenTime());
+			pStmt.setTimestamp(1, new Timestamp(dto.getTakenTime().getTime()));
+			pStmt.setString(2, dto.getTakenMed());
+			pStmt.setString(3, dto.getMemo());
 			pStmt.setInt(4, dto.getLogId());
 			pStmt.setInt(5, dto.getUserId());
 			

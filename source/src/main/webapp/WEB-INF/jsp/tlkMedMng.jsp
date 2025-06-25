@@ -222,31 +222,20 @@ h3 {
 					<c:forEach var="log" items="${mlogList}">
 						<tr>
 							<form action="OmoiyalinkTlkMedMng" method="post">
-								<td><input type="date" name="takenTime"
-									value="${log.takenTimeString}" required class="edit-plain">
-								</td>
-								<td><input type="time" name="takenTimeHourMin"
-									value="${log.takenTimeHourMin}" required class="edit-plain">
-								</td>
-								<td><input type="text" name="nickname"
-									value="${log.nickname}" class="edit-plain"></td>
-								<td><input type="text" name="formalName"
-									value="${log.formalName}" class="edit-plain"></td>
-								<td><input type="text" name="dosage" value="${log.dosage}"
-									class="edit-plain"></td>
-								<td><input type="text" name="memo" value="${log.memo}"
-									class="edit-plain"></td>
+								<td><input type="date" name="takenTime"  				value="${log.takenTimeString}" required 			class="edit-plain"></td>
+								<td><input type="time" name="takenTimeHourMin"  value="${log.takenTimeHourMin}" required 		class="edit-plain"></td>
+								<td><input type="text" name="nickname"					value="${log.nickname}" 									class="edit-plain"></td>
+								<td><input type="text" name="formalName"				value="${log.formalName}" 								class="edit-plain"></td>
+								<td><input type="text" name="dosage"						 value="${log.dosage}"										class="edit-plain"></td>
+								<td><input type="text" name="memo" 						value="${log.memo}"										class="edit-plain"></td>
 								<td>
-						<!-- 必要なhidden値を全部送る -->
-						<input type="hidden" name="logId" value="${log.logId}">
-						<input type="hidden" name="takenMed" value="${log.takenMed}">
-						<input type="hidden" name="medicationId" value="${log.medicationId}">
-								
-						<!-- 更新ボタンと削除ボタン -->
-						<input type="submit" name="submit" value="更新" class="buttonE">
-						<input type="submit" name="submit" value="削除" class="buttonD"
-						onclick="return confirm('本当に削除しますか？');">
-
+									<!-- 必要なhidden値を全部送る -->
+									<input type="hidden" name="logId" 				value="${log.logId}">
+									<input type="hidden" name="takenMed" 		value="${log.takenMed}">
+									<input type="hidden" name="medicationId"	 value="${log.medicationId}">	
+									<!-- 更新ボタンと削除ボタン -->
+									<input type="submit" name="submit" 		value="更新" 		class="buttonE">
+									<input type="submit" name="submit" 		value="削除" 		class="buttonD"		onclick="return confirm('本当に削除しますか？');">
 								</td>
 							</form>
 						</tr>
