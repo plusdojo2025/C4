@@ -147,16 +147,13 @@ button:hover, .menu-btn:hover {
 	</div>
 
 	<div class="buttons">
-		<!-- POSTでaction="start" を送る -->
-		<form action="<%=request.getContextPath()%>/OmoiyalinkBrainTra"
-			method="post">
-			<button type="submit" name="action" value="start">ゲーム開始</button>
-		</form>
-		<!-- POSTでaction="history" を送る -->
-		<form action="<%=request.getContextPath()%>/OmoiyalinkBrainTra"
-			method="post">
-			<button class="seni" type="submit" name="action" value="history">履歴閲覧</button>
-		</form>
+	<form action="<%=request.getContextPath()%>/OmoiyalinkBrainTra" method="post">
+		<button class="seni" type="submit" name="action" value="start">ゲーム開始</button>
+	</form>
+	<form action="<%=request.getContextPath()%>/OmoiyalinkBrainTra" method="post">
+		<button class="seni" type="submit" name="action" value="history">履歴閲覧</button>
+	</form>
 	</div>
+	
 </body>
 </html>

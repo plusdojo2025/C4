@@ -62,14 +62,11 @@ h1 {
 	font-size: 1.23em;
 	text-align: center;
 }
-.button-row {
-	margin-top: 36px;
-	margin-left: 120px;
-
+.buttons {
 	display: flex;
-	gap: 22px;
-	flex-wrap: wrap;
-	
+	justify-content: center;
+	gap: 30px;
+	margin-top: 80px;
 }
 
 button, .menu-btn {
@@ -113,17 +110,18 @@ button:hover, .menu-btn:hover {
 	<div class="saveMsg">
 		<c:out value="${saveResult}" />
 	</div>
-	<div class="button-row">
-		<!-- リトライ（もう一度プレイ） -->
-		<form action="<%=request.getContextPath()%>/OmoiyalinkBrainTraPlay"
-			method="get" style="display: inline;">
-			<button type="submit">リトライ</button>
-		</form>
-		<!-- 履歴閲覧 -->
-		<form action="<%=request.getContextPath()%>/OmoiyalinkBrainTraMng"
-			method="get" style="display: inline;">
-			<button class="seni" type="submit">履歴閲覧</button>
-		</form>
-	</div>
+	<div class="buttons">
+	<!-- リトライ（もう一度プレイ） -->
+	<form action="<%=request.getContextPath()%>/OmoiyalinkBrainTraPlay"
+		method="get">
+		<button class="seni" type="submit">リトライ</button>
+	</form>
+
+	<!-- 履歴閲覧 -->
+	<form action="<%=request.getContextPath()%>/OmoiyalinkBrainTraMng"
+		method="get">
+		<button class="seni" type="submit">履歴閲覧</button>
+	</form>
+</div>
 </body>
 </html>
