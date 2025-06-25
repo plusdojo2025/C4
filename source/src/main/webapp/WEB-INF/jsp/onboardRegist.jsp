@@ -303,13 +303,13 @@ button:hover, .btn:hover {
 	      // タイトル制限
 	      if (titleLength > TITLE_MAX) {
 	        titleInput.value = titleInput.value.substring(0, TITLE_MAX);
-	        errorMessages.push(`タイトルは${TITLE_MAX}100文字以内で入力してください。`);
+	        errorMessages.push(`タイトルは${TITLE_MAX}100文字以内で入力してください`);
 	      }
 
 	      // 本文制限
 	      if (contentLength > CONTENT_MAX) {
 	        contentInput.value = contentInput.value.substring(0, CONTENT_MAX);
-	        errorMessages.push(`投稿内容は${CONTENT_MAX}1000文字以内で入力してください。`);
+	        errorMessages.push(`投稿内容は${CONTENT_MAX}1000文字以内で入力してください`);
 	      }
 
 	      // 表示更新
