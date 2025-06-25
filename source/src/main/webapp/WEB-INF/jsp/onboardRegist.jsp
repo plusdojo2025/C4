@@ -283,6 +283,42 @@ button:hover, .btn:hover {
   function toggleContrast() {
     document.body.classList.toggle('high-contrast');
   }
+  
+  window.addEventListener('DOMContentLoaded', () => {
+	    const titleInput = document.getElementById('title');
+	    const contentInput = document.getElementById('content');
+	    const clientError = document.createElement('div');
+	    clientError.className = 'error';
+	    titleInput.form.insertBefore(clientError, titleInput.form.firstChild); // フォームの一番上に表示
+
+	    const TITLE_MAX = 100;
+	    const CONTENT_MAX = 1000;
+
+	    const updateValidation = () => {
+	      const titleLength = titleInput.value.length;
+	      const contentLength = contentInput.value.length;
+
+	      let errorMessages = [];
+
+	      // タイトル制限
+	      if (titleLength > TITLE_MAX) {
+	        titleInput.value = titleInput.value.substring(0, TITLE_MAX);
+	        errorMessages.push(`タイトルは${TITLE_MAX}100文字以内で入力してください。`);
+	      }
+
+	      // 本文制限
+	      if (contentLength > CONTENT_MAX) {
+	        contentInput.value = contentInput.value.substring(0, CONTENT_MAX);
+	        errorMessages.push(`投稿内容は${CONTENT_MAX}1000文字以内で入力してください。`);
+	      }
+
+	      // 表示更新
+	      clientError.innerHTML = errorMessages.join('<br>');
+	    };
+
+	    titleInput.addEventListener('input', updateValidation);
+	    contentInput.addEventListener('input', updateValidation);
+	  });
 </script>
 </head>
 <body>
