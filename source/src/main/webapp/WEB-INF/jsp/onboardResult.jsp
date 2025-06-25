@@ -360,33 +360,9 @@ h1 {
 </head>
 <body>
 	<!-- ヘッダー -->
-	<header>
-		<h1 id="logo">
-			<a href="${pageContext.request.contextPath}/OmoiyalinkHome"> <img
-				src="${pageContext.request.contextPath}/img/logo.png" alt="おもいやリンク">
-			</a>
-		</h1>
-		<ul id="nav">
-			<li><a href="${pageContext.request.contextPath}/OmoiyalinkHome">
-					<i class="fa-solid fa-house"></i>&nbsp;ホーム
-			</a></li>
-			<li><a
-				href="${pageContext.request.contextPath}/OmoiyalinkHealthRegist">
-					<i class="fa-solid fa-heart-pulse"></i>&nbsp;体調管理
-			</a></li>
-			<li><a
-				href="${pageContext.request.contextPath}/OmoiyalinkTlkMedRegist">
-					<i class="fa-solid fa-capsules"></i>&nbsp;服薬管理
-			</a></li>
-			<li><a href="${pageContext.request.contextPath}/OnboardSearch">
-					<i class="fa-solid fa-comments"></i>&nbsp;掲示板
-			</a></li>
-			<%-- <li><a href="${pageContext.request.contextPath}/OmoiyalinkBrainTra">
-				<i class="fa-solid fa-brain"></i>&nbsp;脳トレ</a></li> --%>
-			<li><a href="?logout=1"> <i
-					class="fa-solid fa-right-from-bracket"></i>&nbsp;ログアウト
-			</a></li>
-		</ul>
+		<!-- ヘッダー -->
+<header>
+		<%@ include file="/WEB-INF/jsp/header.jsp"%>
 	</header>
 	<!-- ヘッダここまで -->
 	<!-- メイン -->
