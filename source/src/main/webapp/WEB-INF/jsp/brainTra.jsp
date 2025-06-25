@@ -120,26 +120,6 @@ button:hover, .menu-btn:hover {
 	margin-top: 80px;
 }
 
-.seni {
-	display: inline-block;
-	background: #A9C9E1;
-	color: #22292F;
-	text-decoration: none;
-	border-radius: 9px;
-	padding: 0.6em 1.7em;
-	margin-bottom: 22px;
-	margin-top: 8px;
-	font-size: 1em;
-	font-weight: bold;
-	transition: background 0.2s;
-	text-decoration: none !important;
-}
-.seni:hover {
-	background: #7BA9C9;
-	color: #fff;
-	text-decoration: none !important;
-}
-
 .red {
 	color:red;
 	font-weight:bold;
@@ -168,11 +148,12 @@ button:hover, .menu-btn:hover {
 
 	<div class="buttons">
 	<form action="<%=request.getContextPath()%>/OmoiyalinkBrainTra" method="post">
-		<button class="seni" type="submit" name="action" value="start">ゲームに戻る</button>
+		<button class="seni" type="submit" name="action" value="start">ゲーム開始</button>
 	</form>
-	<form action="<%=request.getContextPath()%>/OmoiyalinkMypage" method="get">
-		<button class="seni" type="submit">マイページへ</button>
+	<form action="<%=request.getContextPath()%>/OmoiyalinkBrainTra" method="post">
+		<button class="seni" type="submit" name="action" value="history">履歴閲覧</button>
 	</form>
 	</div>
+	
 </body>
 </html>
