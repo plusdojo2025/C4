@@ -34,8 +34,9 @@ input {
 
 th, td {
 	border: 1px solid #ccc;
-	padding: 8px;
+	padding: 10px 14px;
 	text-align: center;
+	font-size: 1.13rem;
 }
 
 th:nth-child(1), td:nth-child(1) {
@@ -146,14 +147,25 @@ h3 {
 }
 
 .table-scroll table {
-	width: max-content;
-	min-width: 600px;
-	margin: 0 auto;
+	width: 80vw;
+    min-width: 650px;
+    max-width: 1600px;
+    margin: 0 auto;
 }
 
 .submit-area {
 	text-align: center;
 	margin-top: 10px;
+}
+
+@media (max-width: 700px) {
+  .table-scroll table {
+    min-width: 400px;
+    font-size: 0.95rem;
+  }
+  th, td {
+    padding: 8px 4px;
+  }
 }
 </style>
 </head>
@@ -176,9 +188,11 @@ h3 {
 			<span class="big-num"><%=m.format(today)%></span>月 <span
 			class="big-num"><%=d.format(today)%></span>日 (<%=e.format(today)%>)
 		</strong>
+		
 		<c:forEach var="entry" items="${medsByTime}">
-			<h3>${entry.key}の薬</h3>
-			<div class="table-scroll">
+		<h3 class="table-time-title">${entry.key}の薬</h3>
+		<div class="table-scroll">
+			
 				<table>
 					<tr>
 						<th>愛称</th>
@@ -192,8 +206,7 @@ h3 {
 							<td>${med.nickname}</td>
 							<td>${med.formalName}</td>
 							<td>${med.dosage}</td>
-							<td><input type="checkbox" name="takenMed"
-								value="${med.medicationId}"
+							<td><input type="checkbox" name="takenMed"   value="${med.medicationId}"
 								<c:if test="${checkedIds.contains(med.medicationId)}">checked disabled</c:if> />
 							</td>
 							<td><input type="text" name="memo_${med.medicationId}"
@@ -224,7 +237,7 @@ h3 {
 				</tr>
 				<tr>
 					<td><select name="freeMedicationId" required>
-							<option value="">選択</option>
+							<option value="">飲んだ薬を選択してください</option>
 							<c:forEach var="med" items="${allMeds}">
 								<option value="${med.medicationId}">${med.nickname}（${med.formalName}）</option>
 							</c:forEach>

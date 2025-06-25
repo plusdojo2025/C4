@@ -1,5 +1,13 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<% int year = (Integer) request.getAttribute("year");
+    int month = (Integer) request.getAttribute("month"); %>
+<% // 年月パラメータを取得
+    int prevYear = year, prevMonth = month - 1;
+    int nextYear = year, nextMonth = month + 1;
+    if (prevMonth == 0) { prevYear--; prevMonth = 12; }
+    if (nextMonth == 13) { nextYear++; nextMonth = 1; }
+%>
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -176,10 +184,25 @@ h3 {
 	</div>
 	<div class="button-nav">
 		<a href="${pageContext.request.contextPath}/OmoiyalinkMedMng">登録した薬</a>
-		<a href="${pageContext.request.contextPath}/OmoiyalinkTlkMedMng">薬を飲む</a>
+		<a href="${pageContext.request.contextPath}/OmoiyalinkTlkMedRegist">薬を飲む</a>
 	</div>
 	<div class="page">
 
+<div style="text-align:center; margin-bottom: 0.7rem;">
+		<span style="font-size: 1.3rem; font-weight: bold;">
+			<%= year %>年<%= month %>月の服薬記録
+		</span>
+	</div>
+
+	<!-- 2. 前月・翌月ボタン（表の下にも置いてOK） -->
+	<div style="text-align:center; margin: 1.2rem 0 1rem 0;">
+		<a href="OmoiyalinkTlkMedMng?year=<%= prevYear %>&month=<%= prevMonth %>">
+			<button type="button">前月</button>
+		</a>
+		<a href="OmoiyalinkTlkMedMng?year=<%= nextYear %>&month=<%= nextMonth %>">
+			<button type="button">翌月</button>
+		</a>
+	</div>
 		<!-- 横スクロール可能なテーブル -->
 		<div class="table-scroll">
 			<table class="table-meds">
@@ -213,17 +236,16 @@ h3 {
 								<td><input type="text" name="memo" value="${log.memo}"
 									class="edit-plain"></td>
 								<td>
-									<!-- 必要なhidden値を全部送る --> <input type="hidden" name="logId"
-									value="${log.logId}"> <input type="hidden"
-									name="nickname" value="${log.nickname}"> <input
-									type="hidden" name="formalName" value="${log.formalName}">
-									<input type="hidden" name="dosage" value="${log.dosage}">
-									<input type="hidden" name="medicationId"
-									value="${log.medicationId}"> <input type="hidden"
-									name="takenMed" value="${log.takenMed}"> <!-- 更新・削除ボタン -->
-									<input type="submit" name="submit" value="更新" class="buttonE">
-									<input type="submit" name="submit" value="削除" class="buttonD"
-									onclick="return confirm('本当に削除しますか？');">
+						<!-- 必要なhidden値を全部送る -->
+						<input type="hidden" name="logId" value="${log.logId}">
+						<input type="hidden" name="takenMed" value="${log.takenMed}">
+						<input type="hidden" name="medicationId" value="${log.medicationId}">
+								
+						<!-- 更新ボタンと削除ボタン -->
+						<input type="submit" name="submit" value="更新" class="buttonE">
+						<input type="submit" name="submit" value="削除" class="buttonD"
+						onclick="return confirm('本当に削除しますか？');">
+
 								</td>
 							</form>
 						</tr>
