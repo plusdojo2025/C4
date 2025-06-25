@@ -299,12 +299,12 @@ button:hover, .btn:hover {
 			<button onclick="changeFontSize(28)">大</button>
 			<button onclick="changeFontSize(36)">特大</button>
 		</div>
-		<div class="button-center">
-			<a class="seni" href="OmoiyalinkMyPost">
-				<button type="button" class="btn">マイ投稿へ移動</button>
-			</a>
-		</div>
 	</div>
+	<div class="button-center">
+		<a class="seni" href="OmoiyalinkMyPost"> 自分の投稿を見る </a>
+		<a class="seni" href="OnboardSearch">検索する</a>
+	</div>
+
 
 
 	<c:if test="${not empty errorMessage}">

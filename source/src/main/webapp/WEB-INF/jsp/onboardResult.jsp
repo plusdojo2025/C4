@@ -319,6 +319,34 @@ h1 {
   background-color: #2d7ea3;
 }
 
+/*画面遷移ボタン*/
+.button-center {
+	text-align: center;
+	margin-top: 18px;
+	margin-bottom: 5px;
+}
+
+.seni {
+	display: inline-block;
+	background: #A9C9E1;
+	color: #22292F;
+	text-decoration: none;
+	border-radius: 9px;
+	padding: 0.6em 1.7em;
+	margin-bottom: 22px;
+	margin-top: 8px;
+	font-size: 1em;
+	font-weight: bold;
+	transition: background 0.2s;
+	text-decoration: none !important;
+}
+
+.seni:hover {
+	background: #7BA9C9;
+	color: #fff;
+	text-decoration: none !important;
+}
+
 </style>
 </head>
 <body>
@@ -364,11 +392,12 @@ h1 {
     <button onclick="document.body.style.fontSize='28px'">大</button>
     <button onclick="document.body.style.fontSize='36px'">特大</button>
   </div>
+ </div>
   <div class="button-center">
-    <button class="seni" onclick="location.href='OnboardSearch'">検索に戻る</button>
-    <button class="seni" onclick="location.href='OmoiyalinkHome'">ホームへ戻る</button>
+    <a class="seni" href="OnboardSearch">検索に戻る</a>
+	<a class="seni" href="OnboardRegist">投稿する</a>  
+	<a class="seni" href="OmoiyalinkMyPost"> 自分の投稿を見る </a>  
   </div>
-</div>
 
 
 		
