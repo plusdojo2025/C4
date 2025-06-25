@@ -7,10 +7,12 @@
 <title>脳トレ履歴一覧</title>
 <style>
 /*画面遷移ボタン*/
-.button-center {
-	text-align: center;
-	margin-top: 18px;
-	margin-bottom: 5px;
+.buttons {
+	display: flex;
+	justify-content: center;
+	gap: 30px;
+	margin-top: 30px;
+	margin-bottom: 10px;
 }
 .seni {
 	display: inline-block;
@@ -92,7 +94,7 @@ table td {
 }
 
 .paging a:hover {
-	color: #FFB74D;
+	color: #F9BEB1;
 	text-decoration: underline;
 }
 
@@ -115,25 +117,25 @@ span {
 		</c:if>
 	</div>
 	
-<div class="button-center">
-	<!-- メニューに戻るボタン（formでボタン化） -->
-<form action="<%=request.getContextPath()%>/OmoiyalinkBrainTra" method="get" style="text-align: right; margin-top: 5px; ">
-	<button type="submit" class="seni">脳トレメニューに戻る</button>
-</form>
-</div>
+<div class="buttons">
+	<!-- 脳トレメニューに戻る -->
+	<form action="<%=request.getContextPath()%>/OmoiyalinkBrainTra" method="get">
+		<button type="submit" class="seni">脳トレメニューに戻る</button>
+	</form>
 
-	<form method="get" action="OmoiyalinkBrainTraMng" style="text-align: right; margin-bottom: 0px;">
-	<input type="hidden" name="page" value="${page}" />
-	<!-- 現在の並び順がascならdescに、descならascに -->
-	<c:choose>
-		<c:when test="${order == 'asc'}">
-			<button class="sort-btn" type="submit" name="order" value="desc">勝利回数順↓</button>
-		</c:when>
-		<c:otherwise>
-			<button class="sort-btn" type="submit" name="order" value="asc">勝利回数順↑</button>
-		</c:otherwise>
-	</c:choose>
-</form>
+	<!-- 勝利回数順ソートボタン -->
+	<form method="get" action="OmoiyalinkBrainTraMng">
+		<input type="hidden" name="page" value="${page}" />
+		<c:choose>
+			<c:when test="${order == 'asc'}">
+				<button class="seni" type="submit" name="order" value="desc">勝利回数順↓</button>
+			</c:when>
+			<c:otherwise>
+				<button class="seni" type="submit" name="order" value="asc">勝利回数順↑</button>
+			</c:otherwise>
+		</c:choose>
+	</form>
+</div>
 
 	<table border="1">
 		<thead>
