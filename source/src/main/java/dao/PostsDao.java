@@ -16,7 +16,8 @@ public class PostsDao {
     // ユーザーIDで自分の投稿だけ取得
     public List<PostsDto> selectByUserId(int userId) {
         List<PostsDto> list = new ArrayList<>();
-        String sql = "SELECT p.*, u.name AS user_name "
+        String sql = "SELECT p.*, u.name AS user_name, "
+                + "(SELECT COUNT(*) FROM reactions r WHERE r.post_id = p.post_id) AS likeCount "
                 + "FROM posts p "
                 + "JOIN users u ON p.user_id = u.user_id "
                 + "WHERE p.user_id = ? "
@@ -129,6 +130,12 @@ public class PostsDao {
         dto.setPref(rs.getString("pref"));
         dto.setCity(rs.getString("city"));
         
+        try {
+            dto.setLikeCount(rs.getInt("likeCount"));
+        } catch (SQLException ignore) {
+            // いいね数がない場合（他のSQLで呼ばれる場合）はスルー
+        }
+
         return dto;
     }
 }

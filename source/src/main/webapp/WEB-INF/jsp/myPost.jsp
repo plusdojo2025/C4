@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -218,25 +219,30 @@ button:hover, .btn:hover {
 			<div class="post" data-post-id="${post.id}">
 				<h3>${post.title}</h3>
 				<p>
-					<strong>場所:</strong> ${post.pref} / ${post.city}
+					<strong>場所: ${post.pref} / ${post.city}</strong>
 				</p>
 				<p>
-					<strong>タグ:</strong> ${post.tag}
+					<strong>タグ: ${post.tag}</strong>
 				</p>
-				<p>${post.content}</p>
 				<p>
-					<strong>投稿日:</strong> ${post.createdAt}
+					<strong>${post.content}</strong>
+				</p>
+				<p>
+					<strong>投稿日:</strong> <fmt:formatDate value="${post.createdAt}" pattern="yyyy/M/d H:mm" />
 				</p>
 				<div>
 					<button class="likeBtn"
 						data-liked="${post.likedByCurrentUser ? 'true' : 'false'}">
-						${post.likedByCurrentUser ? "いいね解除" : "いいね"}</button>
-					<span class="likeCount">${post.likeCount}件</span> <span
-						class="likeUsers"> <c:forEach var="name"
-							items="${post.likedUsers}" varStatus="status">
-            ${name}<c:if test="${!status.last}">, </c:if>
+						${post.likedByCurrentUser ? "いいね解除" : "いいね"}
+					</button>
+					<span class="likeCount">${post.likeCount}件</span> 
+					<span class="likeUsers"> 
+						<c:forEach var="name" items="${post.likedUsers}" varStatus="status">
+            				${name}
+            					<c:if test="${!status.last}">, </c:if>
 						</c:forEach>
-					</span> <span class="delete-area">
+					</span> 
+					<span class="delete-area">
 						<form method="post" style="display: inline;">
 							<input type="hidden" name="deletePostId" value="${post.id}" />
 							<button type="submit" class="deleteBtn">削除</button>
@@ -257,27 +263,28 @@ button:hover, .btn:hover {
     document.body.style.fontSize = size + "px";
   }
   // いいねボタン即時反映
-  document.querySelectorAll(".likeBtn").forEach(btn => {
-    btn.addEventListener("click", function() {
-      const div = btn.closest(".post");
-      const postId = div.dataset.postId;
-      const liked = btn.getAttribute("data-liked") === "true";
-      fetch("ReactionsServlet", {
-        method: "POST",
-        credentials: "same-origin",
-        headers: {"Content-Type": "application/x-www-form-urlencoded"},
-        body: "postId=" + encodeURIComponent(postId) + "&action=" + (liked ? "unlike" : "like")
-      })
-      .then(r => r.json())
-      .then(data => {
-        if (data.status === "ok") {
-          btn.textContent = data.liked ? "いいね解除" : "いいね";
-          btn.setAttribute("data-liked", data.liked);
-          div.querySelector(".likeCount").textContent = data.count + "件";
-          div.querySelector(".likeUsers").textContent = data.users.length > 0 ? "（" + data.users.join("、") + "）" : "";
-        } else if (data.status === "login_required") {
-          alert("ログインしてください");
-          location.href = "OmoiyalinkLogin";
+	// いいねボタン即時反映
+document.querySelectorAll(".likeBtn").forEach(btn => {
+  btn.addEventListener("click", function() {
+    const div = btn.closest(".post");
+    const postId = div.dataset.postId;
+    const liked = btn.getAttribute("data-liked") === "true";
+    fetch("ReactionsServlet", {
+      method: "POST",
+      credentials: "same-origin",
+      headers: {"Content-Type": "application/x-www-form-urlencoded"},
+      body: "postId=" + encodeURIComponent(postId) + "&action=" + (liked ? "unlike" : "like")
+    })
+    .then(r => r.json())
+    .then(data => {
+      if (data.status === "ok") {
+        btn.textContent = data.liked ? "いいね解除" : "いいね";
+        btn.setAttribute("data-liked", data.liked);
+        div.querySelector(".likeCount").textContent = data.count + "件";;
+        div.querySelector(".likeUsers").textContent = data.users.join("、");
+      } else if (data.status === "login_required") {
+        alert("ログインしてください");
+        location.href = "OmoiyalinkLogin";
         }
       });
     });

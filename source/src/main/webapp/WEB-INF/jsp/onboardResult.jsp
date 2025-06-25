@@ -1,5 +1,7 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -154,7 +156,7 @@ h1 {
 	margin-bottom: 0.5em;
 }
 
-.likeForm button {
+.likeBtn {
 	background-color: #46B1E1;
 	color: white;
 	padding: 0.6em 1.4em;
@@ -162,10 +164,17 @@ h1 {
 	border-radius: 6px;
 	font-size: 1.2em;
 	cursor: pointer;
+	transition: background 0.16s;
 }
 
-.likeForm button:hover {
+.likeBtn:hover {
 	background-color: #2d7ea3;
+}
+
+.likeCount {
+	margin-left: 10px;
+	margin-right: 10px;
+	font-weight: bold;
 }
 
 .nav-buttons {
@@ -410,29 +419,31 @@ h1 {
 			<div class="post" data-post-id="${post.id}">
 				<h3>${post.title}</h3>
 				<p>
-					<strong>投稿者:</strong> ${post.userName}
+					<strong>投稿者: ${post.userName}</strong>
 				</p>				
 				<p>
-					<strong>場所:</strong> ${post.pref} / ${post.city}
+					<strong>場所: ${post.pref} / ${post.city}</strong>
 				</p>
 				<p>
-					<strong>タグ:</strong> ${post.tag}
+					<strong>タグ: ${post.tag}</strong>
 				</p>
 				<p>
-					${post.content}
+					<strong>${post.content}</strong>
 				</p>
 				<p>
-					<strong>投稿日:</strong> ${post.createdAt}
+					<strong>投稿日:</strong> <fmt:formatDate value="${post.createdAt}" pattern="yyyy/M/d H:mm" />
 				</p>
 				<div>
 					<!-- いいねボタンと件数・ユーザーリストをclass付きで配置！ -->
 					<button class="likeBtn"
 						data-liked="${post.likedByCurrentUser ? 'true' : 'false'}">
-						${post.likedByCurrentUser ? "いいね解除" : "いいね"}</button>
-					<span class="likeCount">${post.likeCount}件</span> <span
-						class="likeUsers"> <c:forEach var="name"
-							items="${post.likedUsers}" varStatus="status">
-            				${name}<c:if test="${!status.last}">, </c:if>
+						${post.likedByCurrentUser ? "いいね解除" : "いいね"}
+					</button>
+					<span class="likeCount">${post.likeCount}件</span> 
+					<span class="likeUsers">
+						<c:forEach var="name" items="${post.likedUsers}" varStatus="status">
+            				${name}
+            					<c:if test="${!status.last}">, </c:if>
 						</c:forEach>
 					</span>
 				</div>
@@ -450,6 +461,7 @@ h1 {
 	<!-- フッターここまで -->
 
 	<script>
+	// いいねボタン即時反映
 document.querySelectorAll(".likeBtn").forEach(btn => {
   btn.addEventListener("click", function() {
     const div = btn.closest(".post");
@@ -466,8 +478,8 @@ document.querySelectorAll(".likeBtn").forEach(btn => {
       if (data.status === "ok") {
         btn.textContent = data.liked ? "いいね解除" : "いいね";
         btn.setAttribute("data-liked", data.liked);
-        div.querySelector(".likeCount").textContent = data.count;
-        div.querySelector(".likeUsers").textContent = "（" + data.users.join("、") + "）";
+        div.querySelector(".likeCount").textContent = data.count + "件";;
+        div.querySelector(".likeUsers").textContent = data.users.join("、");
       } else if (data.status === "login_required") {
         alert("ログインしてください");
         location.href = "OmoiyalinkLogin";
