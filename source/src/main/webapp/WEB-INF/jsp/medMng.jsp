@@ -272,6 +272,10 @@ textarea {
 			<a class="seni"
 				href="${pageContext.request.contextPath}/OmoiyalinkTlkMedRegist">薬を飲む</a>
 		</div>
+		<c:if test="${not empty message}">
+			<div style="color: green; text-align: center;">${message}</div>
+		</c:if>
+		<c:remove var="message" scope="session" />
 
 		<h2>登録されているお薬の一覧</h2>
 		<c:forEach var="e" items="${cardList}">
