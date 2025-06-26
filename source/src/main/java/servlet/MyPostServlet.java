@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import dao.PostsDao;
+import dao.ReactionsDao;
 import dto.PostsDto;
 
 @WebServlet("/OmoiyalinkMyPost")
@@ -20,14 +21,11 @@ public class MyPostServlet extends CustomTemplateServlet {
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-
-		// 1. 未ログイン・ログアウトの場合はログイン画面などにリダイレクト
 		if (checkNoneLogin(request, response) || checkLogout(request, response)) {
 			return;
 		}
 
 		try {
-			// 2. セッションからログインユーザーIDを取得（"id"属性で統一）
 			HttpSession session = request.getSession(false);
 			Integer userIdObj = (Integer) session.getAttribute("id");
 			if (userIdObj == null) {
@@ -36,16 +34,21 @@ public class MyPostServlet extends CustomTemplateServlet {
 			}
 			int userId = userIdObj;
 
-			// 3. 自分の投稿のみDBから取得
 			PostsDao postDao = new PostsDao();
 			List<PostsDto> myPosts = postDao.selectByUserId(userId);
 
-			// 4. JSPへ渡す
-			request.setAttribute("myPosts", myPosts);
+			// --- ここが重要！「いいね」情報をセット ---
+			ReactionsDao reactionsDao = new ReactionsDao();
+			for (PostsDto post : myPosts) {
+				post.setLikedByCurrentUser(reactionsDao.isUserLiked(post.getPostId(), userId));
+				post.setLikeCount(reactionsDao.getLikeCountByPostId(post.getPostId()));
+				post.setLikedUsers(reactionsDao.getLikedUserNames(post.getPostId()));
+			}
 
-			// 5. マイ投稿一覧JSPへフォワード
+			request.setAttribute("myPosts", myPosts);
 			RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/myPost.jsp");
 			dispatcher.forward(request, response);
+
 		} catch (Exception e) {
 			e.printStackTrace();
 			request.setAttribute("message", "エラーが発生しました。投稿一覧を取得できませんでした。");
