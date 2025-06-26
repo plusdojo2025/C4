@@ -93,7 +93,7 @@ public class HealthRegistServlet extends CustomTemplateServlet {
 
 			// --- ここで重複チェックを挟む ---
 			if (new HealthrecordDao().existsSameRecord(userId, date)) {
-			    request.setAttribute("message", "同じ日付の体調記録はすでに登録されています。");
+			    request.setAttribute("healthMessagetourokuga", "同じ日付の体調記録はすでに登録されています。");
 			    request.getRequestDispatcher("/WEB-INF/jsp/healthRegist.jsp").forward(request, response);
 			    return;
 			}

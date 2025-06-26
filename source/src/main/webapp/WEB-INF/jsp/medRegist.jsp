@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -230,17 +231,28 @@ input:focus, select:focus, textarea:focus {
 	</div>
 
 	<main>
-	
-	
+		<c:if test="${not empty medMessage}">
+			<div style="color:red; text-align: center;">${medMessage}</div>
+		</c:if>
+
 		<form method="POST"
 			action="${pageContext.request.contextPath}/OmoiyalinkMedRegist"
 			autocomplete="off" id="regist_form" class="form-box"
 			accept-charset="UTF-8">
-			<label> 薬の正式名称（必須項目） <input type="text" name="formalName"><br>
-			</label> <label> 薬の愛称 <input type="text" name="nickName"><br>
-			</label> <label> 服薬時間(必須項目) <input type="time" name="intake_time"><br>
-			</label> <label> 用量 <input type="text" name="dosage"><br>
-			</label> <label> メモ <input type="text" name="memo"><br>
+			<label> 
+				薬の正式名称（必須項目） <input type="text" name="formalName"><br>
+			</label> 
+			<label>
+				 薬の愛称 <input type="text" name="nickName"><br>
+			</label>
+			<label> 
+				服薬時間(必須項目) <input type="time" name="intake_time"><br>
+			</label> 
+			<label> 
+				用量(必須項目) <input type="text" name="dosage"><br>
+			</label> 
+			<label> 
+				メモ <input type="text" name="memo"><br>
 			</label>
 			<p id="regist"></p>
 			<button type="submit">登録する</button>
@@ -256,8 +268,9 @@ input:focus, select:focus, textarea:focus {
     document.getElementById('regist_form').onsubmit = function(event){
         const formalName = document.getElementById('regist_form').formalName.value;
         const intake_time = document.getElementById('regist_form').intake_time.value;
-        if (formalName ==='' || intake_time ===''){
-            document.getElementById('regist').textContent ='薬の正式名称と服薬時間を入力してください';
+        const dosage = document.getElementById('regist_form').dosage.value;
+        if (formalName ==='' || intake_time ==='' || dosage ===''){
+            document.getElementById('regist').textContent ='薬の正式名称と服薬時間、用量を入力してください';
             event.preventDefault();
         }
     }
