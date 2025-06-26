@@ -83,7 +83,7 @@ public class MedMngServlet extends CustomTemplateServlet {
 
 			// フォームから値を取得
 			int medicationId = Integer.parseInt(request.getParameter("medicationId"));
-			String nickName = request.getParameter("nickName");
+			String nickname = request.getParameter("nickname");
 			String formalName = request.getParameter("formalName");
 			String dosage = request.getParameter("dosage");
 			String createdAtStr = request.getParameter("created_at");
@@ -107,8 +107,9 @@ public class MedMngServlet extends CustomTemplateServlet {
 			}
 
 			// DTOを生成
-			MedicationsDto dto = new MedicationsDto(medicationId, userId, nickName, formalName, dosage, createdAt, memo,
-					intakeTime);
+	        MedicationsDto dto = new MedicationsDto(
+	                medicationId, userId, nickname, formalName, dosage, createdAt, memo, intakeTime, false
+	            );
 
 			// どちらのボタンか判定（value属性："更新" or "削除"）
 			String submit = request.getParameter("submit");

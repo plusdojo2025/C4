@@ -15,10 +15,10 @@ public class MedicationsDto extends CustomeTemplateDto  implements Serializable{
 	private Date createdAt;
 	private String memo;
 	private Time intakeTime;
-
+    private boolean deleted;
 
 	public MedicationsDto(int medicationId, int userId, String nickname, String formalName, String dosage,
-			Date createdAt, String memo, Time intakeTime) {
+			Date createdAt, String memo, Time intakeTime, boolean deleted) {
 		super();
 		this.medicationId = medicationId;
 		this.userId = userId;
@@ -28,11 +28,12 @@ public class MedicationsDto extends CustomeTemplateDto  implements Serializable{
 		this.createdAt = createdAt;
 		this.memo = memo;
 		this.intakeTime = intakeTime;
+		this.deleted = deleted;
 	}
 
 
 	public MedicationsDto() {
-		this(0,0,"","","",null,"",null);
+		this(0,0,"","","",null,"",null,false);
 	}
 
 
@@ -115,4 +116,12 @@ public class MedicationsDto extends CustomeTemplateDto  implements Serializable{
 		this.intakeTime = intakeTime;
 	}
 
+	public boolean getdeleted() {
+		return deleted;
+	}
+
+
+	public void setdeleted(boolean deleted) {
+		this.deleted = deleted;
+	}
 }

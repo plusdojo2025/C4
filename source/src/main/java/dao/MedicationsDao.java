@@ -19,7 +19,7 @@ public class MedicationsDao extends CustomTemplateDao<MedicationsDto> {
 
 		try {
 			conn = conn();
-			String sql = "SELECT * FROM medications WHERE user_id = ?";
+			String sql = "SELECT * FROM medications WHERE user_id = ? AND deleted = 0";
 			PreparedStatement pStmt = conn.prepareStatement(sql);
 			pStmt.setInt(1, dto.getUserId());
 			ResultSet rs = pStmt.executeQuery();
@@ -43,7 +43,7 @@ public class MedicationsDao extends CustomTemplateDao<MedicationsDto> {
 		try {
 			conn = conn();
 
-			String sql = "SELECT * FROM medications WHERE user_id = ? ORDER BY intake_time";
+			String sql = "SELECT * FROM medications WHERE user_id = ? AND deleted = 0 ORDER BY intake_time ";
 			PreparedStatement ps = conn.prepareStatement(sql);
 			ps.setInt(1, userId);
 
@@ -173,7 +173,7 @@ public class MedicationsDao extends CustomTemplateDao<MedicationsDto> {
 			conn = conn();
 
 			// SQL文を準備する
-			String sql = "DELETE FROM medications WHERE medication_id=?";
+			String sql ="UPDATE medications SET deleted = 1 WHERE medication_id=?";
 			PreparedStatement pStmt = conn.prepareStatement(sql);
 
 			// SQL文を完成させる
@@ -212,7 +212,7 @@ public class MedicationsDao extends CustomTemplateDao<MedicationsDto> {
 		List<MedicationsDto> result = new ArrayList<>();
 		try (Connection conn = conn()) {
 			// intake_timeが「±数分以内」も許可したい場合はBETWEENで幅をもたせる
-			String sql = "SELECT * FROM medications WHERE intake_time = ?";
+			String sql = "SELECT * FROM medications WHERE intake_time = ?  AND deleted = 0";
 			PreparedStatement stmt = conn.prepareStatement(sql);
 			stmt.setTime(1, new java.sql.Time(intakeTime.getTime()));
 			ResultSet rs = stmt.executeQuery();

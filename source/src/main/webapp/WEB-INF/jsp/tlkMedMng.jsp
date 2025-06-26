@@ -20,11 +20,6 @@
 	margin: 2rem;
 }
 
-table {
-	border-collapse: collapse;
-	width: 100%;
-}
-
 th, td {
 	border: 1px solid #aaa;
 	padding: 8px;
@@ -170,12 +165,30 @@ h3 {
 	overflow-x: auto;
 	width: 100%;
 	margin-bottom: 1em;
+    display: flex;
+    justify-content: center;
 }
 
 .table-scroll table {
-	min-width: 1000px; /* ここはカラム内容に応じて調整してください */
-	width: max-content;
+  width: 80vw;
+  min-width: 650px;
+  max-width: 1600px;
+  margin: 0 auto;
 }
+
+input[type="text"].memo-input {
+  width: 95%;
+  min-width: 50px;
+  max-width: 700px;
+  font-size: 1.13rem;
+  padding: 10px 14px;
+}
+.table-scroll {
+  overflow-x: auto;
+  width: 100%;
+  margin-bottom: 1em;
+
+
 </style>
 </head>
 <body>
@@ -227,7 +240,7 @@ h3 {
 								<td><input type="text" name="nickname"					value="${log.nickname}" 									class="edit-plain"></td>
 								<td><input type="text" name="formalName"				value="${log.formalName}" 								class="edit-plain"></td>
 								<td><input type="text" name="dosage"						 value="${log.dosage}"										class="edit-plain"></td>
-								<td><input type="text" name="memo" 						value="${log.memo}"										class="edit-plain"></td>
+								<td><input type="text" name="memo" 						value="${log.memo}"										class="edit-plain memo-input"></td>
 								<td>
 									<!-- 必要なhidden値を全部送る -->
 									<input type="hidden" name="logId" 				value="${log.logId}">
