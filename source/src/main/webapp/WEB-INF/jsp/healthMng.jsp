@@ -143,6 +143,12 @@ th {
 	color: #FFFEEF;
 	background-color: #46B1E1;
 }
+td.memo-cell {
+    white-space: pre-wrap;   /* 改行も反映しつつ折り返す */
+    word-break: break-all;   /* 長い単語・URLも途中で改行 */
+    text-align: left;        /* 左寄せがおすすめ */
+    max-width: 280px;        /* 必要に応じて幅を制限 */
+}
 </style>
 </head>
 <body>
@@ -215,7 +221,7 @@ th {
 											<c:otherwise>―</c:otherwise>
 										</c:choose></td>
 									<td><c:out value="${rec.sleep}" /></td>
-									<td><c:out value="${rec.memo}" /></td>
+									<td class="memo-cell"><c:out value="${rec.memo}" /></td>
 								</tr>
 							</c:forEach>
 						</c:when>
