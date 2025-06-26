@@ -227,14 +227,13 @@ button:hover, .btn:hover {
 					<strong>タグ: ${post.tag}</strong>
 				</p>
 				<p>
-					<strong>投稿内容：</strong><br><span
-						style="white-space: pre-wrap; word-break: break-all;"><c:out
+					<strong>投稿内容：</strong><br>
+					<span style="white-space: pre-wrap; word-break: break-all;"><c:out
 							value="${fn:replace(post.content, '&#10;', '<br>')}"
-							escapeXml="false" />
-					</span>
+							escapeXml="false" /> </span>
 				</p>
-				
-				
+
+
 				<p>
 					<strong>投稿日:</strong>
 					<fmt:formatDate value="${post.createdAt}" pattern="yyyy/M/d H:mm" />
@@ -249,12 +248,14 @@ button:hover, .btn:hover {
             				${name}
             					<c:if test="${!status.last}">, </c:if>
 						</c:forEach>
-					</span> <span class="delete-area">
+					</span><span class="delete-area">
 						<form method="post" style="display: inline;">
 							<input type="hidden" name="deletePostId" value="${post.id}" />
-							<button type="submit" class="deleteBtn">削除</button>
+							<button type="submit" class="deleteBtn"
+								onclick="return confirm('本当に削除しますか？');">削除</button>
 						</form>
 					</span>
+
 				</div>
 			</div>
 		</c:forEach>
