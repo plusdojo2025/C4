@@ -162,7 +162,9 @@ input:focus, select:focus, textarea:focus {
 		<div style="text-align: center; margin-top: 18px;">
 			<a href="OmoiyalinkHealthMng" class="btn"> 一覧を見る </a>
 		</div>
-
+		<c:if test="${not empty message}">
+		    <div style="color:red; text-align: center;">${message}</div>
+		</c:if>
 		<form method="POST"
 			action="${pageContext.request.contextPath}/OmoiyalinkHealthRegist"
 			autocomplete="off" id="regist_form" class="form-box"
