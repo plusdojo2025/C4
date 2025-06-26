@@ -199,6 +199,7 @@ input[name="delete"], input[name="submit"] {
 	margin-top: 18px;
 	margin-bottom: 5px;
 }
+
 .seni {
 	display: inline-block;
 	background: #A9C9E1;
@@ -213,6 +214,7 @@ input[name="delete"], input[name="submit"] {
 	transition: background 0.2s;
 	text-decoration: none !important;
 }
+
 .seni:hover {
 	background: #7BA9C9;
 	color: #fff;
@@ -233,6 +235,21 @@ input[name="delete"], input[name="submit"] {
 	color: #FFFEEF;
 	background-color: #46B1E1;
 }
+
+textarea {
+	width: 98%;
+	padding: 0.48em;
+	font-size: 1.05em;
+	margin-bottom: 1.2em;
+	border: 1px solid #a3cde2;
+	border-radius: 8px;
+	background: #FFFEF9;
+	color: #22292F;
+	box-sizing: border-box;
+	white-space: pre-wrap; /* 改行を保持＆折り返し */
+	word-break: break-all; /* 長い単語も途中で折る */
+	resize: vertical; /* 高さ調整可（横幅は固定） */
+}
 </style>
 </head>
 <body>
@@ -248,9 +265,12 @@ input[name="delete"], input[name="submit"] {
 
 
 		<div class="button-center">
-			<a class="seni" href="${pageContext.request.contextPath}/OmoiyalinkMedRegist">薬を登録する</a>
-			<a class="seni" href="${pageContext.request.contextPath}/OmoiyalinkTlkMedMng">飲んだ薬</a>
-			<a class="seni" href="${pageContext.request.contextPath}/OmoiyalinkTlkMedRegist">薬を飲む</a>
+			<a class="seni"
+				href="${pageContext.request.contextPath}/OmoiyalinkMedRegist">薬を登録する</a>
+			<a class="seni"
+				href="${pageContext.request.contextPath}/OmoiyalinkTlkMedMng">飲んだ薬</a>
+			<a class="seni"
+				href="${pageContext.request.contextPath}/OmoiyalinkTlkMedRegist">薬を飲む</a>
 		</div>
 
 		<h2>登録されているお薬の一覧</h2>
@@ -268,7 +288,8 @@ input[name="delete"], input[name="submit"] {
 					value="<c:out value='${fn:substring(e.intakeTime,0,5)}'/>">
 				</label> <label> 用量 <input type="text" name="dosage"
 					value="${e.dosage}">
-				</label> <label> メモ <input type="text" name="memo" value="${e.memo}">
+				</label> <label> メモ <textarea name="memo" rows="3"
+						style="resize: vertical;">${e.memo}</textarea>
 				</label>
 
 				<div class="button-group">
@@ -290,32 +311,32 @@ input[name="delete"], input[name="submit"] {
 	<script
 		src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 	<script>
-document.querySelectorAll('form.form-box').forEach(function(form) {
-    form.onsubmit = function(event) {
-        const formalName = form.formalName.value;
-        const intake_time = form.intake_time.value;
-        // 必須バリデーション
-        if (formalName === '' || intake_time === '') {
-            alert('薬の正式名称と服薬時間を入力してください');
-            event.preventDefault();
-            return;
-        }
+		document.querySelectorAll('form.form-box').forEach(function(form) {
+			form.onsubmit = function(event) {
+				const formalName = form.formalName.value;
+				const intake_time = form.intake_time.value;
+				// 必須バリデーション
+				if (formalName === '' || intake_time === '') {
+					alert('薬の正式名称と服薬時間を入力してください');
+					event.preventDefault();
+					return;
+				}
 
-        // どのボタンで送信されたかを判定
-        // "submitter"はイベント発火元（モダンブラウザで利用可）
-        const btn = event.submitter;
-        if (btn && btn.value === '削除') {
-            if (!confirm('本当に削除しますか？')) {
-                event.preventDefault();
-            }
-        } else if (btn && btn.value === '更新') {
-            if (!confirm('本当に更新しますか？')) {
-                event.preventDefault();
-            }
-        }
-    }
-});
-</script>
+				// どのボタンで送信されたかを判定
+				// "submitter"はイベント発火元（モダンブラウザで利用可）
+				const btn = event.submitter;
+				if (btn && btn.value === '削除') {
+					if (!confirm('本当に削除しますか？')) {
+						event.preventDefault();
+					}
+				} else if (btn && btn.value === '更新') {
+					if (!confirm('本当に更新しますか？')) {
+						event.preventDefault();
+					}
+				}
+			}
+		});
+	</script>
 
 </body>
 </html>
