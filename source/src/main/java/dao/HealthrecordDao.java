@@ -1,6 +1,7 @@
 package dao;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -12,6 +13,28 @@ import java.util.List;
 import dto.HealthrecordDto;
 
 public class HealthrecordDao extends CustomTemplateDao<HealthrecordDto> {
+
+	public boolean existsSameRecord(int userId, Date date) {
+		Connection conn = null;
+		boolean exists = false;
+		try {
+			conn = conn();
+			String sql = "SELECT COUNT(*) FROM health_records WHERE user_id = ? AND date = ?";
+			PreparedStatement pStmt = conn.prepareStatement(sql);
+			pStmt.setInt(1, userId);
+			pStmt.setDate(2, date);
+
+			ResultSet rs = pStmt.executeQuery();
+			if (rs.next()) {
+				exists = rs.getInt(1) > 0;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(conn);
+		}
+		return exists;
+	}
 
 	/**
 	 * 健康記録を検索する dto.getUserId()がセットされていれば、そのユーザーの記録のみ取得

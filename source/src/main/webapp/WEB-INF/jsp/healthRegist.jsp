@@ -162,14 +162,16 @@ input:focus, select:focus, textarea:focus {
 		<div style="text-align: center; margin-top: 18px;">
 			<a href="OmoiyalinkHealthMng" class="btn"> 一覧を見る </a>
 		</div>
-
+		<c:if test="${not empty healthMessage}">
+		    <div style="color:red; text-align: center;">${healthMessage}</div>
+		</c:if>
 		<form method="POST"
 			action="${pageContext.request.contextPath}/OmoiyalinkHealthRegist"
 			autocomplete="off" id="regist_form" class="form-box"
 			accept-charset="UTF-8">
 			<label> 日付 <input type="date" name="createdAt" required
 				value="<%= new java.text.SimpleDateFormat("yyyy-MM-dd").format(new java.util.Date()) %>">
-			</label> <label> 体温(℃) <input type="text" name="temperature" required
+			</label> <label> 体温(℃) （必須項目）<input type="text" name="temperature" required
 				pattern="\d+(\.\d+)?" placeholder="例：36.6">
 			</label> <label> 最大血圧 <input type="text" name="highBp" pattern="\d*"
 				placeholder="例：120">

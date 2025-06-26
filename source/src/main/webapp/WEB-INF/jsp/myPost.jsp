@@ -1,7 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -202,11 +204,11 @@ button:hover, .btn:hover {
 				<button onclick="changeFontSize(28)">大</button>
 				<button onclick="changeFontSize(36)">特大</button>
 			</div>
-			
-			
+
+
 			<div class="button-center">
-			<a class="seni" href="OnboardRegist">投稿する</a>
-			<a class="seni" href="OnboardSearch">検索する</a>
+				<a class="seni" href="OnboardRegist">投稿する</a> <a class="seni"
+					href="OnboardSearch">検索する</a>
 			</div>
 		</div>
 
@@ -225,29 +227,35 @@ button:hover, .btn:hover {
 					<strong>タグ: ${post.tag}</strong>
 				</p>
 				<p>
-					<strong>${post.content}</strong>
+					<strong>投稿内容：</strong><br>
+					<span style="white-space: pre-wrap; word-break: break-all;"><c:out
+							value="${fn:replace(post.content, '&#10;', '<br>')}"
+							escapeXml="false" /> </span>
 				</p>
+
+
 				<p>
-					<strong>投稿日:</strong> <fmt:formatDate value="${post.createdAt}" pattern="yyyy/M/d H:mm" />
+					<strong>投稿日:</strong>
+					<fmt:formatDate value="${post.createdAt}" pattern="yyyy/M/d H:mm" />
 				</p>
 				<div>
 					<button class="likeBtn"
 						data-liked="${post.likedByCurrentUser ? 'true' : 'false'}">
-						${post.likedByCurrentUser ? "いいね解除" : "いいね"}
-					</button>
-					<span class="likeCount">${post.likeCount}件</span> 
-					<span class="likeUsers"> 
-						<c:forEach var="name" items="${post.likedUsers}" varStatus="status">
+						${post.likedByCurrentUser ? "いいね解除" : "いいね"}</button>
+					<span class="likeCount">${post.likeCount}件</span> <span
+						class="likeUsers"> <c:forEach var="name"
+							items="${post.likedUsers}" varStatus="status">
             				${name}
             					<c:if test="${!status.last}">, </c:if>
 						</c:forEach>
-					</span> 
-					<span class="delete-area">
+					</span><span class="delete-area">
 						<form method="post" style="display: inline;">
 							<input type="hidden" name="deletePostId" value="${post.id}" />
-							<button type="submit" class="deleteBtn">削除</button>
+							<button type="submit" class="deleteBtn"
+								onclick="return confirm('本当に削除しますか？');">削除</button>
 						</form>
 					</span>
+
 				</div>
 			</div>
 		</c:forEach>
@@ -292,5 +300,4 @@ document.querySelectorAll(".likeBtn").forEach(btn => {
 </script>
 </body>
 </html>
- 
- 
+

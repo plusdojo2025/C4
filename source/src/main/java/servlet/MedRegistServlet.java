@@ -81,6 +81,13 @@ public class MedRegistServlet extends CustomTemplateServlet {
 			}
 			int userId = user.getUserId();
 
+	        // ---- 薬名の重複チェック ----
+	        if (new MedicationsDao().existsSameMedication(userId, formalName)) {
+	            request.setAttribute("medMessage", "同じ薬名は既に登録されています。");
+	            request.getRequestDispatcher("/WEB-INF/jsp/medRegist.jsp").forward(request, response);
+	            return;
+	        }
+
 			// DTOにセット
 			MedicationsDto dto = new MedicationsDto();
 			dto.setUserId(userId);

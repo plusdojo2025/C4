@@ -11,6 +11,27 @@ import java.util.List;
 import dto.MedicationsDto;
 
 public class MedicationsDao extends CustomTemplateDao<MedicationsDto> {
+	
+	public boolean existsSameMedication(int userId, String formalName) {
+	    Connection conn = null;
+	    boolean exists = false;
+	    try {
+	        conn = conn();
+	        String sql = "SELECT COUNT(*) FROM medications WHERE user_id = ? AND formal_name = ? AND deleted = 0";
+	        PreparedStatement pStmt = conn.prepareStatement(sql);
+	        pStmt.setInt(1, userId);
+	        pStmt.setString(2, formalName);
+	        ResultSet rs = pStmt.executeQuery();
+	        if (rs.next()) {
+	            exists = rs.getInt(1) > 0;
+	        }
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    } finally {
+	        close(conn);
+	    }
+	    return exists;
+	}
 
 	@Override
 	public List<MedicationsDto> select(MedicationsDto dto) {
