@@ -292,10 +292,9 @@ h1 {
   background-color: #46B1E1;
   color: #FFFEEF;
   padding: 15px 30px;
-  margin-top: 100px; /* ← ここを追加！ */
+  margin-top: 0px; /* ← ここを追加！ */
   text-align: center;
 }
-
 
   .sub-header h2 {
     margin: 0;
