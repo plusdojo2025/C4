@@ -212,12 +212,20 @@ h3 {
 							<td>${med.nickname}</td>
 							<td>${med.formalName}</td>
 							<td>${med.dosage}</td>
-							<td><input type="checkbox" name="takenMed"   value="${med.medicationId}"
-								<c:if test="${checkedIds.contains(med.medicationId)}">checked disabled</c:if> />
-							</td>
-							<td><input type="text" name="memo_${med.medicationId}"
-								<c:if test="${checkedIds.contains(med.medicationId)}">value="${med.memo}" disabled</c:if> />
-							</td>
+							<td>
+						    <c:choose>
+						      <c:when test="${registeredMap[med.medicationId]}">
+						        <input type="checkbox" disabled checked>
+						        <span style="color:gray;"></span>
+						      </c:when>
+						      <c:otherwise>
+						        <input type="checkbox" name="takenMed" value="${med.medicationId}">
+						      </c:otherwise>
+						    </c:choose>
+						  </td>
+						  <td>
+						    <input type="text" name="memo_${med.medicationId}" <c:if test="${registeredMap[med.medicationId]}">disabled</c:if>>
+						  </td>
 						</tr>
 					</c:forEach>
 				</table>

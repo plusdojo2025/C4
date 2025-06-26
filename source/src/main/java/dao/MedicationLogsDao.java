@@ -275,5 +275,33 @@ public class MedicationLogsDao extends CustomTemplateDao<MedicationLogsDto> {
 		return result;
 	}
 
+	 /* 指定ユーザー・薬ID・日付・時間帯（intake_time）で服薬記録が既に存在するか判定*/
+	public boolean existsLogByMedicationAndTime(int userId, int medicationId, java.sql.Date date, java.sql.Time intakeTime) {
+	    Connection conn = null;
+	    boolean exists = false;
+	    try {
+	        conn = conn();
+	        String sql = """
+	            SELECT COUNT(*) 
+	            FROM medication_logs L
+	            INNER JOIN medications M ON L.medication_id = M.medication_id
+	            WHERE L.user_id = ? AND L.medication_id = ? 
+	              AND DATE(L.taken_time) = ? 
+	              AND M.intake_time = ?
+	        """;
+	        PreparedStatement ps = conn.prepareStatement(sql);
+	        ps.setInt(1, userId);
+	        ps.setInt(2, medicationId);
+	        ps.setDate(3, date);
+	        ps.setTime(4, intakeTime);
 
+	        ResultSet rs = ps.executeQuery();
+	        if (rs.next()) exists = rs.getInt(1) > 0;
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    } finally {
+	        close(conn);
+	    }
+	    return exists;
+	}
 }

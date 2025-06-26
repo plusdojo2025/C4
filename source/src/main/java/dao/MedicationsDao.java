@@ -69,6 +69,26 @@ public class MedicationsDao extends CustomTemplateDao<MedicationsDto> {
 
 		return list;
 	}
+	
+	public MedicationsDto selectById(int medicationId) {
+	    MedicationsDto dto = null;
+	    Connection conn = null;
+	    try {
+	        conn = conn();
+	        String sql = "SELECT * FROM medications WHERE medication_id = ? AND deleted = 0";
+	        PreparedStatement pStmt = conn.prepareStatement(sql);
+	        pStmt.setInt(1, medicationId);
+	        ResultSet rs = pStmt.executeQuery();
+	        if (rs.next()) {
+	            dto = mapRowToMedicationsDto(rs);
+	        }
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    } finally {
+	        close(conn);
+	    }
+	    return dto;
+	}
 
 	@Override
 	public boolean insert(MedicationsDto dto) {

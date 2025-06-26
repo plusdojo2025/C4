@@ -4,12 +4,9 @@ import java.io.IOException;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -62,30 +59,49 @@ public class TlkMedRegistServlet extends CustomTemplateServlet {
 //	            System.out.println("・" + med.getNickName() + " - " + med.getIntakeTime());
 //	        }
 
-			// 時間帯（intakeTime）ごとに薬をグループ分け
-			// 例: "09:00", "12:00" など
+			// 「今日」判定
+			java.sql.Date today = new java.sql.Date(System.currentTimeMillis());
+			MedicationLogsDao logsDao = new MedicationLogsDao();
+			Map<Integer, Boolean> registeredMap = new java.util.HashMap<>();
+			for (MedicationsDto med : allMeds) {
+				boolean already = logsDao.existsLogByMedicationAndTime(
+					userId, med.getMedicationId(), today, med.getIntakeTime()
+				);
+				registeredMap.put(med.getMedicationId(), already);
+			}
+
+			// 薬を時間帯でまとめる（例：09:00単位など、今まで通り）
 			Map<String, List<MedicationsDto>> medsByTime = new LinkedHashMap<>();
 			SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
-
 			for (MedicationsDto med : allMeds) {
 				String key = med.getIntakeTime() != null ? sdf.format(med.getIntakeTime()) : "未指定";
 				medsByTime.computeIfAbsent(key, k -> new ArrayList<>()).add(med);
 			}
+			
+			// 時間帯（intakeTime）ごとに薬をグループ分け
+			// 例: "09:00", "12:00" など
+			Map<String, List<MedicationsDto>> medsByT = new LinkedHashMap<>();
+			SimpleDateFormat sdform = new SimpleDateFormat("HH:mm");
+
+			for (MedicationsDto med : allMeds) {
+				String key = med.getIntakeTime() != null ? sdform.format(med.getIntakeTime()) : "未指定";
+				medsByT.computeIfAbsent(key, k -> new ArrayList<>()).add(med);
+			}
 
 			// 今日すでに登録された服薬ログを取得（チェック状態反映用）
-			MedicationLogsDao logsDao = new MedicationLogsDao();
-			MedicationLogsDto cond = new MedicationLogsDto();
-			cond.setUserId(userId);
-			cond.setTakenTime(new Date()); // 今日の服薬記録取得
-			List<MedicationLogsDto> todayLogs = logsDao.selectByDate(cond);
-
-			// チェック済みIDセットに変換
-			Set<Integer> checkedmeds = todayLogs.stream().map(MedicationLogsDto::getMedicationId)
-					.collect(Collectors.toSet());
+//			MedicationLogsDao logsDao = new MedicationLogsDao();
+//			MedicationLogsDto cond = new MedicationLogsDto();
+//			cond.setUserId(userId);
+//			cond.setTakenTime(new Date()); // 今日の服薬記録取得
+//			List<MedicationLogsDto> todayLogs = logsDao.selectByDate(cond);
+//
+//			// チェック済みIDセットに変換
+//			Set<Integer> checkedmeds = todayLogs.stream().map(MedicationLogsDto::getMedicationId)
+//					.collect(Collectors.toSet());
 
 			// JSPに渡すデータをリクエストスコープにセット
-			request.setAttribute("medsByTime", medsByTime); // 時間帯ごとの薬
-			request.setAttribute("checkedIds", checkedmeds); // 今日すでに登録された薬のID
+			request.setAttribute("medsByTime", medsByT); // 時間帯ごとの薬
+			request.setAttribute("registeredMap", registeredMap);// 今日すでに登録された薬のID
 			request.setAttribute("allMeds", allMeds); // 追加登録用
 
 			// 服薬登録画面にフォワード
@@ -162,22 +178,44 @@ public class TlkMedRegistServlet extends CustomTemplateServlet {
 	        doGet(request, response);
 	        return;
 	    }
+	    
 	    Timestamp now = new Timestamp(System.currentTimeMillis());
+	    java.sql.Date date = new java.sql.Date(now.getTime());
+
+	    MedicationLogsDao logsDao = new MedicationLogsDao();
+	    MedicationsDao medsDao = new MedicationsDao();
+
 	    int successCount = 0;
+	    int skippedCount = 0;
+	    
 	    for (String medIdStr : selectedTakenMed) {
 	        int medicationId = Integer.parseInt(medIdStr);
 	        String memo = request.getParameter("memo_" + medicationId);
-	
+
+	        // 薬のintake_timeを取得
+	        MedicationsDto med = medsDao.selectById(medicationId);
+	        if (med == null) continue; // 薬情報なしはスキップ
+	        
+	        java.sql.Time intakeTime = med.getIntakeTime();
+
+            // 重複チェック
+            boolean alreadyRegistered = logsDao.existsLogByMedicationAndTime(userId, medicationId, date, intakeTime);
+            if (alreadyRegistered) {
+                skippedCount++;
+                continue; // 重複ありは登録スキップ
+            }
+
 	        MedicationLogsDto dto = new MedicationLogsDto();
 	        dto.setUserId(userId);
 	        dto.setMedicationId(medicationId);
 	        dto.setTakenTime(now);
 	        dto.setTakenMed("服用済み");
 	        dto.setMemo(memo);
-	
-	        boolean result = new MedicationLogsDao().insert(dto);
+
+	        boolean result = logsDao.insert(dto);
 	        if (result) successCount++;
 	    }
+
 	    String message = (successCount == selectedTakenMed.length) ? "服薬記録を登録しました。"
 	            : (successCount == 0 ? "服薬記録の登録に失敗しました。" : "一部の服薬記録を登録できませんでした。");
 	    session.setAttribute("message", message);
