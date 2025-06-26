@@ -1,6 +1,8 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
+
 
 <!DOCTYPE html>
 <html>
@@ -288,43 +290,44 @@ h1 {
 	text-align: center;
 	font-size: 1.3rem;
 }
- .sub-header {
-  background-color: #46B1E1;
-  color: #FFFEEF;
-  padding: 15px 30px;
-  margin-top: 0px; /* ← ここを追加！ */
-  text-align: center;
+
+.sub-header {
+	background-color: #46B1E1;
+	color: #FFFEEF;
+	padding: 15px 30px;
+	margin-top: 0px; /* ← ここを追加！ */
+	text-align: center;
 }
 
-  .sub-header h2 {
-    margin: 0;
-    font-size: 2.4rem;
-  }
+.sub-header h2 {
+	margin: 0;
+	font-size: 2.4rem;
+}
 
 .search-controls {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  align-items: center;
-  gap: 20px;
-  margin-bottom: 2em;
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	align-items: center;
+	gap: 20px;
+	margin-bottom: 2em;
 }
 
-.search-controls .font-size-buttons button,
-.search-controls .nav-buttons-inline button {
-  font-size: 1.6em;
-  padding: 1.0em 1.5em;
-  border-radius: 8px;
-  border: none;
-  cursor: pointer;
-  background-color: #46B1E1;
-  color: white;
-  transition: background 0.2s;
+.search-controls .font-size-buttons button, .search-controls .nav-buttons-inline button
+	{
+	font-size: 1.6em;
+	padding: 1.0em 1.5em;
+	border-radius: 8px;
+	border: none;
+	cursor: pointer;
+	background-color: #46B1E1;
+	color: white;
+	transition: background 0.2s;
 }
 
-.search-controls .font-size-buttons button:hover,
-.search-controls .nav-buttons-inline button:hover {
-  background-color: #2d7ea3;
+.search-controls .font-size-buttons button:hover, .search-controls .nav-buttons-inline button:hover
+	{
+	background-color: #2d7ea3;
 }
 
 /*画面遷移ボタン*/
@@ -354,37 +357,36 @@ h1 {
 	color: #fff;
 	text-decoration: none !important;
 }
-
 </style>
 </head>
 <body>
 	<!-- ヘッダー -->
-		<!-- ヘッダー -->
-<header>
+	<!-- ヘッダー -->
+	<header>
 		<%@ include file="/WEB-INF/jsp/header.jsp"%>
 	</header>
 	<!-- ヘッダここまで -->
 	<!-- メイン -->
 	<main>
-	<div class="sub-header">
-	<h2>検索結果一覧</h2>
-	</div>
+		<div class="sub-header">
+			<h2>検索結果一覧</h2>
+		</div>
 
-<div class="search-controls">
-  <div class="font-size-buttons">
-    <button onclick="document.body.style.fontSize='20px'">標準</button>
-    <button onclick="document.body.style.fontSize='28px'">大</button>
-    <button onclick="document.body.style.fontSize='36px'">特大</button>
-  </div>
- </div>
-  <div class="button-center">
-    <a class="seni" href="OnboardSearch">検索に戻る</a>
-	<a class="seni" href="OnboardRegist">投稿する</a>  
-	<a class="seni" href="OmoiyalinkMyPost"> 自分の投稿を見る </a>  
-  </div>
+		<div class="search-controls">
+			<div class="font-size-buttons">
+				<button onclick="document.body.style.fontSize='20px'">標準</button>
+				<button onclick="document.body.style.fontSize='28px'">大</button>
+				<button onclick="document.body.style.fontSize='36px'">特大</button>
+			</div>
+		</div>
+		<div class="button-center">
+			<a class="seni" href="OnboardSearch">検索に戻る</a> <a class="seni"
+				href="OnboardRegist">投稿する</a> <a class="seni"
+				href="OmoiyalinkMyPost"> 自分の投稿を見る </a>
+		</div>
 
 
-		
+
 
 		<c:if test="${empty postsList}">
 			<p class="empty-message">該当する投稿が見つかりませんでした。</p>
@@ -395,7 +397,7 @@ h1 {
 				<h3>${post.title}</h3>
 				<p>
 					<strong>投稿者: ${post.userName}</strong>
-				</p>				
+				</p>
 				<p>
 					<strong>場所: ${post.pref} / ${post.city}</strong>
 				</p>
@@ -403,20 +405,24 @@ h1 {
 					<strong>タグ: ${post.tag}</strong>
 				</p>
 				<p>
-					<strong>${post.content}</strong>
+					<strong>投稿内容：</strong><br><span
+						style="white-space: pre-wrap; word-break: break-all;"><c:out
+							value="${fn:replace(post.content, '&#10;', '<br>')}"
+							escapeXml="false" />
+					</span>
 				</p>
 				<p>
-					<strong>投稿日:</strong> <fmt:formatDate value="${post.createdAt}" pattern="yyyy/M/d H:mm" />
+					<strong>投稿日:</strong>
+					<fmt:formatDate value="${post.createdAt}" pattern="yyyy/M/d H:mm" />
 				</p>
 				<div>
 					<!-- いいねボタンと件数・ユーザーリストをclass付きで配置！ -->
 					<button class="likeBtn"
 						data-liked="${post.likedByCurrentUser ? 'true' : 'false'}">
-						${post.likedByCurrentUser ? "いいね解除" : "いいね"}
-					</button>
-					<span class="likeCount">${post.likeCount}件</span> 
-					<span class="likeUsers">
-						<c:forEach var="name" items="${post.likedUsers}" varStatus="status">
+						${post.likedByCurrentUser ? "いいね解除" : "いいね"}</button>
+					<span class="likeCount">${post.likeCount}件</span> <span
+						class="likeUsers"> <c:forEach var="name"
+							items="${post.likedUsers}" varStatus="status">
             				${name}
             					<c:if test="${!status.last}">, </c:if>
 						</c:forEach>
