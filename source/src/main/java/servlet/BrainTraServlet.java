@@ -25,11 +25,10 @@ public class BrainTraServlet extends CustomTemplateServlet {
 			// セッション初期化
 			request.getSession().setAttribute("winCount", 0);
 			request.getSession().setAttribute("history", new java.util.ArrayList<String>());
-			response.sendRedirect(request.getContextPath() + "/OmoiyalinkBrainTraPlay");
+			response.sendRedirect("https://plusdojo.jp/c4/OmoiyalinkBrainTraPlay");
 		} else if ("history".equals(action)) {
-			response.sendRedirect(request.getContextPath() + "/OmoiyalinkBrainTraMng");
+			response.sendRedirect("https://plusdojo.jp/c4/OmoiyalinkBrainTraMng");
 		} else {
-			response.sendRedirect(request.getContextPath() + "/OmoiyalinkBrainTra");
+			response.sendRedirect("https://plusdojo.jp/c4/OmoiyalinkBrainTra");
 		}
-	}
 }

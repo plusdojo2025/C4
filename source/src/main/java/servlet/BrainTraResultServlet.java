@@ -63,6 +63,6 @@ public class BrainTraResultServlet extends CustomTemplateServlet {
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		response.sendRedirect(request.getContextPath() + "/OmoiyalinkBrainTra");
+		response.sendRedirect(request.getContextPath() + "https://plusdojo.jp/c4/ OmoiyalinkBrainTra");
 	}
 }
