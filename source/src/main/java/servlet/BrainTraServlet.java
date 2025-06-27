@@ -32,3 +32,4 @@ public class BrainTraServlet extends CustomTemplateServlet {
 			response.sendRedirect("https://plusdojo.jp/c4/OmoiyalinkBrainTra");
 		}
 }
+}
